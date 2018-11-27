@@ -28,7 +28,10 @@ export class BhkDashboardComponent
   ngOnInit() {
     // init menu awal yang terpilih
     this.menus.selectMenu(['app']);
-    setTimeout(() => this.start = false, 4000);
+    setTimeout(() => this.start = false, 60000);
+
+    // this.mobileQuery.
+
   }
 
   ngAfterViewInit(): void {

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "assets/css/dan-mix";
 
 .to-full-height {
   height: 100%;
@@ -91,7 +92,7 @@ mat-sidenav {
         .mat-expansion-panel-header {
           font-size: 13px;
           position: relative;
-          background-color: rgba(0, 0, 0, 0.03);
+          background-color: $header-color;
 
           .mat-progress-bar {
             height: 2px;

@@ -1,6 +1,9 @@
+
+
 <div class="dan-container"
      (contextmenu)="preventDefaultMode($event)"
      [class.dan-is-mobile]="mobileQuery.matches" >
+
 
 
   <!-- Buat menu navigation bar-->
@@ -8,7 +11,9 @@
 
   <mat-card style="padding: 0 ">
 
-    <mat-progress-bar *ngIf="start" color="warn" mode="indeterminate" style="height: 5px; position: absolute"></mat-progress-bar>
+    <mat-progress-bar *ngIf="start && !mobileQuery.matches" color="warn" mode="indeterminate" style="height: 3px; position: absolute">
+    </mat-progress-bar>
+
     <mat-toolbar class="dan-toolbar " color="primary">
 
 
@@ -16,9 +21,9 @@
         <mat-icon color="">horizontal_split</mat-icon>
       </button>
 
+      <!--*ngIf="start && mobileQuery.matches"-->
       <!--ketika masuk pada batas media query yang ditentukan-->
-      <mat-progress-bar *ngIf="start && mobileQuery.matches" color="warn" mode="indeterminate" class="loading-dashboard-mobile">
-      </mat-progress-bar>
+
       <h1 *ngIf="mobileQuery.matches" style="margin-left: 15px;">&nbsp;{{menus.menuSelected}}</h1>
 
 
@@ -40,6 +45,9 @@
       <button mat-icon-button [matMenuTriggerFor]="userOptionsMenu">
         <mat-icon>settings</mat-icon>
       </button>
+
+      <mat-progress-bar *ngIf="start && mobileQuery.matches" color="warn" mode="indeterminate" class="loading-dashboard-mobile">
+      </mat-progress-bar>
     </mat-toolbar>
   </mat-card>
   <!--<mat-toolbar ></mat-toolbar>-->

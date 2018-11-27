@@ -34,9 +34,6 @@ export class MasterUnitComponent
 
   receivedData: any;
 
-  xContextMenu = 0;
-  yContextMenu = 0;
-
 
   dataSource: MasterUnitTableDataSource;
   displayedColumns = ['uuid', 'namaPegawai', 'tahunAjar'];
