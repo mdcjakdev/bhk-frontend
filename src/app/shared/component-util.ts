@@ -17,6 +17,7 @@ export class ComponentUtil implements OnDestroy {
 
   xContextMenuOfTable = 0;
   yContextMenuOfTable = 0;
+  onTableTargetSelected;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
@@ -24,6 +25,10 @@ export class ComponentUtil implements OnDestroy {
     this.mobileQuery = media.matchMedia(this.mediaMaxWidth);
     this.__mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this.__mobileQueryListener);
+  }
+
+  isMobile() {
+    return (this.mobileQuery.matches);
   }
 
   ngOnDestroy(): void {
@@ -42,8 +47,15 @@ export class ComponentUtil implements OnDestroy {
   }
 
 
+  tableMenuRightClickOnClose(event) {
+    this.onTableTargetSelected.classList.remove('tr-show-menu');
+  }
+
+
   showTableMenuOnRightClick(event, menu, navSize = defaultNavSideBarSize,
                             contentPadding = defaultMainContentPadding, fromTop = this.defaultFromTop) {
+    this.onTableTargetSelected = event.target.parentElement;
+    this.onTableTargetSelected.classList.add('tr-show-menu');
     event.preventDefault();
     this.xContextMenuOfTable = this.positioningXY(event, navSize, contentPadding, fromTop).x;
     this.yContextMenuOfTable = this.positioningXY(event, navSize, contentPadding, fromTop).y;
