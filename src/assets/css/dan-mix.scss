@@ -1,0 +1,136 @@
+@import '~@angular/material/theming';
+
+@mixin dan-theme-mix($theme) {
+
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $color-icon-and-font: rgba(0, 0, 0, 0.56);
+
+  $standard-font-size-lg: 17px;
+  $standard-font-size-md: 14px;
+  $standard-font-size: 13px;
+  $standard-font-size-sm: 12px;
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .font-color {
+    color: $color-icon-and-font;
+  }
+
+  .mat-header-cell {
+    font-size: $standard-font-size-md;
+    font-weight: bold;
+  }
+
+  .mat-cell {
+    color: $color-icon-and-font;
+    font-size: $standard-font-size;
+  }
+
+  th {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .primary {
+    color: mat-color($primary);
+  }
+
+  .accent {
+    color: mat-color($accent);
+  }
+
+  .warn {
+    color: mat-color($warn);
+  }
+
+  //Styling row table
+
+  tr.element-row:not(.expanded-row):hover {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  tr.element-row:not(.expanded-row):active {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  tr.element-row:not(.expanded-row):current {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+
+  tr.element-row td {
+    //border-bottom-width: 0;
+  }
+
+  //// end dari Styling row table
+
+  mat-sidenav {
+    z-index: 1;
+  }
+
+  .mat-menu-item {
+    font-size: $standard-font-size;
+  }
+
+
+  .child-icon-color {
+    color: $color-icon-and-font;
+  }
+
+  .dan-toolbar img {
+    margin-top: -5px;
+    margin-left: 15px;
+    width: 25px;
+    height: 30px;
+  }
+
+  mat-sidenav-content {
+    padding: 25px;
+  }
+
+  .on-menu-selected mat-icon ,
+  .on-menu-selected h6 {
+    color: mat-color($primary);
+  }
+
+  .mat-list-icon {
+    color: $color-icon-and-font
+  }
+
+
+  .load-more {
+    color: mat-color($accent);
+    font-style: italic;
+  }
+
+  .mat-icon {
+    vertical-align: middle;
+  }
+
+
+  .dialog-title-with-icon {
+    vertical-align: middle;  border-top: solid;
+    border-top-color: #ffffff;
+  }
+
+
+
+  .mat-card-title {
+    color: $color-icon-and-font;
+    font-size: $standard-font-size-lg;
+  }
+
+
+
+  .mat-card-subtitle {
+    font-size: $standard-font-size-sm;
+  }
+
+  .mat-card-content {
+    font-size: $standard-font-size-md;
+  }
+
+}

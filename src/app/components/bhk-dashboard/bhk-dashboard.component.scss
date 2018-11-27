@@ -1,0 +1,30 @@
+
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+
+::ng-deep .cdk-focused:focus {
+  outline: 0px dotted;
+}
+
+.loading-dashboard-mobile {
+  height: 5px;
+  margin-top: -60px;
+  margin-left: -16px;
+  position: absolute;
+}
+
+.mat-list-item {
+  font-size: 14px;
+}
+
+//
+//.mat-menu-item {
+//  font-size: 13px;
+//}
+
+

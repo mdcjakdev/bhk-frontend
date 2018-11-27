@@ -1,0 +1,106 @@
+<div class="dan-container"
+     (contextmenu)="preventDefaultMode($event)"
+     [class.dan-is-mobile]="mobileQuery.matches" >
+
+
+  <!-- Buat menu navigation bar-->
+  <!--<mat-progress-bar *ngIf="start" color="warn" mode="indeterminate" style="position: absolute"></mat-progress-bar>-->
+
+  <mat-card style="padding: 0 ">
+
+    <mat-progress-bar *ngIf="start" color="warn" mode="indeterminate" style="height: 5px; position: absolute"></mat-progress-bar>
+    <mat-toolbar class="dan-toolbar " color="primary">
+
+
+      <button mat-icon-button (click)="toggle(sidenav)">
+        <mat-icon color="">horizontal_split</mat-icon>
+      </button>
+
+      <!--ketika masuk pada batas media query yang ditentukan-->
+      <mat-progress-bar *ngIf="start && mobileQuery.matches" color="warn" mode="indeterminate" class="loading-dashboard-mobile">
+      </mat-progress-bar>
+      <h1 *ngIf="mobileQuery.matches" style="margin-left: 15px;">&nbsp;{{menus.menuSelected}}</h1>
+
+
+      <img *ngIf="!mobileQuery.matches"
+           src="../../assets/logo.png" alt="">
+      <h1 *ngIf="!mobileQuery.matches" style="margin-left: 10px;">
+        <strong>Bintang Harapan Kurnia</strong>
+      </h1>
+
+
+      <!--<mat-icon *ngIf="!mobileQuery.matches"-->
+      <!--color=""></mat-icon>-->
+
+      <span class="toolbar-spacer"></span>
+
+      <span style="font-size: 14px; color: #fff;" *ngIf="!mobileQuery.matches">{{menus.menuSelected}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+      </span>
+      <button mat-icon-button [matMenuTriggerFor]="userOptionsMenu">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </mat-toolbar>
+  </mat-card>
+  <!--<mat-toolbar ></mat-toolbar>-->
+  <!--Batas Pembuatan navigation bar-->
+
+
+  <!--User Menu Options-->
+  <mat-menu #userOptionsMenu="matMenu">
+    <!--Lazy load menu-->
+    <ng-template matMenuContent>
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span >Profil</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications</mat-icon>
+        <span >Pemberitahuan</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Keluar dari aplikasi</span>
+      </button>
+    </ng-template>
+  </mat-menu>
+
+  <!--Batas User Menu Options-->
+
+  <!--Membuat Side navigation bar & Content-->
+  <mat-sidenav-container
+    class="dan-sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <!--fixedInViewport="true"-->
+
+    <mat-sidenav #sidenav [mode]="getSidenavMode()"
+                 [opened]="!mobileQuery.matches"
+                 [fixedInViewport]="mobileQuery.matches"
+                 fixedTopGap="56"  >
+
+      <mat-nav-list >
+        <!--Looping for menu item-->
+
+        <mat-list-item [ngClass]="m.cssClassOfColor " routerLink="."
+           *ngFor="let m of menus.showedMenu"
+           (click)="onMenuSelected(m, sidenav)">
+
+          <mat-icon mat-list-icon>{{m.icon}}</mat-icon>
+          <!--<p ></p>-->
+          <h6 mat-line> {{m.menu}} </h6>
+          <mat-icon  *ngIf="m.childs" class="child-icon-color">arrow_right</mat-icon>
+
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+
+    <!--// Konten-->
+    <mat-sidenav-content >
+
+      <app-master-unit></app-master-unit>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div >
