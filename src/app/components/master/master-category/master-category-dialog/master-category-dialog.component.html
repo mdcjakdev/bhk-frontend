@@ -1,0 +1,223 @@
+<div id="dialog-block">
+
+  <!--<div class="dialog-block-content">-->
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
+  </mat-progress-bar>
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+    <div>
+      <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && isDelete()" style="margin-bottom: 4px;">delete</mat-icon>
+
+      <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
+      <ng-template #elseHeader>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Kategori</strong>
+      </ng-template>
+    </div>
+  </h4>
+
+  <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
+    <table>
+      <tr>
+        <td class="form-app table-td">
+          <li><strong>Kategori</strong></li>
+        </td>
+        <td class="table-td">
+          <strong>:</strong> {{data.data.namaKategori}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Kode</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong> {{data.data.kodeKategori}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Tipe</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong> {{data.data.tipeKategori}}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="height: 10px"></td>
+      </tr>
+      <tr>
+        <td class="form-app" colspan="2">
+          <li class="primary">
+            <strong class="primary">Sub Kategori</strong>
+          </li>
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app" colspan="2">
+          <table>
+            <div *ngFor="let subKategori of data.data.subKategori">
+              <tr>
+                <td colspan="2" class="form-app">
+
+                  &nbsp;<span class="accent" style="text-decoration: underline">{{subKategori.nama}}</span>
+
+                </td>
+              </tr>
+              <tr>
+                <td class="form-app">
+                  <li style="margin-left: 5px">
+                    Kode Sub Kategori&nbsp;
+                  </li>
+                </td>
+                <td>
+                  <strong>:&nbsp;&nbsp;{{subKategori.kode}}</strong>
+                </td>
+              </tr>
+            </div>
+          </table>
+        </td>
+      </tr>
+
+    </table>
+  </mat-dialog-content>
+
+
+  <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
+    <form class="form-app" [formGroup]="form">
+
+      <div class="row">
+        <!--<div class="container-fluid">-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <input type="hidden" formControlName="uuid"/>
+
+          <!--nama-->
+          <mat-form-field appearance="legacy">
+            <mat-label>Kategori</mat-label>
+            <input matInput placeholder="Kategori " formControlName="namaKategori" required
+                   [errorStateMatcher]="stateMatchers.namaKategori.matcher">
+
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'namaKategori').hasError('required')">{{stateMatchers.namaKategori.message}}</mat-error>
+          </mat-form-field>
+
+
+          <!--kode-->
+          <mat-form-field appearance="legacy">
+            <mat-label>Kode</mat-label>
+            <input matInput placeholder="Kode " formControlName="kodeKategori" required
+                   [errorStateMatcher]="stateMatchers.kodeKategori.matcher">
+
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeKategori').hasError('required')">{{stateMatchers.kodeKategori.message}}</mat-error>
+          </mat-form-field>
+
+
+          <!--tipe-->
+          <mat-form-field appearance="legacy">
+            <mat-label>Tipe</mat-label>
+            <input matInput placeholder="Tipe " formControlName="tipeKategori" required
+                   [errorStateMatcher]="stateMatchers.tipeKategori.matcher">
+
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'tipeKategori').hasError('required')">{{stateMatchers.tipeKategori.message}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div style="float:right!important;font-size: 13px">
+                <strong class="primary">Sub Kategori</strong>
+                &nbsp;
+                <button mat-icon-button matTooltip="Tambah Sub Kategori"
+                        [matTooltipPosition]="'left'"
+                        (click)="addNewSubCategory(reactiveFormUtil.getFormArray('subKategori', form))">
+                  <mat-icon color="primary">add</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <div formArrayName="subKategori" class="row">
+            <div *ngFor="let sub of reactiveFormUtil.getFormArrays('subKategori', form); index as subIndex">
+              <!--<mat-form-field appearance="legacy">-->
+              <mat-card id="sub-category-card">
+
+                <mat-card-content>
+                  <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                  <button mat-icon-button matTooltip="Hapus Sub Kategori"
+                          [matTooltipPosition]="'below'"
+                          (click)="removeSubCategory(reactiveFormUtil.getFormArray('subKategori', form), subIndex)">
+                    <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
+                  </button>
+                  <!--</div>-->
+                  <div [formGroupName]="subIndex" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <input type="hidden" formControlName="uuid">
+
+                    <!--kode-->
+                    <mat-form-field appearance="legacy">
+                      <mat-label>Kode</mat-label>
+                      <input matInput placeholder="Kode " formControlName="kode" required
+                             [errorStateMatcher]="stateMatchers.subKategori.kode.matcher">
+
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(sub, 'kode').hasError('required')">{{stateMatchers.subKategori.kode.message}}</mat-error>
+                    </mat-form-field>
+
+                    <!--nama-->
+                    <mat-form-field appearance="legacy">
+                      <mat-label>Sub Kategori</mat-label>
+                      <input matInput placeholder="Sub Kategori" formControlName="nama" required
+                             [errorStateMatcher]="stateMatchers.subKategori.nama.matcher">
+
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(sub, 'nama').hasError('required')">{{stateMatchers.subKategori.nama.message}}</mat-error>
+                    </mat-form-field>
+
+                  </div>
+
+                </mat-card-content>
+
+              </mat-card>
+              <!--</mat-form-field>-->
+
+              <br>
+            </div>
+
+          </div>
+
+
+        </div>
+        <!--</div>-->
+
+      </div>
+
+    </form>
+  </mat-dialog-content>
+  <!--</div>-->
+
+
+  <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
+
+  <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
+    <button mat-flat-button color="primary" (click)="save(form.value)"
+            [disabled]="!form.valid">Simpan
+    </button>
+  </mat-dialog-actions>
+
+  <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close">
+      <span>Tidak</span>
+    </button>
+    <button mat-button (click)="delete(data.data.uuid)">
+      <span>Ya</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>

@@ -1,7 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MenuList} from '../../shared/menu-list';
 import {ComponentUtil} from '../../shared/component-util';
+import {NgScrollbar} from 'ngx-scrollbar';
+import {MatMenuTrigger} from '@angular/material';
 
 @Component({
   selector: 'app-bhk-dashboard',
@@ -9,29 +11,39 @@ import {ComponentUtil} from '../../shared/component-util';
   styleUrls: ['./bhk-dashboard.component.scss'],
 })
 export class BhkDashboardComponent
-  extends ComponentUtil
+  extends ComponentUtil<any>
   implements OnInit, AfterViewInit {
 
   // mengambil instance dari menu list yang diinisialisasi
   menus = MenuList.getInstance();
 
 
+  @ViewChild('mainScroll', {read: NgScrollbar}) scrollRef: NgScrollbar;
+
+
   @ViewChild("sidenav") snav;
 
+  scrolledByUser = 0;
 
-  start = true;
+
+  start = false;
   constructor(
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     super(changeDetectorRef, media);
   }
 
   ngOnInit() {
+    // subscribe main scroll event scrolling
+    this.scrollRef.scrollable.elementScrolled().subscribe(
+      value => this.onScroll(value)
+    );
+
     // init menu awal yang terpilih
     this.menus.selectMenu(['app']);
-    setTimeout(() => this.start = false, 60000);
-
-    // this.mobileQuery.
-
+    setTimeout(() => {
+      this.start = true;
+      setTimeout(() => this.start = false, 2000);
+    }, 2000);
   }
 
   ngAfterViewInit(): void {
@@ -45,6 +57,7 @@ export class BhkDashboardComponent
 
 
   toggle(sidenav) {
+    console.log(sidenav.opened);
     sidenav.toggle();
   }
 
@@ -57,6 +70,13 @@ export class BhkDashboardComponent
     }
 
     this.menus.selectMenu(m, sidenav, this.mobileQuery);
+  }
+
+
+  @HostListener('scroll', ['$event'])
+  onScroll(event) {
+    this.scrolledByUser = event.target.scrollTop;
+    // console.log('tinggi', event.target.scrollTop );
   }
 
 }

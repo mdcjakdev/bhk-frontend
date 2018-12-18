@@ -1,0 +1,136 @@
+<div class="dan-container">
+  <!--<mat-toolbar class="dan-toolbar " color="primary">-->
+
+    <!--<button mat-button  >-->
+      <!--<mat-icon>edit</mat-icon>&nbsp;&nbsp;Editor-->
+    <!--</button>-->
+    <!--&nbsp;-->
+    <!--<span>-->
+      <!--|-->
+    <!--</span>-->
+    <!--&nbsp;-->
+    <!--<button mat-button  >-->
+      <!--<mat-icon>list_alt</mat-icon>&nbsp;&nbsp;List Data-->
+    <!--</button>-->
+
+    <!--<span class="toolbar-spacer"></span>-->
+
+    <!--<span style="font-size: 14px;" >Hi, Login User-->
+      <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;-->
+      <!--</span>-->
+    <!--<button mat-icon-button >-->
+      <!--<mat-icon>home</mat-icon>-->
+    <!--</button>-->
+
+  <!--</mat-toolbar>-->
+
+  <mat-sidenav-container>
+    <mat-sidenav>Start</mat-sidenav>
+    <mat-sidenav position="end">End</mat-sidenav>
+  </mat-sidenav-container>
+
+</div>
+
+
+<!--<div class="dan-container"-->
+     <!--(contextmenu)="preventDefaultMode($event)"-->
+     <!--[class.dan-is-mobile]="mobileQuery.matches">-->
+
+
+  <!--&lt;!&ndash; Buat menu navigation bar&ndash;&gt;-->
+  <!--&lt;!&ndash;<mat-progress-bar *ngIf="start" color="warn" mode="indeterminate" style="position: absolute"></mat-progress-bar>&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="mat-elevation-z8">&ndash;&gt;-->
+    <!--<mat-card style="padding: 0 ">-->
+
+      <!--<mat-progress-bar *ngIf="start && !mobileQuery.matches" color="warn" mode="indeterminate"-->
+                        <!--style="height: 3px; position: absolute">-->
+      <!--</mat-progress-bar>-->
+
+
+      <!--<mat-toolbar class="dan-toolbar " color="primary">-->
+
+
+        <!--<button mat-icon-button (click)="toggle(sidenav)">-->
+          <!--<mat-icon color="">horizontal_split</mat-icon>-->
+        <!--</button>-->
+
+        <!--&lt;!&ndash;*ngIf="start && mobileQuery.matches"&ndash;&gt;-->
+        <!--&lt;!&ndash;ketika masuk pada batas media query yang ditentukan&ndash;&gt;-->
+
+        <!--<h1 *ngIf="mobileQuery.matches" style="margin-left: 15px;">&nbsp;{{menus.menuSelected}}</h1>-->
+
+
+        <!--<img *ngIf="!mobileQuery.matches"-->
+             <!--src="../../assets/logo.png" alt="">-->
+        <!--<h1 *ngIf="!mobileQuery.matches" style="margin-left: 10px;">-->
+          <!--<strong>Bintang Harapan Kurnia</strong>-->
+        <!--</h1>-->
+
+
+        <!--&lt;!&ndash;<mat-icon *ngIf="!mobileQuery.matches"&ndash;&gt;-->
+        <!--&lt;!&ndash;color=""></mat-icon>&ndash;&gt;-->
+
+        <!--<span class="toolbar-spacer"></span>-->
+
+        <!--<span style="font-size: 14px; color: #fff;" *ngIf="!mobileQuery.matches">{{menus.menuSelected}}-->
+          <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;-->
+      <!--</span>-->
+        <!--<button mat-icon-button [matMenuTriggerFor]="userOptionsMenu">-->
+          <!--<mat-icon>tune</mat-icon>-->
+        <!--</button>-->
+
+        <!--<mat-progress-bar *ngIf="start && mobileQuery.matches" color="warn" mode="indeterminate"-->
+                          <!--class="loading-dashboard-mobile">-->
+        <!--</mat-progress-bar>-->
+      <!--</mat-toolbar>-->
+
+    <!--</mat-card>-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;<mat-toolbar ></mat-toolbar>&ndash;&gt;-->
+  <!--&lt;!&ndash;Batas Pembuatan navigation bar&ndash;&gt;-->
+
+
+  <!--&lt;!&ndash;User Menu Options&ndash;&gt;-->
+  <!--<mat-menu #userOptionsMenu="matMenu">-->
+    <!--&lt;!&ndash;Lazy load menu&ndash;&gt;-->
+    <!--<ng-template matMenuContent>-->
+      <!--<button mat-menu-item>-->
+        <!--<mat-icon>person</mat-icon>-->
+        <!--<span>Profil</span>-->
+      <!--</button>-->
+      <!--<button mat-menu-item>-->
+        <!--<mat-icon>notifications</mat-icon>-->
+        <!--<span>Pemberitahuan</span>-->
+      <!--</button>-->
+      <!--<button mat-menu-item>-->
+        <!--<mat-icon>power_settings_new</mat-icon>-->
+        <!--<span>Keluar dari aplikasi</span>-->
+      <!--</button>-->
+    <!--</ng-template>-->
+  <!--</mat-menu>-->
+
+  <!--&lt;!&ndash;&lt;!&ndash;Batas User Menu Options&ndash;&gt;&ndash;&gt;-->
+
+  <!--&lt;!&ndash;&lt;!&ndash;Membuat Side navigation bar & Content&ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;<mat-sidenav-container&ndash;&gt;-->
+    <!--&lt;!&ndash;class="dan-sidenav-container"&ndash;&gt;-->
+    <!--&lt;!&ndash;[style.marginTop.px]="mobileQuery.matches ? 56 : 0">&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;fixedInViewport="true"&ndash;&gt;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;<mat-sidenav #sidenav [mode]="getSidenavMode()"&ndash;&gt;&ndash;&gt;-->
+                 <!--&lt;!&ndash;&lt;!&ndash;[opened]="!mobileQuery.matches"&ndash;&gt;&ndash;&gt;-->
+                 <!--&lt;!&ndash;&lt;!&ndash;[fixedInViewport]="mobileQuery.matches"&ndash;&gt;&ndash;&gt;-->
+                 <!--&lt;!&ndash;&lt;!&ndash;fixedTopGap="56">&ndash;&gt;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;</mat-sidenav>&ndash;&gt;&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;// Konten&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;(scroll)="onScroll($event)"&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<mat-sidenav-content >&ndash;&gt;&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;&lt;!&ndash;</mat-sidenav-content>&ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;</mat-sidenav-container>&ndash;&gt;-->
+
+<!--</div>-->

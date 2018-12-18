@@ -53,14 +53,14 @@
         <mat-progress-bar *ngIf="awaitRefresh" color="accent" mode="indeterminate"></mat-progress-bar>
 
         <mat-toolbar-row>
-          <label class="accent">Master Unit</label>
+          <label class="accent">Master Kategori</label>
           <span style="flex: 1 1 auto"></span>
 
           <!--// tampilkan status loading jika masih proses refresh-->
           <mat-progress-spinner *ngIf="awaitRefresh"
-            color="accent"
-            diameter="24"
-            mode="indeterminate">
+                                color="accent"
+                                diameter="24"
+                                mode="indeterminate">
           </mat-progress-spinner>
 
 
@@ -72,7 +72,7 @@
 
         </mat-toolbar-row>
       </mat-card-title>
-      <mat-card-subtitle class="move-subtitle-up">Data-data yang digunakan untuk master unit</mat-card-subtitle>
+      <mat-card-subtitle class="move-subtitle-up">Data-data yang digunakan untuk master kategori</mat-card-subtitle>
 
       <mat-divider></mat-divider>
       <!---->
@@ -127,17 +127,106 @@
     <!--TABLE-->
 
 
-    <div class="mat-elevation-z8">
-      <table mat-table class="full-width-table" [dataSource]="dataSource" matSort aria-label="Elements">
+    <div class="mat-elevation-z8" >
+      <table mat-table class="full-width-table" multiTemplateDataRows [dataSource]="dataSource" matSort aria-label="Elements">
 
         <ng-container [matColumnDef]="properties" *ngFor="let properties of tableProperties.displayedColumns; index as i">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{tableProperties.displayedHeaders[i]}}</th>
-          <td mat-cell *matCellDef="let row">{{delegateLevelValue(row, tableProperties.levelsOnData[i])}}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong class="primary">{{tableProperties.displayedHeaders[i]}}</strong></th>
+          <td mat-cell *matCellDef="let row"
+              [class.expanded-detail]="selectedValue === row"
+              [ngStyle]="{
+                'border-bottom-width': (selectedValue === row && !isRightClick) ? '0px' : '1px',
+                'border-color': 'rgba(0, 0, 0, 0.08)'
+              }">{{delegateLevelValue(row, tableProperties.levelsOnData[i])}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" colspan="4" style="border-bottom-width: 0px">
+            <div class="row example-element-detail"
+                 [@detailExpand]="(element == selectedValue && !isRightClick) ? 'expanded' : 'collapsed'">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 primary">
+                <mat-icon style="margin-bottom: 8px;">description</mat-icon>
+                <strong >&nbsp;&nbsp;&nbsp;Rincian Data Kategori</strong>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 detail-expand">
+                <table>
+                  <tr>
+                    <td class="form-app table-td">
+                      <li><strong>Kategori</strong></li>
+                    </td>
+                    <td class="table-td">
+                      <strong>:</strong> {{element.namaKategori}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="form-app">
+                      <li>
+                        <strong>Kode</strong>
+                      </li>
+                    </td>
+                    <td>
+                      <strong>:</strong> {{element.kodeKategori}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="form-app">
+                      <li>
+                        <strong>Tipe</strong>
+                      </li>
+                    </td>
+                    <td>
+                      <strong>:</strong> {{element.tipeKategori}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="height: 10px"></td>
+                  </tr>
+                  <tr>
+                    <td class="form-app" colspan="2">
+                      <li class="primary">
+                        <strong class="primary">Sub Kategori</strong>
+                      </li>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="form-app" colspan="2">
+                      <table>
+                        <div *ngFor="let subKategori of element.subKategori">
+                          <tr>
+                            <td colspan="2" class="form-app">
+                              &nbsp;<span class="accent" style="text-decoration: underline">{{subKategori.nama}}</span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="form-app">
+                              <li style="margin-left: 5px">
+                                Kode Sub Kategori&nbsp;
+                              </li>
+                            </td>
+                            <td>
+                              <strong>:&nbsp;&nbsp;{{subKategori.kode}}</strong>
+                            </td>
+                          </tr>
+                        </div>
+                      </table>
+                    </td>
+                  </tr>
+
+                </table>
+              </div>
+
+            </div>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="tableProperties.displayedColumns"></tr>
-        <tr mat-row class="element-row " *matRowDef="let row; columns: tableProperties.displayedColumns;"
-            (contextmenu)="onTableRightClicked($event, row)"></tr>
+        <tr mat-row  *matRowDef="let row; columns: tableProperties.displayedColumns;"
+            class="example-element-row"
+            (contextmenu)="onTableRightClicked($event, row)"
+            [class.example-expanded-row]="selectedValue === row"
+            (click)="onTableLeftClick(row)"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
       </table>
 
       <mat-paginator #paginator

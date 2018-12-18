@@ -25,9 +25,22 @@
   font-size: 14px;
 }
 
-//
-//.mat-menu-item {
-//  font-size: 13px;
-//}
+.main-scroll {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.main-content {
+  padding-top: 27px;
+  padding-bottom: 27px;
+  padding-left: 27px;
+  padding-right: 30px;
+}
+
 
 

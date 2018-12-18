@@ -3,6 +3,31 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "assets/css/dan-mix";
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
 .to-full-height {
   height: 100%;
 }
@@ -22,6 +47,7 @@
 }
 
 .dan-is-mobile .dan-toolbar {
+
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
@@ -44,6 +70,7 @@
 mat-sidenav {
   width: 250px;
 }
+
 
 
 
@@ -74,6 +101,12 @@ mat-sidenav {
 
     .mat-card-subtitle {
       margin-top: -25px
+    }
+
+    .default-snackbar {
+      //color: mat-color($primary);
+      //font-weight: bold;
+      background-color: #0f9d58;
     }
 
 

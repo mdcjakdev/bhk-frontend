@@ -3,58 +3,32 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatDividerModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatSidenavModule,
-  MatSortModule,
-  MatTableModule,
-  MatToolbarModule
-} from '@angular/material';
-import {LayoutModule} from '@angular/cdk/layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './components/login/login.component';
+import {SharedModule} from './modules/shared/shared.module';
+import {FormsModule} from '@angular/forms';
+import {SalesOrderComponent} from './components/sales-order/sales-order.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    SalesOrderComponent
+
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
 
-
-    MatInputModule,
-    MatFormFieldModule,
-
-    MatIconModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatCardModule,
-    MatDividerModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatListModule,
-    MatButtonToggleModule,
-    LayoutModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule
+    SharedModule
 
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+
+  ],
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

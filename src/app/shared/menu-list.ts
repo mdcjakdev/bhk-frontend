@@ -31,7 +31,20 @@ export class MenuList {
     ]
   };
 
-  private masterData = <MenuModel> { ...createMenu, selector: ['masterData'], menu: 'Master Data', icon: 'blur_linear'};
+  protected masterDataRootSelector = 'masterData';
+  private masterData = <MenuModel> { ...createMenu, selector: ['masterData'], menu: 'Master Data', icon: 'blur_linear',
+    childs: [
+      this.back,
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'customer'], menu: 'Master Pelanggan', icon: 'looks_one'},
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'unit'], menu: 'Master Unit', icon: 'looks_two'},
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'category'], menu: 'Master Kategori', icon: 'looks_3'},
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'item'], menu: 'Master Item', icon: 'looks_4'},
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'coloritem'], menu: 'Master Item Warna', icon: 'looks_5'},
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'supplier'], menu: 'Master Suplier', icon: 'looks_5'},
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'location'], menu: 'Master Location', icon: 'looks_5'},
+      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'warehouse'], menu: 'Master Gudang', icon: 'looks_5'}
+    ]
+  };
 
   private administrator = <MenuModel> { ...createMenu, selector: ['administrator'], menu: 'Administrator', icon: 'supervised_user_circle'};
 

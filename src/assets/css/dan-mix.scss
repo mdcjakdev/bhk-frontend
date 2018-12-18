@@ -1,16 +1,32 @@
 @import '~@angular/material/theming';
 
+$color-icon-and-font: rgba(0, 0, 0, 0.56);
+$standard-font-size-lg: 17px;
+$standard-font-size-md: 14px;
+$standard-font-size: 13px;
+$standard-font-size-sm: 12px;
+$header-color: rgba(0, 0, 0, 0.05);
+
+
 @mixin dan-theme-mix($theme) {
 
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
   $warn: map-get($theme, warn);
-  $color-icon-and-font: rgba(0, 0, 0, 0.56);
 
-  $standard-font-size-lg: 17px;
-  $standard-font-size-md: 14px;
-  $standard-font-size: 13px;
-  $standard-font-size-sm: 12px;
+
+  .form-app {
+    padding-left: 15px;
+  }
+
+  .mat-form-field {
+    mat-error {
+      //font-weight: bolder;
+    }
+    font-size: $standard-font-size;
+    width: 100%;
+    margin-top: 5px;
+  }
 
   .bold {
     font-weight: bold;
@@ -31,7 +47,7 @@
   }
 
   th {
-    background-color: rgba(0, 0, 0, 0.06);
+    background-color: $header-color;
   }
 
   .primary {
@@ -46,25 +62,41 @@
     color: mat-color($warn);
   }
 
+  //::ng-deep {
+  .scroll-bar {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+    border-radius: 4px;
+  }
+  .scroll-thumbs {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+
+    &:hover,
+    &:active {
+      background-color: rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+  //}
+
+
   //Styling row table
 
-  tr.element-row:not(.expanded-row):hover {
-    background: rgba(0, 0, 0, 0.03);
-  }
-
-  tr.element-row:not(.expanded-row):active {
-    background: rgba(0, 0, 0, 0.05);
-  }
-
-
-  tr.tr-show-menu{
-    background-color: rgba(0, 0, 0, 0.04);
-  }
-
-
-  tr.element-row td {
-    //border-bottom-width: 0;
-  }
+  //tr.element-row:not(.expanded-row):hover {
+  //  background: rgba(0, 0, 0, 0.03);
+  //}
+  //
+  //tr.element-row:not(.expanded-row):active {
+  //  background: rgba(0, 0, 0, 0.05);
+  //}
+  //
+  //
+  //tr.tr-show-menu {
+  //  background-color: rgba(0, 0, 0, 0.03);
+  //}
+  //
+  //// menghilangkan garis pada row tabel
+  //tr.element-row td {
+  //  //border-bottom-width: 0;
+  //}
 
   //// end dari Styling row table
 
@@ -92,7 +124,7 @@
     padding: 25px;
   }
 
-  .on-menu-selected mat-icon ,
+  .on-menu-selected mat-icon,
   .on-menu-selected h6 {
     color: mat-color($primary);
   }
@@ -113,10 +145,10 @@
 
 
   .dialog-title-with-icon {
-    vertical-align: middle;  border-top: solid;
+    vertical-align: middle;
+    border-top: solid;
     border-top-color: #ffffff;
   }
-
 
 
   .mat-card-title {
@@ -125,13 +157,18 @@
   }
 
 
-
   .mat-card-subtitle {
     font-size: $standard-font-size-sm;
   }
 
   .mat-card-content {
     font-size: $standard-font-size-md;
+  }
+
+
+  .mat-grid-tile-content-top {
+    position: absolute;
+    top: 0;
   }
 
 }

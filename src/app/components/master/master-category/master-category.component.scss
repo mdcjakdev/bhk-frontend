@@ -1,0 +1,37 @@
+.full-width-table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.example-element-row td {
+  border-width: 0;
+}
+
+.example-element-detail {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  overflow: hidden;
+  display: flex;
+}
+
+
+.expanded-detail {
+  background: #eeeeee;
+}
+
+.bordering-data {
+  //background: #e1e1e1;
+  border-bottom-width: 1px;
+  border-color: #cfcfcf;
+}

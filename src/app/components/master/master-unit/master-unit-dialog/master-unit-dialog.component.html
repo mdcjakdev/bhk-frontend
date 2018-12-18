@@ -1,0 +1,82 @@
+<div id="dialog-block">
+
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'primary' : 'accent'"  mode="indeterminate">
+  </mat-progress-bar>
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+    <div>
+      <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && isDelete()" style="margin-bottom: 4px;">delete</mat-icon>
+
+      <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
+      <ng-template #elseHeader>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Unit</strong>
+      </ng-template>
+    </div>
+  </h4>
+
+  <div *ngIf="!isDataNull() && isDetail()" mat-dialog-content class="form-app">
+    <table  >
+      <tr>
+        <td class="form-app table-td" >
+          <li><strong>Unit</strong></li>
+        </td>
+        <td class="table-td" >
+          <strong>:</strong> {{data.data.name}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Deskripsi</strong>
+          </li>
+        </td>
+        <td >
+          <strong>:</strong> {{data.data.deskripsi}}
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+
+  <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
+    <form [formGroup]="form" class="form-app">
+      <input type="hidden" formControlName="uuid"/>
+
+      <!--nama-->
+      <mat-form-field appearance="legacy">
+        <mat-label>Nama Unit</mat-label>
+        <input matInput placeholder="Nama Unit" formControlName="name" required
+               [errorStateMatcher]="stateMatchers.name.matcher">
+
+        <mat-error
+          *ngIf="reactiveFormUtil.formControl(form, 'name').hasError('required')">{{stateMatchers.name.message}}</mat-error>
+      </mat-form-field>
+
+
+      <!--deskripsi-->
+      <mat-form-field appearance="legacy">
+        <mat-label>Deskripsi</mat-label>
+        <textarea  matInput placeholder="Deskripsi" formControlName="deskripsi"></textarea>
+      </mat-form-field>
+
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
+    <button mat-button color="primary" (click)="save(form.value)"
+            [disabled]="!form.valid"><strong>Simpan</strong></button>
+  </mat-dialog-actions>
+
+  <mat-dialog-actions *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close"  >
+      <strong>Tidak</strong>
+    </button>
+    <button mat-button   (click)="delete(data.data.uuid)" >
+      <strong>Ya</strong>
+    </button>
+  </mat-dialog-actions>
+
+</div>

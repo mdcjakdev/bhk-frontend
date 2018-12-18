@@ -1,3 +1,35 @@
-<p>
-  login works!
-</p>
+
+  <div id="login">
+    <mat-card>
+      <mat-card-title>
+        <!--<mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>-->
+        <strong class="primary">BHK</strong>
+      </mat-card-title>
+      <mat-card-subtitle class="move-subtitle-up">
+       <b>Masuk Menggunakan Akun Anda</b>
+      </mat-card-subtitle>
+      <mat-card-content ><br>
+
+        <mat-form-field appearance="outline">
+          <mat-label>&nbsp;ID Pengguna</mat-label>
+          <input matInput placeholder="Pengguna" required
+                 >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>&nbsp;Kata Sandi</mat-label>
+          <input [type]="hide ? 'password' : 'text'" matInput placeholder="Katasandi" required>
+          <mat-icon style="cursor: pointer;" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+
+      </mat-card-content>
+      <mat-card-actions align="end" style="padding-right: 7px">
+        <button mat-flat-button color="primary">
+          Masuk
+        </button>
+      </mat-card-actions>
+      <span class="company"><b>PT.&nbsp;Bintang Harapan Kurnia&nbsp;&nbsp;</b>(<b>BHK</b>),
+        &nbsp;Denpasar - Indonesia</span>
+    </mat-card>
+
+  </div>

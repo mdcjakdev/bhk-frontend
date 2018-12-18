@@ -1,21 +1,31 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Ui} from '../../../shared/ui';
-import {MasterUnitService} from '../../../services/master/master-unit/master-unit.service';
-import {MediaMatcher} from '@angular/cdk/layout';
 import {ComponentUtil} from '../../../shared/component-util';
 import {AppTableDataSource} from '../../../shared/table-data-source';
+import {MasterUnitService} from '../../../services/master/master-unit/master-unit.service';
+import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {MasterUnitDialogComponent} from './master-unit-dialog/master-unit-dialog.component';
 import {Action} from '../../../shared/action.enum';
+import {MasterUnitDialogComponent} from '../master-unit/master-unit-dialog/master-unit-dialog.component';
+import {Ui} from '../../../shared/ui';
+import {MasterCategoryService} from '../../../services/master/master-category/master-category.service';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
-
+import {MasterCategoryDialogComponent} from './master-category-dialog/master-category-dialog.component';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {masterCategoryInit} from '../../../inits/master/master-category-init';
 
 @Component({
-  selector: 'app-master-unit',
-  templateUrl: './master-unit.component.html',
-  styleUrls: ['./master-unit.component.scss']
+  selector: 'app-master-category',
+  templateUrl: './master-category.component.html',
+  styleUrls: ['./master-category.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
-export class MasterUnitComponent
+export class MasterCategoryComponent
   extends ComponentUtil<AppTableDataSource>
   implements OnInit {
 
@@ -24,16 +34,17 @@ export class MasterUnitComponent
    * @var receivedData, yang akan ditampilkan pada data tabel
    */
 
-   tableProperties = {
-    displayedColumns: ['uuid', 'name', 'deskripsi'],
-    displayedHeaders: ['No', 'Nama', 'Deskripsi'],
-    levelsOnData: [['uuid'], ['name'], ['deskripsi']],
-    isStringDataTypes: [true, true, true]
+  tableProperties = {
+    displayedColumns: ['uuid', 'namaKategori', 'kodeKategori', 'tipeKategori'],
+    displayedHeaders: ['No', 'Nama', 'Kode', 'Tipe'],
+    levelsOnData: [['uuid'], ['namaKategori'], ['kodeKategori'], ['tipeKategori']],
+    isStringDataTypes: [true, true, true, true]
   };
-  private selectedValue: any;
+  selectedValue: any = null;
+  private isRightClick;
 
 
-  constructor(private masterUnitHttpService: MasterUnitService,
+  constructor(private masterCategoryHttpService: MasterCategoryService,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               public snackBar: MatSnackBar,
@@ -42,13 +53,18 @@ export class MasterUnitComponent
   }
 
 
+  /** menghilangkan hover style pada row jika menu telah tertutup */
+  tableMenuRightClickOnClose(event) {
+    this.selectedValue = null;
+    super.tableMenuRightClickOnClose(event);
+  }
+
   ngOnInit() {
     this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
   }
 
   callbackGetDataError = (error) => {
-    // console.log(error);
     if (error.status === 0) {
       this.snackBar.open(ERROR_STATUS_CODE_0, '', {
         duration: 3000,
@@ -75,32 +91,36 @@ export class MasterUnitComponent
   /**
    * Service untuk mengambil data ke server
    */
-  getData = () => this.serviceGetData(this.masterUnitHttpService.getData(), this.callbackGetDataSuccess, this.callbackGetDataError);
+  getData = () => this.serviceGetData(this.masterCategoryHttpService.getData(), this.callbackGetDataSuccess, this.callbackGetDataError);
 
 
   onTableRightClicked = (event, row) => {
+    this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
+  }
+
+  onTableLeftClick = (row) => {
+    this.isRightClick = false;
+    this.selectedValue = (this.selectedValue === row ? null : row);
   }
 
 
   /**
    * Untuk Aksi pada data insert atau update
    */
-  openDialogData(data?, action = Action.INSERT) {
-    const dialogRef = this.dialog.open(MasterUnitDialogComponent, {
-      width: (action === Action.DELETE) ? '250px' : '400px',
+  openDialogData(data = masterCategoryInit, action = Action.INSERT) {
+    const dialogRef = this.dialog.open(MasterCategoryDialogComponent, {
+      width: (action === Action.DELETE) ? '250px' : '500px',
       data: {action: action, data: data},
       autoFocus: false,
-      position: { top: '100px', bottom: '50px' }
+      position: { bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px' }
     });
 
     // callback closing dari dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // if (result.action === Action.INSERT || result.action === Action.UPDATE) {
-          this.getData();
-        // }
+        this.getData();
       }
     });
   }
@@ -128,6 +148,5 @@ export class MasterUnitComponent
       this.searchPanel.close();
     }, 5000);
   }
-
 
 }

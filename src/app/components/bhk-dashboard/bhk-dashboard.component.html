@@ -1,55 +1,58 @@
-
-
 <div class="dan-container"
-     (contextmenu)="preventDefaultMode($event)"
-     [class.dan-is-mobile]="mobileQuery.matches" >
 
+     (contextmenu)="preventDefaultMode($event)"
+     [class.dan-is-mobile]="mobileQuery.matches">
 
 
   <!-- Buat menu navigation bar-->
   <!--<mat-progress-bar *ngIf="start" color="warn" mode="indeterminate" style="position: absolute"></mat-progress-bar>-->
+  <div class="mat-elevation-z8">
+    <mat-card style="padding: 0 ">
 
-  <mat-card style="padding: 0 ">
-
-    <mat-progress-bar *ngIf="start && !mobileQuery.matches" color="warn" mode="indeterminate" style="height: 3px; position: absolute">
-    </mat-progress-bar>
-
-    <mat-toolbar class="dan-toolbar " color="primary">
-
-
-      <button mat-icon-button (click)="toggle(sidenav)">
-        <mat-icon color="">horizontal_split</mat-icon>
-      </button>
-
-      <!--*ngIf="start && mobileQuery.matches"-->
-      <!--ketika masuk pada batas media query yang ditentukan-->
-
-      <h1 *ngIf="mobileQuery.matches" style="margin-left: 15px;">&nbsp;{{menus.menuSelected}}</h1>
-
-
-      <img *ngIf="!mobileQuery.matches"
-           src="../../assets/logo.png" alt="">
-      <h1 *ngIf="!mobileQuery.matches" style="margin-left: 10px;">
-        <strong>Bintang Harapan Kurnia</strong>
-      </h1>
-
-
-      <!--<mat-icon *ngIf="!mobileQuery.matches"-->
-      <!--color=""></mat-icon>-->
-
-      <span class="toolbar-spacer"></span>
-
-      <span style="font-size: 14px; color: #fff;" *ngIf="!mobileQuery.matches">{{menus.menuSelected}}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-      </span>
-      <button mat-icon-button [matMenuTriggerFor]="userOptionsMenu">
-        <mat-icon>settings</mat-icon>
-      </button>
-
-      <mat-progress-bar *ngIf="start && mobileQuery.matches" color="warn" mode="indeterminate" class="loading-dashboard-mobile">
+      <mat-progress-bar *ngIf="start && !mobileQuery.matches" color="warn" mode="indeterminate"
+                        style="height: 3px; position: absolute">
       </mat-progress-bar>
-    </mat-toolbar>
-  </mat-card>
+
+
+      <mat-toolbar class="dan-toolbar " color="primary">
+
+
+        <button mat-icon-button (click)="toggle(sidenav)">
+          <mat-icon color="">horizontal_split</mat-icon>
+        </button>
+
+        <!--*ngIf="start && mobileQuery.matches"-->
+        <!--ketika masuk pada batas media query yang ditentukan-->
+
+        <h1 *ngIf="mobileQuery.matches" style="margin-left: 15px;">&nbsp;{{menus.menuSelected}}</h1>
+
+
+        <img *ngIf="!mobileQuery.matches"
+             src="../../assets/logo.png" alt="">
+        <h1 *ngIf="!mobileQuery.matches" style="margin-left: 10px;">
+          <strong>Bintang Harapan Kurnia</strong>
+        </h1>
+
+
+        <!--<mat-icon *ngIf="!mobileQuery.matches"-->
+        <!--color=""></mat-icon>-->
+
+        <span class="toolbar-spacer"></span>
+
+        <span style="font-size: 14px; color: #fff;" *ngIf="!mobileQuery.matches">{{menus.menuSelected}}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+      </span>
+        <button mat-icon-button [matMenuTriggerFor]="userOptionsMenu">
+          <mat-icon>tune</mat-icon>
+        </button>
+
+        <mat-progress-bar *ngIf="start && mobileQuery.matches" color="warn" mode="indeterminate"
+                          class="loading-dashboard-mobile">
+        </mat-progress-bar>
+      </mat-toolbar>
+
+    </mat-card>
+  </div>
   <!--<mat-toolbar ></mat-toolbar>-->
   <!--Batas Pembuatan navigation bar-->
 
@@ -60,11 +63,11 @@
     <ng-template matMenuContent>
       <button mat-menu-item>
         <mat-icon>person</mat-icon>
-        <span >Profil</span>
+        <span>Profil</span>
       </button>
       <button mat-menu-item>
         <mat-icon>notifications</mat-icon>
-        <span >Pemberitahuan</span>
+        <span>Pemberitahuan</span>
       </button>
       <button mat-menu-item>
         <mat-icon>power_settings_new</mat-icon>
@@ -84,19 +87,19 @@
     <mat-sidenav #sidenav [mode]="getSidenavMode()"
                  [opened]="!mobileQuery.matches"
                  [fixedInViewport]="mobileQuery.matches"
-                 fixedTopGap="56"  >
+                 fixedTopGap="56">
 
-      <mat-nav-list >
+      <mat-nav-list>
         <!--Looping for menu item-->
 
         <mat-list-item [ngClass]="m.cssClassOfColor " routerLink="."
-           *ngFor="let m of menus.showedMenu"
-           (click)="onMenuSelected(m, sidenav)">
+                       *ngFor="let m of menus.showedMenu"
+                       (click)="onMenuSelected(m, sidenav)">
 
           <mat-icon mat-list-icon>{{m.icon}}</mat-icon>
           <!--<p ></p>-->
           <h6 mat-line> {{m.menu}} </h6>
-          <mat-icon  *ngIf="m.childs" class="child-icon-color">arrow_right</mat-icon>
+          <mat-icon *ngIf="m.childs" class="child-icon-color">arrow_right</mat-icon>
 
         </mat-list-item>
       </mat-nav-list>
@@ -104,11 +107,23 @@
 
 
     <!--// Konten-->
+    <!--(scroll)="onScroll($event)"-->
     <mat-sidenav-content >
 
-      <app-master-unit></app-master-unit>
+      <!--< >-->
+      <ng-scrollbar #mainScroll
+                    class="main-scroll"
+                    barClass="scroll-bar" thumbClass="scroll-thumbs"
+                    [overlay]="true" [trackX]="true" [autoHide]="true">
+        <div class="main-content">
+          <!--<app-master- unit [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-master-unit>-->
+          <app-master-category [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-master-category>
+        </div>
+
+      </ng-scrollbar>
+
 
     </mat-sidenav-content>
   </mat-sidenav-container>
 
-</div >
+</div>
