@@ -54,6 +54,10 @@ $header-color: rgba(0, 0, 0, 0.05);
     color: mat-color($primary);
   }
 
+  .primary-background {
+    background: mat-color($primary);
+  }
+
   .accent {
     color: mat-color($accent);
   }
@@ -79,6 +83,8 @@ $header-color: rgba(0, 0, 0, 0.05);
 
 
   //Styling row table
+
+
 
   //tr.element-row:not(.expanded-row):hover {
   //  background: rgba(0, 0, 0, 0.03);
@@ -170,5 +176,8 @@ $header-color: rgba(0, 0, 0, 0.05);
     position: absolute;
     top: 0;
   }
+
+
+
 
 }

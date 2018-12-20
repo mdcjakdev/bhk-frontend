@@ -1,2 +1,2 @@
 
-export const ERROR_STATUS_CODE_0 = 'Tidak terhubung ke jaringan/ Terjadi Kesalahan ...';
+export const ERROR_STATUS_CODE_0 = 'Tidak terhubung/ Terjadi Kesalahan ...';

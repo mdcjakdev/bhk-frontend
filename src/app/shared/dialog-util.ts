@@ -1,17 +1,16 @@
 import {Action} from './action.enum';
 import {MatDialogRef} from '@angular/material';
 import {FormGroup} from '@angular/forms';
-import {ReactiveFormUtil} from './reactive-form-util';
+import {Constants} from './constants';
 
 
-export class DialogUtil {
-
-  public reactiveFormUtil = new ReactiveFormUtil();
+export class DialogUtil extends Constants {
 
   constructor(public dialogRef: MatDialogRef<any>,
               public data,
               public form: FormGroup,
               public stateMatchers: any) {
+    super();
     if (data !== undefined && data.data !== undefined) {
       form.patchValue(data.data);
     }

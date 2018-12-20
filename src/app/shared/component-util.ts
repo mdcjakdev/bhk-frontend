@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Input, OnDestroy, ViewChild} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
-import {defaultMainContentPadding, defaultNavSideBarSize, delayHttpRequest, delegateLevelValue} from './constants';
+import {defaultMainContentPadding, defaultNavSideBarSize, delayHttpRequest, delegateLevelValue, UUID_COLUMN} from './constants';
 import {MatExpansionPanel, MatMenuTrigger, MatPaginator, MatSort} from '@angular/material';
 import {DataSource} from '@angular/cdk/table';
 import {Ui} from './ui';
@@ -135,6 +135,13 @@ export class ComponentUtil<T extends DataSource<any> | any>
     this.mobileQuery.addListener(this.__mobileQueryListener);
   }
 
+  isUuid(column) {
+    return (column === UUID_COLUMN);
+  }
+
+  printValue(column, columnValue, index) {
+    return (column === UUID_COLUMN) ? (index + 1) : columnValue;
+  }
 
 
   isReceivedDataUndefined() {

@@ -2,12 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {MasterCategoryService} from '../../../../services/master/master-category/master-category.service';
-import {
-  masterCategoryErrorStateMatchers,
-  masterCategoryForm,
-  masterSubCategoryForm,
-  masterSubCategoryInit
-} from '../../../../inits/master/master-category-init';
+import {masterCategoryErrorStateMatchers, masterCategoryForm, masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
@@ -30,7 +25,6 @@ export class MasterCategoryDialogComponent extends DialogUtil
       data,
       masterCategoryForm(data.data),
       masterCategoryErrorStateMatchers);
-    // console.log(data);
   }
 
   addNewSubCategory(fa) {

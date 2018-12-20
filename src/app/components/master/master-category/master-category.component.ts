@@ -1,17 +1,16 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ComponentUtil} from '../../../shared/component-util';
 import {AppTableDataSource} from '../../../shared/table-data-source';
-import {MasterUnitService} from '../../../services/master/master-unit/master-unit.service';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Action} from '../../../shared/action.enum';
-import {MasterUnitDialogComponent} from '../master-unit/master-unit-dialog/master-unit-dialog.component';
 import {Ui} from '../../../shared/ui';
 import {MasterCategoryService} from '../../../services/master/master-category/master-category.service';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {MasterCategoryDialogComponent} from './master-category-dialog/master-category-dialog.component';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {masterCategoryInit} from '../../../inits/master/master-category-init';
+import {UUID_COLUMN} from '../../../shared/constants';
 
 @Component({
   selector: 'app-master-category',
@@ -43,7 +42,6 @@ export class MasterCategoryComponent
   selectedValue: any = null;
   private isRightClick;
 
-
   constructor(private masterCategoryHttpService: MasterCategoryService,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
@@ -51,6 +49,9 @@ export class MasterCategoryComponent
               public dialog: MatDialog) {
     super(changeDetectorRef, media);
   }
+
+
+
 
 
   /** menghilangkan hover style pada row jika menu telah tertutup */

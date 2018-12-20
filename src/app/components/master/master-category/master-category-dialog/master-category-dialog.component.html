@@ -49,10 +49,10 @@
       <tr>
         <td colspan="2" style="height: 10px"></td>
       </tr>
-      <tr>
+      <tr *ngIf="data.data.subKategori.length > 0">
         <td class="form-app" colspan="2">
           <li class="primary">
-            <strong class="primary">Sub Kategori</strong>
+            <strong class="primary">Sub Kategori &nbsp;({{data.data.subKategori.length}})</strong>
           </li>
         </td>
       </tr>
@@ -95,7 +95,7 @@
           <input type="hidden" formControlName="uuid"/>
 
           <!--nama-->
-          <mat-form-field appearance="legacy">
+          <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kategori</mat-label>
             <input matInput placeholder="Kategori " formControlName="namaKategori" required
                    [errorStateMatcher]="stateMatchers.namaKategori.matcher">
@@ -106,7 +106,7 @@
 
 
           <!--kode-->
-          <mat-form-field appearance="legacy">
+          <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kode</mat-label>
             <input matInput placeholder="Kode " formControlName="kodeKategori" required
                    [errorStateMatcher]="stateMatchers.kodeKategori.matcher">
@@ -117,7 +117,7 @@
 
 
           <!--tipe-->
-          <mat-form-field appearance="legacy">
+          <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Tipe</mat-label>
             <input matInput placeholder="Tipe " formControlName="tipeKategori" required
                    [errorStateMatcher]="stateMatchers.tipeKategori.matcher">
@@ -146,7 +146,7 @@
 
           <div formArrayName="subKategori" class="row">
             <div *ngFor="let sub of reactiveFormUtil.getFormArrays('subKategori', form); index as subIndex">
-              <!--<mat-form-field appearance="legacy">-->
+              <!--<mat-form-field [appearance]="formFieldAppearance">-->
               <mat-card id="sub-category-card">
 
                 <mat-card-content>
@@ -161,7 +161,7 @@
                     <input type="hidden" formControlName="uuid">
 
                     <!--kode-->
-                    <mat-form-field appearance="legacy">
+                    <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>Kode</mat-label>
                       <input matInput placeholder="Kode " formControlName="kode" required
                              [errorStateMatcher]="stateMatchers.subKategori.kode.matcher">
@@ -171,7 +171,7 @@
                     </mat-form-field>
 
                     <!--nama-->
-                    <mat-form-field appearance="legacy">
+                    <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>Sub Kategori</mat-label>
                       <input matInput placeholder="Sub Kategori" formControlName="nama" required
                              [errorStateMatcher]="stateMatchers.subKategori.nama.matcher">

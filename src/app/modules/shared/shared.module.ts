@@ -3,17 +3,38 @@ import { CommonModule } from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {
-  MatButtonModule, MatButtonToggleModule, MatCardModule, MatChipsModule,
-  MatDialogModule, MatDividerModule, MatExpansionModule,
-  MatFormFieldModule, MatGridListModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatGridListModule,
   MatIconModule,
-  MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatOptionModule,
+  MatPaginatorModule,
   MatProgressBarModule,
-  MatProgressSpinnerModule, MatSidenavModule, MatSnackBarModule, MatSortModule, MatTableModule, MatToolbarModule, MatTooltipModule
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 import {NgScrollbarModule} from 'ngx-scrollbar';
 import {MasterUnitService} from '../../services/master/master-unit/master-unit.service';
 import {MasterCategoryService} from '../../services/master/master-category/master-category.service';
+import {MasterSupplierService} from '../../services/master/master-supplier/master-supplier.service';
+
 
 @NgModule({
   declarations: [],
@@ -53,11 +74,17 @@ import {MasterCategoryService} from '../../services/master/master-category/maste
 
     MatChipsModule,
 
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatOptionModule,
+    MatSelectModule
+
+    // Md2DatepickerModule
+
   ],
   providers: [
     MasterUnitService,
-    MasterCategoryService
+    MasterCategoryService,
+    MasterSupplierService
   ], exports: [
     HttpClientModule,
 
@@ -95,7 +122,12 @@ import {MasterCategoryService} from '../../services/master/master-category/maste
 
     MatChipsModule,
 
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatOptionModule,
+    MatSelectModule,
+
+
+    // Md2DatepickerModule
   ]
 })
 export class SharedModule { }
