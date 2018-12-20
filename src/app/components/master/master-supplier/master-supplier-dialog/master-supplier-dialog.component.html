@@ -1,0 +1,270 @@
+<div id="dialog-block">
+
+  <!--<div class="dialog-block-content">-->
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
+  </mat-progress-bar>
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+    <div>
+      <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && isDelete()" style="margin-bottom: 4px;">delete</mat-icon>
+
+      <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
+      <ng-template #elseHeader>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Supplier</strong>
+      </ng-template>
+    </div>
+  </h4>
+
+  <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
+    <table class="full-width-table">
+      <tr>
+        <td class="form-app table-td">
+          <li><strong>Nama Supplier</strong></li>
+        </td>
+        <td class="table-td">
+          <strong>:</strong>&nbsp; {{data.data.nama}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Alamat</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.alamat}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Email</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.email}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Payment Due Date</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{date(data.data.paymentDueDate)}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Telepon</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.telepon}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Fax</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.fax}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Kode Supplier</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.kodeSupplier}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>Kode Trans</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.kodeTrans}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>PIC</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.picName}}
+        </td>
+      </tr>
+      <tr>
+        <td class="form-app">
+          <li>
+            <strong>PIC Number</strong>
+          </li>
+        </td>
+        <td>
+          <strong>:</strong>&nbsp; {{data.data.picNumber}}
+        </td>
+      </tr>
+
+
+    </table>
+  </mat-dialog-content>
+
+
+  <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
+    <form class="form-app" [formGroup]="form">
+
+      <div class="row">
+        <!--<div class="container-fluid">-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <input type="hidden" formControlName="uuid"/>
+
+          <!--nama-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Nama Supplier</mat-label>
+            <input matInput placeholder="Nama Supplier " formControlName="nama" required
+                   [errorStateMatcher]="stateMatchers.nama.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'nama').hasError('required')">{{stateMatchers.nama.message}}</mat-error>
+          </mat-form-field>
+
+
+          <!--<md2-datepicker ></md2-datepicker>-->
+          <!--alamat-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Alamat</mat-label>
+            <textarea style="height: 100px" matInput placeholder="Alamat Supplier"
+                       formControlName="alamat" [errorStateMatcher]="stateMatchers.alamat.matcher"></textarea>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'alamat').hasError('required')">{{stateMatchers.alamat.message}}</mat-error>
+          </mat-form-field>
+
+
+
+          <!--paymentDueDate-->
+          <mat-form-field>
+            <mat-label>Payment Due Date</mat-label>
+            <input matInput  placeholder="Payment Due Date" formControlName="paymentDueDate" required
+                   (focus)="myDatepicker.open()"
+                   (click)="myDatepicker.open()"
+                   [errorStateMatcher]="stateMatchers.paymentDueDate.matcher" [matDatepicker]="myDatepicker">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'paymentDueDate').hasError('required')">
+              {{stateMatchers.paymentDueDate.message}}</mat-error>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+
+          </mat-form-field>
+
+          <!--Email-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" formControlName="email" required
+                   [errorStateMatcher]="stateMatchers.email.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'email').hasError('required')">{{stateMatchers.email.message}}</mat-error>
+          </mat-form-field>
+
+
+
+          <!--Telepon-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Telepon</mat-label>
+            <input matInput placeholder="Telepon" formControlName="telepon" required
+                   [errorStateMatcher]="stateMatchers.telepon.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'telepon').hasError('required')">{{stateMatchers.telepon.message}}</mat-error>
+          </mat-form-field>
+
+          <!--Fax-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Fax</mat-label>
+            <input matInput placeholder="Fax" formControlName="fax" required
+                   [errorStateMatcher]="stateMatchers.fax.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'fax').hasError('required')">{{stateMatchers.fax.message}}</mat-error>
+          </mat-form-field>
+
+          <!--Kode Supplier-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode Supplier</mat-label>
+            <input matInput placeholder="Kode Supplier" formControlName="kodeSupplier" required
+                   [errorStateMatcher]="stateMatchers.kodeSupplier.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeSupplier').hasError('required')">
+              {{stateMatchers.kodeSupplier.message}}</mat-error>
+          </mat-form-field>
+
+          <!--kode trans-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode Trans</mat-label>
+            <input matInput placeholder="Kode Trans" formControlName="kodeTrans" required
+                   [errorStateMatcher]="stateMatchers.kodeTrans.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeTrans').hasError('required')">
+              {{stateMatchers.kodeTrans.message}}</mat-error>
+          </mat-form-field>
+
+          <!--PIC-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>PIC</mat-label>
+            <input matInput placeholder="PIC" formControlName="picName" required
+                   [errorStateMatcher]="stateMatchers.picName.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'picName').hasError('required')">
+              {{stateMatchers.picName.message}}</mat-error>
+          </mat-form-field>
+
+          <!--PIC Number-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>PIC Number</mat-label>
+            <input matInput placeholder="PIC Number" formControlName="picNumber" required
+                   [errorStateMatcher]="stateMatchers.picNumber.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'picNumber').hasError('required')">
+              {{stateMatchers.picNumber.message}}</mat-error>
+          </mat-form-field>
+
+
+
+
+        </div>
+
+
+        <!--</div>-->
+
+      </div>
+
+    </form>
+  </mat-dialog-content>
+  <!--</div>-->
+
+
+  <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
+
+  <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
+    <button mat-flat-button color="primary" (click)="save(form.value)"
+            [disabled]="!form.valid">Simpan
+    </button>
+  </mat-dialog-actions>
+
+  <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close">
+      <span>Tidak</span>
+    </button>
+    <button mat-button (click)="delete(data.data.uuid)">
+      <span>Ya</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>
