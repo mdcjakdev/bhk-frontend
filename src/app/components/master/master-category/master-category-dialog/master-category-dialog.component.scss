@@ -14,14 +14,6 @@
   font-size: 15px;
 }
 
-table {
-  width: 100%; font-size: 13px;
-}
-
-.table-td {
-  width: 50%;
-}
-
 .icon-delete-subcategory {
   color: #6f6f6f;
 }
@@ -79,5 +71,22 @@ table {
     color: rgba(0, 0, 0, 0.89);
   }
 
+}
+
+#table-detail {
+  margin-left: 40px;
+  table  {
+    font-size: 13px;
+    td {
+      vertical-align: top;
+      li {
+        padding-left: 15px;
+      }
+    }
+  }
+}
+
+.sub-category {
+  padding-left: 40px;
 }
 

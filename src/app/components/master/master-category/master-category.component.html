@@ -151,70 +151,79 @@
                   <strong>&nbsp;&nbsp;&nbsp;Rincian Data Kategori</strong>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 detail-expand">
-                  <table class="full-width-table">
-                    <tr>
-                      <td class="form-app table-td">
-                        <li><strong>Kategori</strong></li>
-                      </td>
-                      <td class="table-td">
-                        <strong>:</strong> {{element.namaKategori}}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="form-app">
-                        <li>
-                          <strong>Kode</strong>
-                        </li>
-                      </td>
-                      <td>
-                        <strong>:</strong> {{element.kodeKategori}}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="form-app">
-                        <li>
-                          <strong>Tipe</strong>
-                        </li>
-                      </td>
-                      <td>
-                        <strong>:</strong> {{element.tipeKategori}}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" style="height: 10px"></td>
-                    </tr>
-                    <tr *ngIf="element.subKategori.length > 0">
-                      <td class="form-app" colspan="2">
-                        <li class="primary">
-                          <strong class="primary">Sub Kategori &nbsp;({{element.subKategori.length}})</strong>
-                        </li>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="form-app" colspan="2">
-                        <table>
-                          <div *ngFor="let subKategori of element.subKategori">
-                            <tr>
-                              <td colspan="2" class="form-app">
-                                &nbsp;<span class="accent" style="text-decoration: underline">{{subKategori.nama}}</span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="form-app">
-                                <li style="margin-left: 5px">
-                                  Kode Sub Kategori&nbsp;
-                                </li>
-                              </td>
-                              <td>
-                                <strong>:&nbsp;&nbsp;{{subKategori.kode}}</strong>
-                              </td>
-                            </tr>
-                          </div>
-                        </table>
-                      </td>
-                    </tr>
+                  <div id="table-detail">
+                    <table class="full-width-table">
+                      <tr>
+                        <td>
+                          <li><strong>Kategori</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.namaKategori}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <li><strong>Kode</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.kodeKategori}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <li><strong>Tipe</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.tipeKategori}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" style="height: 10px"></td>
+                      </tr>
+                      <tr *ngIf="element.subKategori.length > 0">
+                        <td colspan="3">
+                          <li class="primary">
+                            <strong class="primary">Sub Kategori &nbsp;({{element.subKategori.length}})</strong>
+                          </li>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="sub-category">
+                          <table>
+                            <div *ngFor="let subKategori of element.subKategori">
+                              <tr>
+                                <td colspan="2">
+                                  <span class="accent" style="text-decoration: underline; margin-left: -5px">
+                                    {{subKategori.nama}}
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <li style="margin-left: 5px">
+                                    Kode Sub Kategori&nbsp;
+                                  </li>
+                                </td>
+                                <td>
+                                  <strong>:&nbsp;&nbsp;{{subKategori.kode}}</strong>
+                                </td>
+                              </tr>
+                            </div>
+                          </table>
+                        </td>
+                      </tr>
 
-                  </table>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

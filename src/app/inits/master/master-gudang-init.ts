@@ -44,27 +44,27 @@ export const masterGudangErrorStateMatchers = {
   },
   autoReplenish:  {
     matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan alamat'
+    message: 'Kolom ini tidak boleh kosong'
   },
   kode:  {
     matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan alamat'
+    message: 'Pastikan anda menginputkan kode'
   },
   lokasi:  {
     matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan alamat'
+    message: 'Pastikan anda memilih lokasi gudang'
   },
   nama:  {
     matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan alamat'
+    message: 'Pastikan anda menginputkan nama'
   },
   tanggalMulai:  {
     matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan alamat'
+    message: 'Inputkan tanggal gudang mulai beroperasi'
   },
   telepon:  {
     matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan alamat'
+    message: 'Harap masukan nomor telepon'
   },
 };
 
