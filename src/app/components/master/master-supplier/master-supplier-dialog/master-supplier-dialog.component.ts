@@ -1,6 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {MasterCategoryService} from '../../../../services/master/master-category/master-category.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';

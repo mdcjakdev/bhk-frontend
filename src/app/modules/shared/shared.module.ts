@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {
@@ -7,7 +7,6 @@ import {
   MatButtonToggleModule,
   MatCardModule,
   MatChipsModule,
-  MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
   MatExpansionModule,
@@ -34,6 +33,9 @@ import {NgScrollbarModule} from 'ngx-scrollbar';
 import {MasterUnitService} from '../../services/master/master-unit/master-unit.service';
 import {MasterCategoryService} from '../../services/master/master-category/master-category.service';
 import {MasterSupplierService} from '../../services/master/master-supplier/master-supplier.service';
+import {MasterPelangganService} from '../../services/master/master-pelanggan/master-pelanggan.service';
+import {MasterLokasiService} from '../../services/master/master-lokasi/master-lokasi.service';
+import {MasterGudangService} from '../../services/master/master-gudang/master-gudang.service';
 
 
 @NgModule({
@@ -84,8 +86,12 @@ import {MasterSupplierService} from '../../services/master/master-supplier/maste
   providers: [
     MasterUnitService,
     MasterCategoryService,
-    MasterSupplierService
-  ], exports: [
+    MasterSupplierService,
+    MasterPelangganService,
+    MasterLokasiService,
+    MasterGudangService
+  ],
+  exports: [
     HttpClientModule,
 
     ReactiveFormsModule,

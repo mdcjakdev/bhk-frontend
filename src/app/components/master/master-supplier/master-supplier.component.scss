@@ -6,3 +6,17 @@
 .mat-column-uuid {
   width: 30px;
 }
+
+
+#table-detail {
+  margin-left: 19px;
+  table  {
+    font-size: 13px;
+    td {
+      vertical-align: top;
+      li {
+        padding-left: 15px;
+      }
+    }
+  }
+}

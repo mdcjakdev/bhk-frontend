@@ -3,9 +3,9 @@ import {AppErrorStateMatcher} from '../../shared/utils';
 
 
 export interface MasterUnit {
-  uuid: string;
-  name: string;
-  deskripsi: string;
+  uuid?: string;
+  name?: string;
+  deskripsi?: string;
 }
 
 export const masterUnitInit = {

@@ -15,6 +15,11 @@ $header-color: rgba(0, 0, 0, 0.05);
   $warn: map-get($theme, warn);
 
 
+  .load-more {
+    color: mat-color($accent);
+    font-style: italic;
+  }
+
   .form-app {
     padding-left: 15px;
   }

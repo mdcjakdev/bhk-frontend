@@ -17,108 +17,170 @@
   </h4>
 
   <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
-    <table class="full-width-table">
-      <tr>
-        <td class="form-app table-td">
-          <li><strong>Nama Supplier</strong></li>
-        </td>
-        <td class="table-td">
-          <strong>:</strong>&nbsp; {{data.data.nama}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+    <div id="table-detail">
+      <table class="full-width-table">
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td style="width: 120px">
+            <strong>Nama Supplier</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.nama}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>Alamat</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.alamat}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.alamat}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>Email</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.email}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.email}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>Payment Due Date</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{date(data.data.paymentDueDate)}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{date(data.data.paymentDueDate)}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>Telepon</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.telepon}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.telepon}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>Fax</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.fax}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.fax}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>Kode Supplier</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.kodeSupplier}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.kodeSupplier}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>Kode Trans</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.kodeTrans}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.kodeTrans}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>PIC</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.picName}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.picName}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+
             <strong>PIC Number</strong>
-          </li>
-        </td>
-        <td>
-          <strong>:</strong>&nbsp; {{data.data.picNumber}}
-        </td>
-      </tr>
+
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.picNumber}}
+          </td>
+        </tr>
 
 
-    </table>
+      </table>
+    </div>
   </mat-dialog-content>
 
 
@@ -145,17 +207,16 @@
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Alamat</mat-label>
             <textarea style="height: 100px" matInput placeholder="Alamat Supplier"
-                       formControlName="alamat" [errorStateMatcher]="stateMatchers.alamat.matcher"></textarea>
+                      formControlName="alamat" [errorStateMatcher]="stateMatchers.alamat.matcher"></textarea>
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'alamat').hasError('required')">{{stateMatchers.alamat.message}}</mat-error>
           </mat-form-field>
 
 
-
           <!--paymentDueDate-->
           <mat-form-field>
             <mat-label>Payment Due Date</mat-label>
-            <input matInput  placeholder="Payment Due Date" formControlName="paymentDueDate" required
+            <input matInput placeholder="Payment Due Date" formControlName="paymentDueDate" required
                    (focus)="myDatepicker.open()"
                    (click)="myDatepicker.open()"
                    [errorStateMatcher]="stateMatchers.paymentDueDate.matcher" [matDatepicker]="myDatepicker">
@@ -174,7 +235,6 @@
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'email').hasError('required')">{{stateMatchers.email.message}}</mat-error>
           </mat-form-field>
-
 
 
           <!--Telepon-->
@@ -234,8 +294,6 @@
               *ngIf="reactiveFormUtil.formControl(form, 'picNumber').hasError('required')">
               {{stateMatchers.picNumber.message}}</mat-error>
           </mat-form-field>
-
-
 
 
         </div>

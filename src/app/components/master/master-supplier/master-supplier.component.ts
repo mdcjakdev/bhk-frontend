@@ -33,7 +33,6 @@ export class MasterSupplierComponent
    * Kumpulan array dari nama-nama property data yang di peroleh dari
    * @var receivedData, yang akan ditampilkan pada data tabel
    */
-
   tableProperties = {
     displayedColumns: ['uuid', 'nama', 'picName', 'kodeSupplier', 'email', 'telepon'],
     displayedHeaders: ['No', 'Nama', 'PIC', 'Kode Supplier', 'Email', 'Telepon'],
@@ -64,7 +63,7 @@ export class MasterSupplierComponent
   }
 
   ngOnInit() {
-    // this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
+    this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
   }
 

@@ -9,8 +9,8 @@ export class MasterUnitService {
   constructor(private http: HttpClient) { }
 
 
-  getData() {
-    return this.http.get(apiHost + ':' + apiPort + '/api/master/unit/?page=0&size=10');
+  getData(page = 0, size = 10) {
+    return this.http.get(apiHost + ':' + apiPort + '/api/master/unit/?page=' + page + '&size=' + size);
   }
 
   postData(body) {

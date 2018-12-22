@@ -1,24 +1,21 @@
 import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppErrorStateMatcher} from '../../shared/utils';
-import * as moment from 'moment';
 
 /** Model Class MasterSupplier */
 export interface MasterSupplier extends AppAuditEntity {
-  alamat: string;
-  email: string;
-  fax: string;
-  kodeSupplier: string;
-  kodeTrans: string;
-  nama: string;
-  paymentDueDate: any;
-  picName: string;
-  picNumber: string;
-  telepon: string;
+  alamat?: string;
+  email?: string;
+  fax?: string;
+  kodeSupplier?: string;
+  kodeTrans?: string;
+  nama?: string;
+  paymentDueDate?: any;
+  picName?: string;
+  picNumber?: string;
+  telepon?: string;
 }
 
-
-const date = moment(moment().format('DD/MM/YYYY'), "MM/DD/YYYY");
 /** Init nilai awal MasterSupplier */
 export const masterSupplierInit = <MasterSupplier> {
   ...appAuditEntityInit,

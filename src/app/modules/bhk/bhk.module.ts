@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BhkDashboardComponent} from '../../components/bhk-dashboard/bhk-dashboard.component';
 import {BhkRoutingModule} from './bhk-routing.module';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
 import {MasterUnitComponent} from '../../components/master/master-unit/master-unit.component';
 import {MasterUnitDialogComponent} from '../../components/master/master-unit/master-unit-dialog/master-unit-dialog.component';
 import {SharedModule} from '../shared/shared.module';
@@ -12,8 +12,20 @@ import {MasterCategoryComponent} from '../../components/master/master-category/m
 import {MasterCategoryDialogComponent} from '../../components/master/master-category/master-category-dialog/master-category-dialog.component';
 import {MasterSupplierComponent} from '../../components/master/master-supplier/master-supplier.component';
 import {MasterSupplierDialogComponent} from '../../components/master/master-supplier/master-supplier-dialog/master-supplier-dialog.component';
-import {MatMomentDateModule, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {AppDateAdapter} from '../../shared/app-date-adapter';
+import {MasterGudangDialogComponent} from '../../components/master/master-gudang/master-gudang-dialog/master-gudang-dialog.component';
+import {MasterGudangComponent} from '../../components/master/master-gudang/master-gudang.component';
+import {MasterItemComponent} from '../../components/master/master-item/master-item.component';
+import {MasterItemDialogComponent} from '../../components/master/master-item/master-item-dialog/master-item-dialog.component';
+import {MasterKaryawanComponent} from '../../components/master/master-karyawan/master-karyawan.component';
+import {MasterKaryawanDialogComponent} from '../../components/master/master-karyawan/master-karyawan-dialog/master-karyawan-dialog.component';
+import {MasterPelangganComponent} from '../../components/master/master-pelanggan/master-pelanggan.component';
+import {MasterPelangganDialogComponent} from '../../components/master/master-pelanggan/master-pelanggan-dialog/master-pelanggan-dialog.component';
+import {MasterLokasiComponent} from '../../components/master/master-lokasi/master-lokasi.component';
+import {MasterLokasiDialogComponent} from '../../components/master/master-lokasi/master-lokasi-dialog/master-lokasi-dialog.component';
+import {MasterWarnaComponent} from '../../components/master/master-warna/master-warna.component';
+import {MasterWarnaDialogComponent} from '../../components/master/master-warna/master-warna-dialog/master-warna-dialog.component';
+
 
 // import  as moment from 'moment';
 
@@ -31,18 +43,6 @@ export const MY_FORMATS = {
 };
 
 
-// const CUSTOM_DATE_FORMATS = {
-//   parse: {
-//     dateInput: { month: "short", year: "numeric", day: "numeric" }
-//   },
-//   display: {
-//     dateInput: "input",
-//     monthYearLabel: { year: "numeric", month: "short" },
-//     dateA11yLabel: { year: "numeric", month: "long", day: "numeric" },
-//     monthYearA11yLabel: { year: "numeric", month: "long" }
-//   }
-// };
-
 @NgModule({
   declarations: [
     BhkDashboardComponent,
@@ -51,14 +51,26 @@ export const MY_FORMATS = {
     MasterCategoryComponent,
     MasterCategoryDialogComponent,
     MasterSupplierComponent,
-    MasterSupplierDialogComponent
+    MasterSupplierDialogComponent,
+
+    MasterGudangDialogComponent,
+    MasterGudangComponent,
+    MasterItemComponent,
+    MasterItemDialogComponent,
+    MasterKaryawanComponent,
+    MasterKaryawanDialogComponent,
+    MasterPelangganComponent,
+    MasterPelangganDialogComponent,
+    MasterLokasiComponent,
+    MasterLokasiDialogComponent,
+    MasterWarnaComponent,
+    MasterWarnaDialogComponent,
   ],
   imports: [
     CommonModule,
 
     BhkRoutingModule,
     SharedModule,
-    // MatNativeDateModule,  ,,,
     // MatMomentDateModule
     MatDatepickerModule,
     MatNativeDateModule
@@ -71,7 +83,13 @@ export const MY_FORMATS = {
   entryComponents: [
     MasterUnitDialogComponent,
     MasterCategoryDialogComponent,
-    MasterSupplierDialogComponent
+    MasterSupplierDialogComponent,
+    MasterGudangDialogComponent,
+    MasterItemDialogComponent,
+    MasterKaryawanDialogComponent,
+    MasterPelangganDialogComponent,
+    MasterLokasiDialogComponent,
+    MasterWarnaDialogComponent,
   ],
   exports: [
   ],

@@ -5,6 +5,10 @@ export class ReactiveFormUtil {
 
   formControl = (formGroup: FormGroup, controlName: string) => <FormControl> formGroup.get(controlName);
 
+  getFormGroup(fg: FormGroup, control: string) {
+    return <FormGroup> fg.get(control);
+  }
+
   /** Pengambilan form array untuk proses tambah atau hapus data */
   getFormArray(formArrayName: string, parentFormGroup: FormGroup) {
     return (<FormArray> parentFormGroup.controls[formArrayName]);

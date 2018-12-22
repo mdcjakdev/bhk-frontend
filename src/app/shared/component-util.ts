@@ -6,6 +6,7 @@ import {DataSource} from '@angular/cdk/table';
 import {Ui} from './ui';
 import {Observable} from 'rxjs';
 import {first} from 'rxjs/operators';
+import {printWord} from './utils';
 
 
 /** */
@@ -135,12 +136,19 @@ export class ComponentUtil<T extends DataSource<any> | any>
     this.mobileQuery.addListener(this.__mobileQueryListener);
   }
 
+  defaultNoActionVoid(column, value) {
+    return value;
+  }
+
   isUuid(column) {
     return (column === UUID_COLUMN);
   }
 
-  printValue(column, columnValue, index) {
-    return (column === UUID_COLUMN) ? (index + 1) : columnValue;
+
+  printValue(column, columnValue, index, conditionVoid: Function = this.defaultNoActionVoid, showLength = 20) {
+    let v = conditionVoid(column, columnValue);
+    v = (column === UUID_COLUMN) ? (index + 1) : v;
+    return printWord(v, showLength);
   }
 
 

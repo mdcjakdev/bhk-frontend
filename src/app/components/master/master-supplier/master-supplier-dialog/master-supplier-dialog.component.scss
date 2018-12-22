@@ -16,12 +16,17 @@
   font-size: 15px;
 }
 
-table {
-  width: 100%; font-size: 13px;
-}
-
-.table-td {
-  width: 50%;
+#table-detail {
+  margin-left: 13px;
+  table  {
+    font-size: 13px;
+    td {
+      vertical-align: top;
+      li {
+        padding-left: 15px;
+      }
+    }
+  }
 }
 
 .icon-delete-subcategory {
