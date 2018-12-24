@@ -1,3 +1,340 @@
-<p>
-  master-item-dialog works!
-</p>
+<div id="dialog-block">
+
+  <!--<div class="dialog-block-content">-->
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
+  </mat-progress-bar>
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+    <div>
+      <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && isDelete()" style="margin-bottom: 4px;">delete</mat-icon>
+
+      <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
+      <ng-template #elseHeader>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Item</strong>
+      </ng-template>
+    </div>
+  </h4>
+
+  <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
+    <!--<div id="table-detail">-->
+      <!--<table class="full-width-table">-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<li></li>-->
+          <!--</td>-->
+          <!--<td style="width: 160px">-->
+            <!--<strong>Nama Gudang</strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>:</strong>&nbsp;-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--{{data.data.nama}}-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<li></li>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>Alamat</strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>:</strong>&nbsp;-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--{{data.data.alamat}}-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<li></li>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>Auto Replenish</strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>:</strong>&nbsp;-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--{{data.data.autoReplenish}}-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<li></li>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>Lokasi</strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>:</strong>&nbsp;-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--{{data.data.lokasi.namaLokasi}}-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<li></li>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>Tanggal Pengoperasioan</strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>:</strong>&nbsp;-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--{{date(data.data.tanggalMulai)}}-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<li></li>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>Kode</strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>:</strong>&nbsp;-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--{{data.data.kode}}-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<li></li>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>Telepon</strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<strong>:</strong>&nbsp;-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--{{data.data.telepon}}-->
+          <!--</td>-->
+        <!--</tr>-->
+
+
+      <!--</table>-->
+    <!--</div>-->
+  </mat-dialog-content>
+
+  <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
+    <form class="form-app" [formGroup]="form">
+
+      <div class="row">
+        <!--<div class="container-fluid">-->
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <input type="hidden" formControlName="uuid"/>
+
+          <!--nama item-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Nama Item</mat-label>
+            <input matInput placeholder="Nama Item" formControlName="namaItem" required
+                   [errorStateMatcher]="stateMatchers.namaItem.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'namaItem').hasError('required')">{{stateMatchers.namaItem.message}}</mat-error>
+          </mat-form-field>
+
+          <!--nama kain-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Nama Kain</mat-label>
+            <input matInput placeholder="Nama Kain" formControlName="namaKain" required
+                   [errorStateMatcher]="stateMatchers.namaKain.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'namaKain').hasError('required')">{{stateMatchers.namaKain.message}}</mat-error>
+          </mat-form-field>
+
+          <!--Kode-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode</mat-label>
+            <input matInput placeholder="Kode" formControlName="kode" required
+                   [errorStateMatcher]="stateMatchers.kode.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">{{stateMatchers.kode.message}}</mat-error>
+          </mat-form-field>
+
+          <!--Kode Alias -->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode Alias</mat-label>
+            <input matInput placeholder="Kode Alias" formControlName="kodeItemAlias" required
+                   [errorStateMatcher]="stateMatchers.kodeItemAlias.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeItemAlias').hasError('required')">
+              {{stateMatchers.kodeItemAlias.message}}</mat-error>
+          </mat-form-field>
+
+          <!--jenis kain-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Jenis Kain</mat-label>
+            <input matInput placeholder="Jenis Kain" formControlName="jenisKain" required
+                   [errorStateMatcher]="stateMatchers.jenisKain.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'jenisKain').hasError('required')">
+              {{stateMatchers.jenisKain.message}}</mat-error>
+          </mat-form-field>
+
+          <!--ukuran-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Ukuran</mat-label>
+            <input matInput placeholder="Ukuran" formControlName="ukuran" required
+                   [errorStateMatcher]="stateMatchers.ukuran.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'ukuran').hasError('required')">
+              {{stateMatchers.ukuran.message}}</mat-error>
+          </mat-form-field>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+          <!--kategori-->
+          <mat-form-field formGroupName="kategori">
+            <mat-select (selectionChange)="onKategoriChanged($event)" #selectKategori [placeholder]="(isKategoriEnabled()) ? 'Kategori' : 'Memuat data kategori ......'" formControlName="uuid"
+                        [errorStateMatcher]="stateMatchers.kategori.matcher" [required]="isKategoriEnabled()">
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.uuid" *ngFor="let v of dataKategori">
+                {{v.namaKategori}}
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option *ngIf="!isLastKategori" (click)="loadMoreKategori()" class="lebih-banyak">
+                <div *ngIf="!waitingLoadMoreKategori; else load" >Muat lebih banyak
+                  ....
+                </div>
+                <ng-template #load>
+                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                    mode="indeterminate"></mat-progress-bar>
+                </ng-template>
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'kategori'), 'uuid').hasError('required')">
+              {{stateMatchers.kategori.message}}</mat-error>
+          </mat-form-field>
+
+          <!--sub kategori-->
+          <mat-form-field formGroupName="subKategori">
+            <mat-select #selectKategori [placeholder]="(isKategoriEnabled()) ? 'Sub Kategori' : 'Memuat data sub kategori ......'" formControlName="uuid"
+                        [errorStateMatcher]="stateMatchers.subKategori.matcher" [required]="isKategoriEnabled()">
+              <mat-option class="pilih">--&nbsp; {{(dataSubKategori.length === 0 ? 'Salah satu kategori harus terpilih' : 'Pilih salah satu')}} &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.uuid" *ngFor="let v of dataSubKategori">
+                {{v.nama}}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'subKategori'), 'uuid').hasError('required')">
+              {{stateMatchers.subKategori.message}}</mat-error>
+          </mat-form-field>
+
+          <!--unit-->
+          <mat-form-field formGroupName="unit">
+            <mat-select #selectUnit [placeholder]="(isUnitEnabled()) ? 'Unit' : 'Memuat data unit ......'" formControlName="uuid"
+                        [errorStateMatcher]="stateMatchers.unit.matcher" [required]="isUnitEnabled()">
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.uuid" *ngFor="let v of dataUnit">
+                {{v.name}}
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option *ngIf="!isLastUnit" (click)="loadMoreUnit()" class="lebih-banyak">
+                <div *ngIf="!waitingLoadMoreUnit; else loadUnit" >Muat lebih banyak
+                  ....
+                </div>
+                <ng-template #loadUnit>
+                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                    mode="indeterminate"></mat-progress-bar>
+                </ng-template>
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'unit'), 'uuid').hasError('required')">
+              {{stateMatchers.unit.message}}</mat-error>
+          </mat-form-field>
+
+          <!--benang-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Benang</mat-label>
+            <input matInput placeholder="Benang" formControlName="benang" required
+                   [errorStateMatcher]="stateMatchers.benang.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'benang').hasError('required')">
+              {{stateMatchers.benang.message}}</mat-error>
+          </mat-form-field>
+
+          <!--gramasi-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Gramasi</mat-label>
+            <input matInput placeholder="Gramasi" formControlName="gramasi" required
+                   [errorStateMatcher]="stateMatchers.gramasi.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'gramasi').hasError('required')">
+              {{stateMatchers.gramasi.message}}</mat-error>
+          </mat-form-field>
+
+          <!--setting-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Setting</mat-label>
+            <input matInput placeholder="Setting" formControlName="setting" required
+                   [errorStateMatcher]="stateMatchers.setting.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'setting').hasError('required')">
+              {{stateMatchers.setting.message}}</mat-error>
+          </mat-form-field>
+
+          <!--handfeel-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Handfeel</mat-label>
+            <input matInput placeholder="Handfeel" formControlName="handfeel" required
+                   [errorStateMatcher]="stateMatchers.handfeel.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'handfeel').hasError('required')">
+              {{stateMatchers.handfeel.message}}</mat-error>
+          </mat-form-field>
+
+          <!--tambahan-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Additional</mat-label>
+            <input matInput placeholder="Additional" formControlName="tambahan" required
+                   [errorStateMatcher]="stateMatchers.tambahan.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'tambahan').hasError('required')">
+              {{stateMatchers.tambahan.message}}</mat-error>
+          </mat-form-field>
+
+
+        </div>
+
+
+        <!--</div>-->
+
+      </div>
+
+    </form>
+  </mat-dialog-content>
+  <!--</div>-->
+
+
+  <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
+
+  <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
+    <button mat-flat-button color="primary" (click)="save(form.value)"
+            [disabled]="form.valid">Simpan
+    </button>
+  </mat-dialog-actions>
+
+  <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close">
+      <span>Tidak</span>
+    </button>
+    <button mat-button (click)="delete(data.data.uuid)">
+      <span>Ya</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>

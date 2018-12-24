@@ -134,3 +134,14 @@
 }
 
 // end of customize angular material date picker
+
+
+::ng-deep .pilih * {
+  color: mat-color($dan-app-warning);
+}
+
+::ng-deep .lebih-banyak * {
+  padding-right: 15px;
+  font-style: italic;
+  color: mat-color($dan-app-primary);
+}

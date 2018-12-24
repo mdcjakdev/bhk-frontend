@@ -23,13 +23,12 @@ export class MasterGudangDialogComponent extends DialogUtil
   close = undefined;
 
   dataLokasi: any[] = [];
-
   @ViewChild('selectLokasi') selectLokasi;
   lokasiPage = 0;
   waitingLoadMoreLokasi = false;
   isLastLokasi = false;
   isLokasiUuidTrue = false;
-  cek = false;
+
 
 
   constructor(public masterGudangService: MasterGudangService,

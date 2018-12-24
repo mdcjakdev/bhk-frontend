@@ -6,7 +6,6 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {Action} from '../../../shared/action.enum';
-import {MasterSupplierDialogComponent} from '../master-supplier/master-supplier-dialog/master-supplier-dialog.component';
 import {Ui} from '../../../shared/ui';
 import {MasterWarnaService} from '../../../services/master/master-warna/master-warna.service';
 import {masterWarnaInit} from '../../../inits/master/master-warna';

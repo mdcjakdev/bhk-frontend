@@ -38,6 +38,8 @@ import {MasterLokasiService} from '../../services/master/master-lokasi/master-lo
 import {MasterGudangService} from '../../services/master/master-gudang/master-gudang.service';
 import {MasterWarnaService} from '../../services/master/master-warna/master-warna.service';
 import {ElementFocusDirective} from '../../shared/directives/element-focus.directive';
+import {MasterItemService} from '../../services/master/master-item/master-item.service';
+import {MasterKaryawanService} from '../../services/master/master-karyawan/master-karyawan.service';
 
 
 @NgModule({
@@ -94,7 +96,9 @@ import {ElementFocusDirective} from '../../shared/directives/element-focus.direc
     MasterPelangganService,
     MasterLokasiService,
     MasterGudangService,
-    MasterWarnaService
+    MasterWarnaService,
+    MasterItemService,
+    MasterKaryawanService
 
 
   ],

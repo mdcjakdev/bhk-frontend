@@ -11,6 +11,8 @@ export class ElementFocusDirective implements OnInit {
 
   ngOnInit(): void {
     this.elementRef.nativeElement.focus();
+
+    // add this to fixing error "Expression has changed after it was checked"
     this.cdRef.detectChanges();
   }
 

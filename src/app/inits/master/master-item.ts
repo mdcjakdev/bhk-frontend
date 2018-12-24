@@ -97,9 +97,9 @@ export const masterItemDisables = {
   gramasi: false,
   setting: false,
   handfeel: false,
-  kategori: masterCategoryDisables,
-  subKategori: masterSubCategoryDisables,
-  unit: masterUnitDisables,
+  kategori: false,
+  subKategori: false,
+  unit: false,
   tambahan: false,
 };
 
@@ -133,9 +133,9 @@ export const masterItemErrorStateMatchers = {
   gramasi: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
   setting: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
   handfeel: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-  kategori: masterCategoryErrorStateMatchers,
-  subKategori: masterSubCategoryErrorStateMatchers,
-  unit: masterUnitErrorStateMatchers,
+  kategori: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kategori'},
+  subKategori: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan sub kategori'},
+  unit: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih unit'},
   tambahan: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
 };
 
@@ -196,9 +196,15 @@ export function masterItemForm(init: MasterItem = masterItemInit,
     gramasi: [{value: init.gramasi, disabled: disables.gramasi}, Validators.required],
     setting: [{value: init.setting, disabled: disables.setting}, Validators.required],
     handfeel: [{value: init.handfeel, disabled: disables.handfeel}, Validators.required],
-    kategori: masterCategoryForm(),
-    subKategori: masterSubCategoryForm(),
-    unit: masterUnitForm(),
+    kategori: new FormBuilder().group({
+      uuid: [{value: init.kategori.uuid, disabled: disables.kategori}, Validators.required]
+    }),
+    subKategori: new FormBuilder().group({
+      uuid: [{value: init.subKategori.uuid, disabled: disables.subKategori}, Validators.required]
+    }),
+    unit: new FormBuilder().group({
+      uuid: [{value: init.unit.uuid, disabled: disables.unit }, Validators.required]
+    }),
     tambahan: [{value: init.tambahan, disabled: disables.tambahan}, Validators.required],
   });
 

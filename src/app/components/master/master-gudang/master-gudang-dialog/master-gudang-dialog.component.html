@@ -155,14 +155,14 @@
           <mat-form-field formGroupName="lokasi">
             <mat-select #selectLokasi [placeholder]="(isLokasiEnabled()) ? 'Lokasi' : 'Memuat data lokasi ......'" formControlName="uuid"
                         [errorStateMatcher]="stateMatchers.lokasi.matcher" [required]="isLokasiEnabled()">
-              <mat-option style="color: #9f1154;">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
               <mat-divider></mat-divider>
               <mat-option [value]="v.uuid" *ngFor="let v of dataLokasi">
                 {{v.namaLokasi}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option *ngIf="!isLastLokasi" (click)="loadMoreLokasi()" style="padding-right: 15px">
-                <div *ngIf="!waitingLoadMoreLokasi; else load" style="color: #9f1154;font-style: italic;">Muat lebih banyak
+              <mat-option *ngIf="!isLastLokasi" (click)="loadMoreLokasi()" class="lebih-banyak">
+                <div *ngIf="!waitingLoadMoreLokasi; else load" >Muat lebih banyak
                   ....
                 </div>
                 <ng-template #load>
