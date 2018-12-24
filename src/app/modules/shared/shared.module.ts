@@ -36,10 +36,14 @@ import {MasterSupplierService} from '../../services/master/master-supplier/maste
 import {MasterPelangganService} from '../../services/master/master-pelanggan/master-pelanggan.service';
 import {MasterLokasiService} from '../../services/master/master-lokasi/master-lokasi.service';
 import {MasterGudangService} from '../../services/master/master-gudang/master-gudang.service';
+import {MasterWarnaService} from '../../services/master/master-warna/master-warna.service';
+import {ElementFocusDirective} from '../../shared/directives/element-focus.directive';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ElementFocusDirective
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -89,9 +93,13 @@ import {MasterGudangService} from '../../services/master/master-gudang/master-gu
     MasterSupplierService,
     MasterPelangganService,
     MasterLokasiService,
-    MasterGudangService
+    MasterGudangService,
+    MasterWarnaService
+
+
   ],
   exports: [
+    ElementFocusDirective,
     HttpClientModule,
 
     ReactiveFormsModule,

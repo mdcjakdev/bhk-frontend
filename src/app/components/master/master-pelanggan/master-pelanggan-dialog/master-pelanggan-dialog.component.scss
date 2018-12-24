@@ -14,6 +14,18 @@
   font-size: 15px;
 }
 
+#table-detail {
+  margin-left: 40px;
+  table  {
+    font-size: 13px;
+    td {
+      vertical-align: top;
+      li {
+        padding-left: 15px;
+      }
+    }
+  }
+}
 .icon-delete-subcategory {
   color: #6f6f6f;
 }
@@ -27,7 +39,7 @@
     text-align: right;
   }
 
-  //margin-left: 15px;
+  margin-left: 15px;
   background: rgba(89, 89, 89, 0.01);
   border: 1px solid #dedede;
   border-radius: 5px;
@@ -72,21 +84,3 @@
   }
 
 }
-
-#table-detail {
-  margin-left: 40px;
-  table  {
-    font-size: 13px;
-    td {
-      vertical-align: top;
-      li {
-        padding-left: 15px;
-      }
-    }
-  }
-}
-
-.sub-category {
-  padding-left: 40px;
-}
-

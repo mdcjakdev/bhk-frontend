@@ -11,7 +11,7 @@
 
       <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
       <ng-template #elseHeader>
-        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Kategori</strong>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Warna</strong>
       </ng-template>
     </div>
   </h4>
@@ -20,74 +20,53 @@
     <div id="table-detail">
       <table class="full-width-table">
         <tr>
-          <td>
-            <li><strong>Kategori</strong></li>
+          <td style="width: 120px">
+            <li><strong>Nama Warna</strong></li>
           </td>
           <td>
             <strong>:</strong>&nbsp;
           </td>
           <td>
-            {{data.data.namaKategori}}
+            {{data.data.namaWarna}}
           </td>
         </tr>
         <tr>
           <td>
-            <li><strong>Kode</strong></li>
+            <li><strong>Kode Warna</strong></li>
           </td>
           <td>
             <strong>:</strong>&nbsp;
           </td>
           <td>
-            {{data.data.kodeKategori}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li><strong>Tipe</strong></li>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.tipeKategori}}
+            {{data.data.kodeWarna}}
           </td>
         </tr>
         <tr>
           <td colspan="3" style="height: 10px"></td>
         </tr>
-        <tr *ngIf="data.data.subKategori.length > 0">
+        <tr *ngIf="data.data.barcode.length > 0">
           <td colspan="3">
             <li class="primary">
-              <strong class="primary">Sub Kategori &nbsp;({{data.data.subKategori.length}})</strong>
+              <strong class="primary">Barcode &nbsp;({{data.data.barcode.length}})</strong>
             </li>
           </td>
         </tr>
         <tr>
           <td colspan="3" class="sub-category">
             <table>
-              <div *ngFor="let subKategori of data.data.subKategori">
+              <div *ngFor="let b of data.data.barcode">
                 <tr>
-                  <td colspan="2">
-                                  <span class="accent" style="text-decoration: underline; margin-left: -5px">
-                                    {{subKategori.nama}}
+                  <td colspan="2" style="padding-left: 15px">
+                                  <span class="accent" style="text-decoration: underline;">
+                                    {{b.barcode}}
                                   </span>
                   </td>
                 </tr>
-                <tr>
-                  <td>
-                    <li style="margin-left: 5px">
-                      Kode Sub Kategori&nbsp;
-                    </li>
-                  </td>
-                  <td>
-                    <strong>:&nbsp;&nbsp;{{subKategori.kode}}</strong>
-                  </td>
-                </tr>
+
               </div>
             </table>
           </td>
         </tr>
-
       </table>
     </div>
   </mat-dialog-content>
@@ -101,36 +80,24 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
 
-          <!--nama-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kategori</mat-label>
-            <input matInput placeholder="Kategori " formControlName="namaKategori" required
-                   [errorStateMatcher]="stateMatchers.namaKategori.matcher">
 
+          <!--warna-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Nama Warna</mat-label>
+            <input  matInput  placeholder="Nama Warna" formControlName="namaWarna" required
+                   [errorStateMatcher]="stateMatchers.namaWarna.matcher">
             <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'namaKategori').hasError('required')">{{stateMatchers.namaKategori.message}}</mat-error>
+              *ngIf="reactiveFormUtil.formControl(form, 'namaWarna').hasError('required')">{{stateMatchers.namaWarna.message}}</mat-error>
           </mat-form-field>
 
 
           <!--kode-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode</mat-label>
-            <input matInput placeholder="Kode " formControlName="kodeKategori" required
-                   [errorStateMatcher]="stateMatchers.kodeKategori.matcher">
-
+            <mat-label>Kode Warna</mat-label>
+            <input matInput placeholder="Kode Warna" formControlName="kodeWarna" required
+                   [errorStateMatcher]="stateMatchers.kodeWarna.matcher">
             <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kodeKategori').hasError('required')">{{stateMatchers.kodeKategori.message}}</mat-error>
-          </mat-form-field>
-
-
-          <!--tipe-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Tipe</mat-label>
-            <input matInput placeholder="Tipe " formControlName="tipeKategori" required
-                   [errorStateMatcher]="stateMatchers.tipeKategori.matcher">
-
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'tipeKategori').hasError('required')">{{stateMatchers.tipeKategori.message}}</mat-error>
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeWarna').hasError('required')">{{stateMatchers.kodeWarna.message}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -139,11 +106,11 @@
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div style="float:right!important;font-size: 13px">
-                <strong class="primary">Sub Kategori</strong>
+                <strong class="primary">Barcode</strong>
                 &nbsp;
-                <button mat-icon-button matTooltip="Tambah Sub Kategori"
+                <button mat-icon-button matTooltip="Tambah Barcode"
                         [matTooltipPosition]="'left'"
-                        (click)="addNewSubCategory(reactiveFormUtil.getFormArray('subKategori', form))">
+                        (click)="addNewBarcode(reactiveFormUtil.getFormArray('barcode', form))">
                   <mat-icon color="primary">add</mat-icon>
                 </button>
               </div>
@@ -151,44 +118,32 @@
           </div>
 
 
-          <div formArrayName="subKategori" class="row">
-            <div *ngFor="let sub of reactiveFormUtil.getFormArrays('subKategori', form); index as subIndex"
+          <div formArrayName="barcode" >
+            <div *ngFor="let temp of reactiveFormUtil.getFormArrays('barcode', form); index as subIndex"
                  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <!--<mat-form-field [appearance]="formFieldAppearance">-->
-              <mat-card id="sub-category-card">
+              <mat-card id="barcode-card" >
 
                 <mat-card-content>
                   <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                  <button mat-icon-button matTooltip="Hapus Sub Kategori"
+                  <button mat-icon-button matTooltip="Hapus Barcode"
                           [matTooltipPosition]="'below'"
-                          (click)="removeSubCategory(reactiveFormUtil.getFormArray('subKategori', form), subIndex)">
+                          (click)="removeBarcode(reactiveFormUtil.getFormArray('barcode', form), subIndex)">
                     <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
                   </button>
                   <!--</div>-->
                   <div [formGroupName]="subIndex" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <input type="hidden" formControlName="uuid">
 
-                    <!--nama-->
+                    <!--barcode-->
                     <mat-form-field [appearance]="formFieldAppearance">
-                      <mat-label>Sub Kategori</mat-label>
-                      <input appElementFocus matInput placeholder="Sub Kategori" formControlName="nama" required
-                             [errorStateMatcher]="stateMatchers.subKategori.nama.matcher">
+                      <mat-label>Barcode</mat-label>
+                      <input appElementFocus matInput placeholder="Barcode " formControlName="barcode" required
+                             [errorStateMatcher]="stateMatchers.barcode.barcode.matcher">
 
                       <mat-error
-                        *ngIf="reactiveFormUtil.formControl(sub, 'nama').hasError('required')">{{stateMatchers.subKategori.nama.message}}</mat-error>
+                        *ngIf="reactiveFormUtil.formControl(temp, 'barcode').hasError('required')">{{stateMatchers.barcode.barcode.message}}</mat-error>
                     </mat-form-field>
-
-                    <!--kode-->
-                    <mat-form-field [appearance]="formFieldAppearance">
-                      <mat-label>Kode</mat-label>
-                      <input matInput placeholder="Kode " formControlName="kode" required
-                             [errorStateMatcher]="stateMatchers.subKategori.kode.matcher">
-
-                      <mat-error
-                        *ngIf="reactiveFormUtil.formControl(sub, 'kode').hasError('required')">{{stateMatchers.subKategori.kode.message}}</mat-error>
-                    </mat-form-field>
-
-
 
                   </div>
 

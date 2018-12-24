@@ -1,0 +1,110 @@
+<div id="dialog-block">
+
+  <!--<div class="dialog-block-content">-->
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
+  </mat-progress-bar>
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+    <div>
+      <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && isDelete()" style="margin-bottom: 4px;">delete</mat-icon>
+
+      <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
+      <ng-template #elseHeader>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Lokasi</strong>
+      </ng-template>
+    </div>
+  </h4>
+
+  <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
+    <div id="table-detail">
+      <table class="full-width-table">
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td style="width: 120px">
+            <strong>Nama Lokasi</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.namaLokasi}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td style="width: 120px">
+            <strong>Tipe Lokasi</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.tipeLokasi}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </mat-dialog-content>
+
+
+  <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
+    <form class="form-app" [formGroup]="form">
+
+      <div class="row">
+        <!--<div class="container-fluid">-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <input type="hidden" formControlName="uuid"/>
+
+          <!--Nama Lokasi -->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Nama Lokasi</mat-label>
+            <input matInput placeholder="Nama Lokasi " formControlName="namaLokasi" required
+                   [errorStateMatcher]="stateMatchers.namaLokasi.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'namaLokasi').hasError('required')">{{stateMatchers.namaLokasi.message}}</mat-error>
+          </mat-form-field>
+
+          <!--Tipe Lokasi-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Tipe Lokasi</mat-label>
+            <input matInput placeholder="Tipe Lokasi" formControlName="tipeLokasi" required
+                   [errorStateMatcher]="stateMatchers.tipeLokasi.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'tipeLokasi').hasError('required')">
+              {{stateMatchers.tipeLokasi.message}}</mat-error>
+          </mat-form-field>
+
+
+
+        </div>
+
+      </div>
+
+    </form>
+  </mat-dialog-content>
+  <!--</div>-->
+
+
+  <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
+
+  <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
+    <button mat-flat-button color="primary" (click)="save(form.value)"
+            [disabled]="!form.valid">Simpan
+    </button>
+  </mat-dialog-actions>
+
+  <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close">
+      <span>Tidak</span>
+    </button>
+    <button mat-button (click)="delete(data.data.uuid)">
+      <span>Ya</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>

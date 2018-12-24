@@ -1,3 +1,5 @@
+@import "~src/assets/css/dan-theme";
+
 .mat-dialog-actions {
   padding-bottom: 20px;
 }
@@ -14,6 +16,21 @@
   font-size: 15px;
 }
 
+#table-detail {
+  margin-left: 40px;
+  table  {
+    font-size: 13px;
+    td {
+      vertical-align: top;
+
+    }
+  }
+}
+
+.mat-option {
+  font-size: 13px;
+}
+
 .icon-delete-subcategory {
   color: #6f6f6f;
 }
@@ -27,7 +44,7 @@
     text-align: right;
   }
 
-  //margin-left: 15px;
+  margin-left: 15px;
   background: rgba(89, 89, 89, 0.01);
   border: 1px solid #dedede;
   border-radius: 5px;
@@ -73,20 +90,47 @@
 
 }
 
-#table-detail {
-  margin-left: 40px;
-  table  {
-    font-size: 13px;
-    td {
-      vertical-align: top;
-      li {
-        padding-left: 15px;
+
+// customize angular material date picker
+
+::ng-deep .mat-datepicker-content {
+  //border-radius: 10px;
+  margin-top: 2px;
+  height: 388px;
+  .mat-calendar {
+    //border-radius: 10px;
+    .mat-calendar-header {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      //border-radius: 10px;
+      background: mat-color($dan-app-primary);
+      color: #ffffff;
+      padding: 8px 8px 1px 8px;
+      .mat-calendar-controls {
+        .mat-button {
+          .mat-button-wrapper {
+            .mat-calendar-arrow {
+              display: none;
+            }
+          }
+        }
+        .mat-icon-button {
+          color: #ffffff;
+        }
       }
     }
   }
 }
 
-.sub-category {
-  padding-left: 40px;
+::ng-deep .mat-calendar-table {
+  .mat-calendar-table-header {
+    margin-top: 10px;
+  }
+  .mat-calendar-table-header th {
+    text-align: center;
+    padding: 16px 0 8px 0;
+    background: #ffffff;
+  }
 }
 
+// end of customize angular material date picker
