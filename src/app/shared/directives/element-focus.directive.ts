@@ -1,18 +1,18 @@
-import {AfterContentChecked, AfterViewChecked, AfterViewInit, Directive, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, OnInit} from '@angular/core';
 
 @Directive({
   selector: '[appElementFocus]'
 })
 export class ElementFocusDirective implements OnInit {
 
-  constructor(public elementRef?: ElementRef) {
+  constructor(private cdRef: ChangeDetectorRef, public elementRef?: ElementRef) {
   }
 
 
   ngOnInit(): void {
     this.elementRef.nativeElement.focus();
+    this.cdRef.detectChanges();
   }
-
 
 
 }

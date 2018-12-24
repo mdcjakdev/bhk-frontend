@@ -2,27 +2,71 @@
   padding-bottom: 20px;
 }
 
-
 .mat-progress-bar {
   position: absolute;
-  margin-left: -24px;
-  margin-top: -24px;
   height: 4px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
-  width: 113.6%;
+  width: 100%;
 }
-
-
 
 .mat-dialog-title {
   font-size: 15px;
 }
 
-table {
-  width: 100%; font-size: 13px;
+#table-detail {
+  margin-left: 40px;
+  table  {
+    font-size: 13px;
+    td {
+      vertical-align: top;
+      li {
+        padding-left: 15px;
+      }
+    }
+  }
+}
+.icon-delete-subcategory {
+  color: #6f6f6f;
 }
 
-.table-td {
-  width: 50%;
+
+
+//
+::ng-deep .mat-dialog-container {
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 24px;
+}
+
+#dialog-block {
+
+  .mat-dialog-title {
+    padding: 24px;
+    margin: 0;
+  }
+
+  .mat-dialog-content {
+    margin: 0;
+    padding: 24px;
+  }
+
+  .mat-divider.divider-actions {
+    margin-top: 5px;
+    border-color: rgba(0, 0, 0, 0.18);
+  }
+
+  .mat-dialog-actions {
+    padding-right: 24px;
+    padding-top: 14px;
+    padding-bottom: 18px;
+    background: rgba(0, 0, 0, 0.07);
+  }
+
+  .mat-dialog-actions.delete {
+    background: rgba(0, 0, 0, 0.0);
+    color: rgba(0, 0, 0, 0.89);
+  }
+
 }

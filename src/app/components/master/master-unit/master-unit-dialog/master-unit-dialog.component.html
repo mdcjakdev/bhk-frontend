@@ -1,6 +1,6 @@
 <div id="dialog-block">
 
-  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'primary' : 'accent'"  mode="indeterminate">
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
   </mat-progress-bar>
   <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
     <div>
@@ -16,26 +16,39 @@
   </h4>
 
   <div *ngIf="!isDataNull() && isDetail()" mat-dialog-content class="form-app">
-    <table  >
-      <tr>
-        <td class="form-app table-td" >
-          <li><strong>Unit</strong></li>
-        </td>
-        <td class="table-td" >
-          <strong>:</strong> {{data.data.name}}
-        </td>
-      </tr>
-      <tr>
-        <td class="form-app">
-          <li>
+
+    <div id="table-detail">
+      <table class="full-width-table">
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td style="width: 120px">
+            <strong>Unit</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.name}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td style="width: 120px">
             <strong>Deskripsi</strong>
-          </li>
-        </td>
-        <td >
-          <strong>:</strong> {{data.data.deskripsi}}
-        </td>
-      </tr>
-    </table>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.deskripsi}}
+          </td>
+        </tr>
+      </table>
+    </div>
 
   </div>
 
@@ -66,16 +79,17 @@
   </mat-dialog-content>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-button color="primary" (click)="save(form.value)"
-            [disabled]="!form.valid"><strong>Simpan</strong></button>
+    <button mat-flat-button color="primary" (click)="save(form.value)"
+            [disabled]="!form.valid">Simpan
+    </button>
   </mat-dialog-actions>
 
-  <mat-dialog-actions *ngIf="!isDataNull() && isDelete()" align="end">
-    <button mat-button [mat-dialog-close]="close"  >
-      <strong>Tidak</strong>
+  <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close">
+      <span>Tidak</span>
     </button>
-    <button mat-button   (click)="delete(data.data.uuid)" >
-      <strong>Ya</strong>
+    <button mat-button (click)="delete(data.data.uuid)">
+      <span>Ya</span>
     </button>
   </mat-dialog-actions>
 

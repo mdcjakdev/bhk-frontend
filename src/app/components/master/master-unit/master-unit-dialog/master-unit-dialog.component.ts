@@ -7,6 +7,7 @@ import {MasterUnitService} from '../../../../services/master/master-unit/master-
 import {delayHttpRequest} from '../../../../shared/constants';
 import {SUCCESS} from '../../../../shared/utils';
 import {first} from 'rxjs/operators';
+import {masterLokasiForm} from '../../../../inits/master/master-lokasi-init';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class MasterUnitDialogComponent
               @Inject(MAT_DIALOG_DATA) data: any) {
     super(dialogRef,
       data,
-      masterUnitForm(),
+      masterUnitForm(data.data),
       masterUnitErrorStateMatchers);
   }
 
@@ -35,14 +36,14 @@ export class MasterUnitDialogComponent
    */
   save(value?): void {
     this.dialogRef.disableClose = true;
-    Ui.blockUI('#dialog-block', 0.5, 0, 0);
+    Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
       this.masterUnitService.postData(value).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
-          this.dialogRef.close({...this.data, data: SUCCESS });
+          this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
           this.dialogRef.disableClose = false;
@@ -59,14 +60,14 @@ export class MasterUnitDialogComponent
    */
   delete(uuid?): void {
     this.dialogRef.disableClose = true;
-    Ui.blockUI('#dialog-block', 0.5, 0, 0);
+    Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
       this.masterUnitService.deleteData(uuid).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
-          this.dialogRef.close({...this.data, data: SUCCESS });
+          this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
           this.dialogRef.disableClose = false;
@@ -78,5 +79,4 @@ export class MasterUnitDialogComponent
 
   ngOnInit() {
   }
-
 }
