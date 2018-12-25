@@ -184,5 +184,32 @@ $header-color: rgba(0, 0, 0, 0.05);
 
 
 
+  ::ng-deep .default-snackbar {
+    color: #771d5b;
+    font-weight: bold;
+    background: #BDBDBD;
+  }
+
+
+  ::ng-deep .warning-snackbar {
+    color: #ffffff;
+    //font-weight: bold;
+    background: mat-color($accent);
+  }
+
+  ::ng-deep .success-snackbar {
+    color: #ffffff;
+    //font-weight: bold;
+    background: mat-color($primary);
+  }
+
+  ::ng-deep .error-snackbar {
+    color: #ffffff;
+    //font-weight: bold;
+    background: mat-color($warn);
+  }
+
+
+
 
 }
