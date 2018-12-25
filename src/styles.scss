@@ -3,9 +3,10 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "assets/css/dan-mix";
 
+
 /* width */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 /* Track */
@@ -103,9 +104,7 @@ mat-sidenav {
       margin-top: -25px
     }
 
-    .default-snackbar {
-      background-color: #0f9d58;
-    }
+
 
 
     .mat-card-content {
@@ -186,7 +185,6 @@ mat-sidenav {
   }
 
 }
-
 
 
 
