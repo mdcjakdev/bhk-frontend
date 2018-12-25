@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
-import {delayHttpRequest} from '../../../../shared/constants';
+import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {masterPelangganErrorStateMatchers, masterPelangganForm} from '../../../../inits/master/master-pelanggan-init';
 import {MasterPelangganService} from '../../../../services/master/master-pelanggan/master-pelanggan.service';
 
@@ -18,7 +18,8 @@ export class MasterPelangganDialogComponent extends DialogUtil
 
   close = undefined;
 
-  constructor(public masterPelangganService: MasterPelangganService,
+  constructor(public snackBar: MatSnackBar,
+              public masterPelangganService: MasterPelangganService,
               dialogRef: MatDialogRef<MasterPelangganDialogComponent>,
               @Inject(MAT_DIALOG_DATA) data: any) {
     super(dialogRef,
@@ -40,6 +41,7 @@ export class MasterPelangganDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil ');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
@@ -64,6 +66,7 @@ export class MasterPelangganDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil dihapus');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {

@@ -89,7 +89,7 @@ export const MY_FORMATS = {
     MasterKaryawanDialogComponent,
     MasterPelangganDialogComponent,
     MasterLokasiDialogComponent,
-    MasterWarnaDialogComponent,
+    MasterWarnaDialogComponent
   ],
   exports: [
   ],

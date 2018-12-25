@@ -150,27 +150,50 @@
                   <div id="table-detail">
                     <table class="full-width-table">
                       <tr>
-                        <td style="width: 120px">
-                          <li><strong>Nama Warna</strong></li>
+                        <td style="width: 150px">
+                          <li><strong>Nama Item</strong></li>
                         </td>
                         <td>
                           <strong>:</strong>&nbsp;
                         </td>
                         <td>
-                          {{element.namaWarna}}
+                          {{element.namaItem}}
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <li><strong>Kode Warna</strong></li>
+                          <li><strong>Nama Kain</strong></li>
                         </td>
                         <td>
                           <strong>:</strong>&nbsp;
                         </td>
                         <td>
-                          {{element.kodeWarna}}
+                          {{element.namaKain}}
                         </td>
                       </tr>
+                      <tr>
+                        <td>
+                          <li><strong>Kode</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.kode}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <li><strong>Kode Alias Item</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.kodeItemAlias}}
+                        </td>
+                      </tr>
+                      <!--BARCODE-->
                       <tr>
                         <td colspan="3" style="height: 10px"></td>
                       </tr>
@@ -182,11 +205,11 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="3" class="sub-category">
+                        <td colspan="3" >
                           <table>
                             <div *ngFor="let b of element.barcode">
                               <tr>
-                                <td colspan="2" style="padding-left: 15px">
+                                <td colspan="2" style="padding-left: 34px">
                                   <span class="accent" style="text-decoration: underline;">
                                     {{b.barcode}}
                                   </span>
@@ -195,6 +218,152 @@
 
                             </div>
                           </table>
+                        </td>
+                      </tr>
+                      <!--kode item alias-->
+                      <tr>
+                        <td>
+                          <li><strong>Jenis Kain</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.jenisKain}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <li><strong>Ukuran</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.ukuran}}
+                        </td>
+                      </tr>
+                      <!--nama alias-->
+                      <tr>
+                        <td colspan="3" style="height: 10px"></td>
+                      </tr>
+                      <tr *ngIf="element.barcode.length > 0">
+                        <td colspan="3">
+                          <li class="primary">
+                            <strong class="primary">Nama Alias &nbsp;({{element.namaAlias.length}})</strong>
+                          </li>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" >
+                          <table>
+                            <div *ngFor="let b of element.namaAlias">
+                              <tr>
+                                <td colspan="2" style="padding-left: 34px">
+                                  <span class="accent" style="text-decoration: underline;">
+                                    {{b.namaAlias}}
+                                  </span>
+                                </td>
+                              </tr>
+
+                            </div>
+                          </table>
+                        </td>
+                      </tr>
+                      <!--kategori-->
+                      <tr>
+                        <td>
+                          <li><strong>Kategori</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.kategori.namaKategori}}
+                        </td>
+                      </tr>
+                      <!--sub kategori-->
+                      <tr>
+                        <td>
+                          <li><strong>Sub Kategori</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.subKategori.nama}}
+                        </td>
+                      </tr>
+                      <!--unit-->
+                      <tr>
+                        <td>
+                          <li><strong>Unit</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.unit.name}}
+                        </td>
+                      </tr>
+                      <!--benang-->
+                      <tr>
+                        <td>
+                          <li><strong>Benang</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.benang}}
+                        </td>
+                      </tr>
+                      <!--gramasi-->
+                      <tr>
+                        <td>
+                          <li><strong>Gramasi</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.gramasi}}
+                        </td>
+                      </tr>
+                      <!--setting-->
+                      <tr>
+                        <td>
+                          <li><strong>Setting</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.setting}}
+                        </td>
+                      </tr>
+                      <!--handfeel-->
+                      <tr>
+                        <td>
+                          <li><strong>Handfeel</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.handfeel}}
+                        </td>
+                      </tr>
+                      <!--additional-->
+                      <tr>
+                        <td>
+                          <li><strong>Additional</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.tambahan}}
                         </td>
                       </tr>
                     </table>

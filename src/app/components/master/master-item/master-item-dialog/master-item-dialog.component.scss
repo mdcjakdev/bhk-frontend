@@ -1,4 +1,5 @@
 @import "~src/assets/css/dan-theme";
+@import "~src/assets/css/dan-mix";
 
 .mat-dialog-actions {
   padding-bottom: 20px;
@@ -17,7 +18,7 @@
 }
 
 #table-detail {
-  margin-left: 40px;
+  margin-left: 30px;
 
   table {
     font-size: 13px;
@@ -37,23 +38,34 @@
   color: #6f6f6f;
 }
 
-#sub-category-card {
+#barcode-card {
   .mat-card-title, .mat-card-subtitle {
     text-align: right;
   }
-
   .mat-card-content {
     text-align: right;
   }
-
-  margin-left: 15px;
+  margin-top: 10px;
   background: rgba(89, 89, 89, 0.01);
   border: 1px solid #dedede;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 1px 0px, rgba(0, 0, 0, 0.19) 0px 1px 2px 0px;
 }
 
-//
+#alias-card {
+  .mat-card-title, .mat-card-subtitle {
+    text-align: right;
+  }
+  .mat-card-content {
+    text-align: right;
+  }
+  margin-top: 10px;
+  background: rgba(89, 89, 89, 0.01);
+  border: 1px solid #dedede;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 1px 0px, rgba(0, 0, 0, 0.19) 0px 1px 2px 0px;
+}
+
 ::ng-deep .mat-dialog-container {
   padding-top: 0px;
   padding-left: 0px;
@@ -97,7 +109,13 @@
 }
 
 ::ng-deep .lebih-banyak * {
-  padding-right: 15px;
+  //padding-right: 10px;
   font-style: italic;
   color: mat-color($dan-app-primary);
 }
+
+a {
+  font-size: $standard-font-size;
+  cursor: pointer;
+}
+

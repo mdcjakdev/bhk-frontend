@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {masterUnitErrorStateMatchers, masterUnitForm} from '../../../../inits/master/master-unit-init';
 import {Ui} from '../../../../shared/ui';
 import {MasterUnitService} from '../../../../services/master/master-unit/master-unit.service';
-import {delayHttpRequest} from '../../../../shared/constants';
+import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {SUCCESS} from '../../../../shared/utils';
 import {first} from 'rxjs/operators';
 import {masterLokasiForm} from '../../../../inits/master/master-lokasi-init';
@@ -21,7 +21,8 @@ export class MasterUnitDialogComponent
 
   close = undefined;
 
-  constructor(public masterUnitService: MasterUnitService,
+  constructor(public snackBar: MatSnackBar,
+              public masterUnitService: MasterUnitService,
               dialogRef: MatDialogRef<MasterUnitDialogComponent>,
               @Inject(MAT_DIALOG_DATA) data: any) {
     super(dialogRef,
@@ -43,6 +44,7 @@ export class MasterUnitDialogComponent
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil ');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
@@ -67,6 +69,7 @@ export class MasterUnitDialogComponent
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil dihapus');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {

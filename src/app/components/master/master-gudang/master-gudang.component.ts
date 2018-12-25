@@ -17,6 +17,7 @@ import {masterGudangDisables, masterGudangInit} from '../../../inits/master/mast
 import {MasterLokasiService} from '../../../services/master/master-lokasi/master-lokasi.service';
 import {MasterGudangDialogComponent} from './master-gudang-dialog/master-gudang-dialog.component';
 import {momentParsingDate} from '../../../shared/utils';
+import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 
 @Component({
   selector: 'app-master-gudang',
@@ -84,15 +85,9 @@ export class MasterGudangComponent
 
   callbackGetDataError = (error) => {
     if (error.status === 0) {
-      this.snackBar.open(ERROR_STATUS_CODE_0, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, ERROR_STATUS_CODE_0, SNACKBAR_ERROR_STYLE, 2000);
     } else {
-      this.snackBar.open(error.error.message, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
   }
 

@@ -10,7 +10,7 @@ import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {MasterCategoryDialogComponent} from './master-category-dialog/master-category-dialog.component';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {masterCategoryInit} from '../../../inits/master/master-category-init';
-import {UUID_COLUMN} from '../../../shared/constants';
+import {openAppSnackbar, SNACKBAR_ERROR_STYLE, UUID_COLUMN} from '../../../shared/constants';
 
 @Component({
   selector: 'app-master-category',
@@ -67,15 +67,9 @@ export class MasterCategoryComponent
 
   callbackGetDataError = (error) => {
     if (error.status === 0) {
-      this.snackBar.open(ERROR_STATUS_CODE_0, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, ERROR_STATUS_CODE_0, SNACKBAR_ERROR_STYLE, 2000);
     } else {
-      this.snackBar.open(error.error.message, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
   }
 

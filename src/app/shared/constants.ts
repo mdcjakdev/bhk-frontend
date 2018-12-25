@@ -18,6 +18,10 @@ export const delayAnotherProcess = 5000;
 export const defaultNavSideBarSize = 250;
 export const defaultMainContentPadding = 35;
 
+export const SNACKBAR_SUCCESS_STYLE = 'success-snackbar';
+export const SNACKBAR_ERROR_STYLE = 'error-snackbar';
+export const SNACKBAR_WARNING_STYLE = 'warning-snackbar';
+
 
 /**
  * Buat menu default
@@ -65,4 +69,11 @@ export function delegateLevelValue(value, levels: string[]) {
   return value;
 }
 
+
+export function openAppSnackbar(snack, message, styleCss = SNACKBAR_SUCCESS_STYLE, duration = 1000) {
+  snack.open(message, '', {
+    duration: duration,
+    panelClass: [styleCss]
+  });
+}
 

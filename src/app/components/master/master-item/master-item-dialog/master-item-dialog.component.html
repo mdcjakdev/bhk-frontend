@@ -17,110 +17,221 @@
   </h4>
 
   <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
-    <!--<div id="table-detail">-->
-      <!--<table class="full-width-table">-->
-        <!--<tr>-->
-          <!--<td>-->
-            <!--<li></li>-->
-          <!--</td>-->
-          <!--<td style="width: 160px">-->
-            <!--<strong>Nama Gudang</strong>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>:</strong>&nbsp;-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{data.data.nama}}-->
-          <!--</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>-->
-            <!--<li></li>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>Alamat</strong>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>:</strong>&nbsp;-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{data.data.alamat}}-->
-          <!--</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>-->
-            <!--<li></li>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>Auto Replenish</strong>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>:</strong>&nbsp;-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{data.data.autoReplenish}}-->
-          <!--</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>-->
-            <!--<li></li>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>Lokasi</strong>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>:</strong>&nbsp;-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{data.data.lokasi.namaLokasi}}-->
-          <!--</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>-->
-            <!--<li></li>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>Tanggal Pengoperasioan</strong>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>:</strong>&nbsp;-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{date(data.data.tanggalMulai)}}-->
-          <!--</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>-->
-            <!--<li></li>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>Kode</strong>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>:</strong>&nbsp;-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{data.data.kode}}-->
-          <!--</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-          <!--<td>-->
-            <!--<li></li>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>Telepon</strong>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<strong>:</strong>&nbsp;-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{data.data.telepon}}-->
-          <!--</td>-->
-        <!--</tr>-->
+    <div id="table-detail">
+      <table class="full-width-table">
+        <tr>
+          <td style="width: 150px">
+            <li><strong>Nama Item</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.namaItem}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li><strong>Nama Kain</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.namaKain}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li><strong>Kode</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.kode}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li><strong>Kode Alias Item</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.kodeItemAlias}}
+          </td>
+        </tr>
+        <!--BARCODE-->
+        <tr *ngIf="data.data.barcode.length > 0">
+          <td colspan="3">
+            <li class="primary">
+              <strong class="primary">Barcode &nbsp;({{data.data.barcode.length}})</strong>
+            </li>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" >
+            <table>
+              <div *ngFor="let b of data.data.barcode">
+                <tr>
+                  <td colspan="2" style="padding-left: 20px">
+                                  <span class="accent" style="text-decoration: underline;">
+                                    {{b.barcode}}
+                                  </span>
+                  </td>
+                </tr>
 
+              </div>
+            </table>
+          </td>
+        </tr>
+        <!--kode item alias-->
+        <tr>
+          <td>
+            <li><strong>Jenis Kain</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.jenisKain}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li><strong>Ukuran</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.ukuran}}
+          </td>
+        </tr>
+        <!--nama alias-->
+        <tr *ngIf="data.data.barcode.length > 0">
+          <td colspan="3">
+            <li class="primary">
+              <strong class="primary">Nama Alias &nbsp;({{data.data.namaAlias.length}})</strong>
+            </li>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" >
+            <table>
+              <div *ngFor="let b of data.data.namaAlias">
+                <tr>
+                  <td colspan="2" style="padding-left: 20px">
+                                  <span class="accent" style="text-decoration: underline;">
+                                    {{b.namaAlias}}
+                                  </span>
+                  </td>
+                </tr>
 
-      <!--</table>-->
-    <!--</div>-->
+              </div>
+            </table>
+          </td>
+        </tr>
+        <!--kategori-->
+        <tr>
+          <td>
+            <li><strong>Kategori</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.kategori.namaKategori}}
+          </td>
+        </tr>
+        <!--sub kategori-->
+        <tr>
+          <td>
+            <li><strong>Sub Kategori</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.subKategori.nama}}
+          </td>
+        </tr>
+        <!--unit-->
+        <tr>
+          <td>
+            <li><strong>Unit</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.unit.name}}
+          </td>
+        </tr>
+        <!--benang-->
+        <tr>
+          <td>
+            <li><strong>Benang</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.benang}}
+          </td>
+        </tr>
+        <!--gramasi-->
+        <tr>
+          <td>
+            <li><strong>Gramasi</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.gramasi}}
+          </td>
+        </tr>
+        <!--setting-->
+        <tr>
+          <td>
+            <li><strong>Setting</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.setting}}
+          </td>
+        </tr>
+        <!--handfeel-->
+        <tr>
+          <td>
+            <li><strong>Handfeel</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.handfeel}}
+          </td>
+        </tr>
+        <!--additional-->
+        <tr>
+          <td>
+            <li><strong>Additional</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.tambahan}}
+          </td>
+        </tr>
+      </table>
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
@@ -188,13 +299,120 @@
               {{stateMatchers.ukuran.message}}</mat-error>
           </mat-form-field>
 
+          <!--barcode-->
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 15px 0px 0px 0px">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px">
+              <a (click)="barcodeClick()">
+                <strong class="primary">Barcode
+                  &nbsp;
+                  {{(barcodeCount() > 0) ? ('(' + barcodeCount() + ')') : ''}}
+                </strong>
+              </a>
+              <button class="float-right"
+                      *ngIf="barcodeState === 'expanded'" mat-icon-button matTooltip="Tambah Barcode"
+                      [matTooltipPosition]="'left'"
+                      (click)="addNewBarcode(reactiveFormUtil.getFormArray('barcode', form))">
+                <mat-icon color="primary">add</mat-icon>
+              </button>
+            </div>
+            <div [@barcodeExpand]="barcodeState"
+                 formArrayName="barcode"
+                 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
+              <div *ngFor="let temp of reactiveFormUtil.getFormArrays('barcode', form); index as bar">
+                <mat-card id="barcode-card" >
+                  <mat-card-content>
+                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                    <button mat-icon-button matTooltip="Hapus Barcode"
+                            [matTooltipPosition]="'below'"
+                            (click)="removeBarcode(reactiveFormUtil.getFormArray('barcode', form), bar)">
+                      <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
+                    </button>
+                    <!--</div>-->
+                    <div [formGroupName]="bar" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <input type="hidden" formControlName="uuid">
+
+                      <!--barcode-->
+                      <mat-form-field [appearance]="formFieldAppearance">
+                        <mat-label>Barcode</mat-label>
+                        <input appElementFocus
+                               [isInsert]="isInsert()"
+                               matInput placeholder="Barcode " formControlName="barcode" required
+                               [errorStateMatcher]="stateMatchers.barcode.barcode.matcher">
+
+                        <mat-error
+                          *ngIf="reactiveFormUtil.formControl(temp, 'barcode').hasError('required')">{{stateMatchers.barcode.barcode.message}}</mat-error>
+                      </mat-form-field>
+
+                    </div>
+
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </div>
+
+          <!--nama alias-->
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 15px 0px 20px 0px">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px">
+              <a (click)="aliasClick()">
+                <strong class="primary">Nama Alias
+                  &nbsp;
+                  {{(aliasCount() > 0) ? ('(' + aliasCount() + ')') : ''}}</strong>
+              </a>
+              <button class="float-right"
+                      *ngIf="aliasState === 'expanded'" mat-icon-button matTooltip="Tambah Nama Alias"
+                      [matTooltipPosition]="'left'"
+                      (click)="addNewNamaAlias(reactiveFormUtil.getFormArray('namaAlias', form))">
+                <mat-icon color="primary">add</mat-icon>
+              </button>
+            </div>
+            <div [@aliasExpand]="aliasState" formArrayName="namaAlias"
+                 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
+              <div *ngFor="let temp of reactiveFormUtil.getFormArrays('namaAlias', form); index as al">
+                <mat-card id="alias-card" >
+
+                  <mat-card-content>
+                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                    <button mat-icon-button matTooltip="Hapus Nama Alias"
+                            [matTooltipPosition]="'below'"
+                            (click)="removeNamaAlias(reactiveFormUtil.getFormArray('namaAlias', form), al)">
+                      <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
+                    </button>
+                    <!--</div>-->
+                    <div [formGroupName]="al" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <input type="hidden" formControlName="uuid">
+
+                      <!--barcode-->
+                      <mat-form-field [appearance]="formFieldAppearance">
+                        <mat-label>Nama Alias</mat-label>
+                        <input appElementFocus
+                               [isInsert]="isInsert()"
+                               matInput placeholder="Nama Alias " formControlName="namaAlias" required
+                               [errorStateMatcher]="stateMatchers.namaAlias.namaAlias.matcher">
+
+                        <mat-error
+                          *ngIf="reactiveFormUtil.formControl(temp, 'namaAlias').hasError('required')">
+                          {{stateMatchers.namaAlias.namaAlias.message}}</mat-error>
+                      </mat-form-field>
+
+                    </div>
+
+                  </mat-card-content>
+
+                </mat-card>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
           <!--kategori-->
           <mat-form-field formGroupName="kategori">
-            <mat-select (selectionChange)="onKategoriChanged($event)" #selectKategori [placeholder]="(isKategoriEnabled()) ? 'Kategori' : 'Memuat data kategori ......'" formControlName="uuid"
+            <mat-select #selectKategori
+                        [placeholder]="(isKategoriEnabled()) ? 'Kategori' : (kategoriFailToFetch ? 'Gagal memuat data kategori ......' : 'Memuat data kategori ......')"
+                        formControlName="uuid"
                         [errorStateMatcher]="stateMatchers.kategori.matcher" [required]="isKategoriEnabled()">
               <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
               <mat-divider></mat-divider>
@@ -202,7 +420,7 @@
                 {{v.namaKategori}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option *ngIf="!isLastKategori" (click)="loadMoreKategori()" class="lebih-banyak">
+              <mat-option [value]="null" *ngIf="!isLastKategori" (click)="loadMoreKategori()" class="lebih-banyak">
                 <div *ngIf="!waitingLoadMoreKategori; else load" >Muat lebih banyak
                   ....
                 </div>
@@ -212,6 +430,11 @@
                 </ng-template>
               </mat-option>
             </mat-select>
+            <button *ngIf="kategoriFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Kategori"
+                    (click)="refreshKategori()"
+                    [matTooltipPosition]="'left'">
+              <mat-icon color="primary">refresh</mat-icon>
+            </button>
             <mat-error
               *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'kategori'), 'uuid').hasError('required')">
               {{stateMatchers.kategori.message}}</mat-error>
@@ -219,9 +442,11 @@
 
           <!--sub kategori-->
           <mat-form-field formGroupName="subKategori">
-            <mat-select #selectKategori [placeholder]="(isKategoriEnabled()) ? 'Sub Kategori' : 'Memuat data sub kategori ......'" formControlName="uuid"
+            <mat-select #selectKategori
+                        [placeholder]="(isKategoriEnabled()) ? 'Kategori' : (kategoriFailToFetch ? 'Gagal memuat data sub kategori ......' : 'Memuat data sub kategori ......')"
+                        formControlName="uuid"
                         [errorStateMatcher]="stateMatchers.subKategori.matcher" [required]="isKategoriEnabled()">
-              <mat-option class="pilih">--&nbsp; {{(dataSubKategori.length === 0 ? 'Salah satu kategori harus terpilih' : 'Pilih salah satu')}} &nbsp;--</mat-option>
+              <mat-option  class="pilih">--&nbsp; {{(dataSubKategori.length === 0 ? 'Salah satu kategori harus terpilih' : 'Pilih salah satu')}} &nbsp;--</mat-option>
               <mat-divider></mat-divider>
               <mat-option [value]="v.uuid" *ngFor="let v of dataSubKategori">
                 {{v.nama}}
@@ -234,7 +459,8 @@
 
           <!--unit-->
           <mat-form-field formGroupName="unit">
-            <mat-select #selectUnit [placeholder]="(isUnitEnabled()) ? 'Unit' : 'Memuat data unit ......'" formControlName="uuid"
+            <mat-select #selectUnit [placeholder]="(isUnitEnabled()) ? 'Unit' : (unitFailToFetch ? 'Gagal memuat data unit ...' : 'Memuat data unit ......')"
+                        formControlName="uuid"
                         [errorStateMatcher]="stateMatchers.unit.matcher" [required]="isUnitEnabled()">
               <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
               <mat-divider></mat-divider>
@@ -252,6 +478,11 @@
                 </ng-template>
               </mat-option>
             </mat-select>
+            <button *ngIf="unitFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Unit"
+                    (click)="refreshUnit()"
+                    [matTooltipPosition]="'left'">
+              <mat-icon color="primary">refresh</mat-icon>
+            </button>
             <mat-error
               *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'unit'), 'uuid').hasError('required')">
               {{stateMatchers.unit.message}}</mat-error>
@@ -324,7 +555,7 @@
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
     <button mat-flat-button color="primary" (click)="save(form.value)"
-            [disabled]="form.valid">Simpan
+            [disabled]="simpanButtonCondition(form.valid)">Simpan
     </button>
   </mat-dialog-actions>
 

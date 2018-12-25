@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
-import {delayHttpRequest} from '../../../../shared/constants';
+import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {masterLokasiErrorStateMatchers, masterLokasiForm} from '../../../../inits/master/master-lokasi-init';
 import {MasterLokasiService} from '../../../../services/master/master-lokasi/master-lokasi.service';
 
@@ -18,7 +18,8 @@ export class MasterLokasiDialogComponent extends DialogUtil
 
   close = undefined;
 
-  constructor(public masterLokasiService: MasterLokasiService,
+  constructor(public snackBar: MatSnackBar,
+              public masterLokasiService: MasterLokasiService,
               dialogRef: MatDialogRef<MasterLokasiDialogComponent>,
               @Inject(MAT_DIALOG_DATA) data: any) {
     super(dialogRef,
@@ -40,6 +41,7 @@ export class MasterLokasiDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil ');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
@@ -64,6 +66,7 @@ export class MasterLokasiDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil dihapus');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {

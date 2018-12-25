@@ -11,6 +11,7 @@ import {MasterItemService} from '../../../services/master/master-item/master-ite
 import {masterItemDisables, masterItemInit} from '../../../inits/master/master-item';
 import {MasterItemDialogComponent} from './master-item-dialog/master-item-dialog.component';
 import {masterGudangDisables} from '../../../inits/master/master-gudang-init';
+import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 
 @Component({
   selector: 'app-master-item',
@@ -64,15 +65,9 @@ export class MasterItemComponent
 
   callbackGetDataError = (error) => {
     if (error.status === 0) {
-      this.snackBar.open(ERROR_STATUS_CODE_0, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, ERROR_STATUS_CODE_0, SNACKBAR_ERROR_STYLE, 2000);
     } else {
-      this.snackBar.open(error.error.message, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
   };
 

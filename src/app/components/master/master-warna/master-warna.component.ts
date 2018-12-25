@@ -10,6 +10,7 @@ import {Ui} from '../../../shared/ui';
 import {MasterWarnaService} from '../../../services/master/master-warna/master-warna.service';
 import {masterWarnaInit} from '../../../inits/master/master-warna';
 import {MasterWarnaDialogComponent} from './master-warna-dialog/master-warna-dialog.component';
+import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 
 @Component({
   selector: 'app-master-warna',
@@ -63,15 +64,9 @@ export class MasterWarnaComponent
 
   callbackGetDataError = (error) => {
     if (error.status === 0) {
-      this.snackBar.open(ERROR_STATUS_CODE_0, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, ERROR_STATUS_CODE_0, SNACKBAR_ERROR_STYLE, 2000);
     } else {
-      this.snackBar.open(error.error.message, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
   }
 

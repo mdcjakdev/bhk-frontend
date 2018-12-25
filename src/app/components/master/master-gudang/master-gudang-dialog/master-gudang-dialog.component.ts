@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
 import {DATE_PATTERN} from '../../../../shared/app-date-adapter';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
-import {delayHttpRequest} from '../../../../shared/constants';
+import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {MasterGudangService} from '../../../../services/master/master-gudang/master-gudang.service';
 import {masterGudangErrorStateMatchers, masterGudangForm} from '../../../../inits/master/master-gudang-init';
 import {MasterLokasiService} from '../../../../services/master/master-lokasi/master-lokasi.service';
@@ -31,7 +31,8 @@ export class MasterGudangDialogComponent extends DialogUtil
 
 
 
-  constructor(public masterGudangService: MasterGudangService,
+  constructor(public snackBar: MatSnackBar,
+              public masterGudangService: MasterGudangService,
               public masterLokasiService: MasterLokasiService,
               dialogRef: MatDialogRef<MasterGudangDialogComponent>,
               @Inject(MAT_DIALOG_DATA) data: any) {
@@ -136,6 +137,7 @@ export class MasterGudangDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil ');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
@@ -160,6 +162,7 @@ export class MasterGudangDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil dihapus');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {

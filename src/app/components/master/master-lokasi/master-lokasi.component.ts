@@ -12,6 +12,7 @@ import {Ui} from '../../../shared/ui';
 import {MasterLokasiService} from '../../../services/master/master-lokasi/master-lokasi.service';
 import {masterLokasiInit} from '../../../inits/master/master-lokasi-init';
 import {MasterLokasiDialogComponent} from './master-lokasi-dialog/master-lokasi-dialog.component';
+import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 
 @Component({
   selector: 'app-master-lokasi',
@@ -66,15 +67,9 @@ export class MasterLokasiComponent
 
   callbackGetDataError = (error) => {
     if (error.status === 0) {
-      this.snackBar.open(ERROR_STATUS_CODE_0, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, ERROR_STATUS_CODE_0, SNACKBAR_ERROR_STYLE, 2000);
     } else {
-      this.snackBar.open(error.error.message, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
   }
 

@@ -1,11 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {masterCategoryErrorStateMatchers, masterCategoryForm, masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
-import {delayHttpRequest} from '../../../../shared/constants';
+import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
 import {masterWarnaBarcodeForm, masterWarnaErrorStateMatchers, masterWarnaForm} from '../../../../inits/master/master-warna';
 
@@ -19,7 +19,8 @@ export class MasterWarnaDialogComponent extends DialogUtil
 
   close = undefined;
 
-  constructor(public masterWarnaService: MasterWarnaService,
+  constructor(public snackBar: MatSnackBar,
+              public masterWarnaService: MasterWarnaService,
               dialogRef: MatDialogRef<MasterWarnaDialogComponent>,
               @Inject(MAT_DIALOG_DATA) data: any) {
     super(dialogRef,
@@ -51,6 +52,7 @@ export class MasterWarnaDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil ');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
@@ -75,6 +77,7 @@ export class MasterWarnaDialogComponent extends DialogUtil
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
+          openAppSnackbar(this.snackBar, 'Berhasil dihapus');
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {

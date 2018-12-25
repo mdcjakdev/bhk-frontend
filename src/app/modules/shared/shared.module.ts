@@ -44,7 +44,7 @@ import {MasterKaryawanService} from '../../services/master/master-karyawan/maste
 
 @NgModule({
   declarations: [
-    ElementFocusDirective
+    ElementFocusDirective,
   ],
   imports: [
     CommonModule,
@@ -102,8 +102,11 @@ import {MasterKaryawanService} from '../../services/master/master-karyawan/maste
 
 
   ],
+  entryComponents: [
+  ],
   exports: [
     ElementFocusDirective,
+
     HttpClientModule,
 
     ReactiveFormsModule,

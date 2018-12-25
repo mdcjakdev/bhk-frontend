@@ -11,6 +11,7 @@ import {ComponentUtil} from '../../../shared/component-util';
 import {MasterPelangganService} from '../../../services/master/master-pelanggan/master-pelanggan.service';
 import {MasterPelangganDialogComponent} from './master-pelanggan-dialog/master-pelanggan-dialog.component';
 import {masterPelangganInit} from '../../../inits/master/master-pelanggan-init';
+import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 
 @Component({
   selector: 'app-master-pelanggan',
@@ -63,15 +64,9 @@ export class MasterPelangganComponent
 
   callbackGetDataError = (error) => {
     if (error.status === 0) {
-      this.snackBar.open(ERROR_STATUS_CODE_0, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, ERROR_STATUS_CODE_0, SNACKBAR_ERROR_STYLE, 2000);
     } else {
-      this.snackBar.open(error.error.message, '', {
-        duration: 3000,
-        panelClass: 'default-snackbar'
-      });
+      openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
   }
 
