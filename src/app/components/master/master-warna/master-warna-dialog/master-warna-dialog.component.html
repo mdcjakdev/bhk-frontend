@@ -138,7 +138,9 @@
                     <!--barcode-->
                     <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>Barcode</mat-label>
-                      <input appElementFocus matInput placeholder="Barcode " formControlName="barcode" required
+                      <input appElementFocus
+                             [isInsert]="isInsert()"
+                             matInput placeholder="Barcode " formControlName="barcode" required
                              [errorStateMatcher]="stateMatchers.barcode.barcode.matcher">
 
                       <mat-error

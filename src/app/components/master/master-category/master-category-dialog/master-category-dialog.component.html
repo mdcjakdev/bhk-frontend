@@ -117,7 +117,6 @@
             <mat-label>Kode</mat-label>
             <input matInput placeholder="Kode " formControlName="kodeKategori" required
                    [errorStateMatcher]="stateMatchers.kodeKategori.matcher">
-
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'kodeKategori').hasError('required')">{{stateMatchers.kodeKategori.message}}</mat-error>
           </mat-form-field>
@@ -171,7 +170,9 @@
                     <!--nama-->
                     <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>Sub Kategori</mat-label>
-                      <input appElementFocus matInput placeholder="Sub Kategori" formControlName="nama" required
+                      <input appElementFocus
+                             [isInsert]="isInsert()"
+                             matInput placeholder="Sub Kategori" formControlName="nama" required
                              [errorStateMatcher]="stateMatchers.subKategori.nama.matcher">
 
                       <mat-error

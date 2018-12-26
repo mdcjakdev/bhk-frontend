@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -59,6 +60,7 @@ import {MasterKaryawanService} from '../../services/master/master-karyawan/maste
 
     MatInputModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
 
     MatProgressSpinnerModule,
     MatProgressBarModule,
@@ -118,6 +120,7 @@ import {MasterKaryawanService} from '../../services/master/master-karyawan/maste
 
     MatInputModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
 
     MatGridListModule,
 

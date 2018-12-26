@@ -10,6 +10,7 @@ import {
   masterSubCategoryInit
 } from './master-category-init';
 import {MasterUnit, masterUnitDisables, masterUnitErrorStateMatchers, masterUnitForm, masterUnitInit} from './master-unit-init';
+import {MasterWarna, masterWarnaDisables, masterWarnaForm, masterWarnaInit} from './master-warna';
 
 
 /** Model Class Master Item Barcode */
@@ -40,6 +41,7 @@ export interface MasterItem extends AppAuditEntity {
   subKategori?: MasterSubCategory;
   unit?: MasterUnit;
   tambahan?: string;
+  warna?: MasterWarna[];
 }
 
 /** Init nilai awal Master Item Barcode */
@@ -73,6 +75,7 @@ export const masterItemInit = <MasterItem>{
   subKategori: masterSubCategoryInit,
   unit: masterUnitInit,
   tambahan: '',
+  warna: []
 };
 
 /** Init nilai awal status disable formcontrol Master Item Barcode */
@@ -101,6 +104,7 @@ export const masterItemDisables = {
   subKategori: false,
   unit: false,
   tambahan: false,
+  warna: false
 };
 
 /** Init StateMatcher formcontrol Master Item Barcode */
@@ -137,6 +141,7 @@ export const masterItemErrorStateMatchers = {
   subKategori: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan sub kategori'},
   unit: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih unit'},
   tambahan: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
+  warna: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan memilih warna'},
 };
 
 
@@ -171,6 +176,21 @@ function generateMasterItemNamaAlias(temp: MasterItemNamaAlias[]) {
   return data;
 }
 
+/** Fungsi Init Reactive Form Group untuk data Master Item Nama Alias */
+export function masterItemWarnaRelationForm(init: MasterWarna = masterWarnaInit,
+                                        initAuditForm: Function = appAuditEntityForm): FormGroup {
+  return new FormBuilder().group({
+    ...initAuditForm().controls,
+    uuid: [{value: init.uuid, disabled: true}, Validators.required]
+  });
+}
+export function generateMasterItemWarnaRelation(temp: MasterWarna[]) {
+  const data = [];
+  temp.forEach(value => data.push(masterWarnaForm(value)));
+  return data;
+}
+
+
 /** Fungsi Init Reactive Form Group untuk data Master Item */
 export function masterItemForm(init: MasterItem = masterItemInit,
                                    disables = masterItemDisables,
@@ -181,6 +201,9 @@ export function masterItemForm(init: MasterItem = masterItemInit,
 
   /** megeneralisasi nilai2 array dari nama alias */
   const namaAlias = (init.namaAlias.length === 0) ? [] : generateMasterItemNamaAlias(init.namaAlias);
+
+  /** megeneralisasi nilai2 array dari nama alias */
+  const warna = (init.warna.length === 0) ? [] : generateMasterItemWarnaRelation(init.warna);
 
   return new FormBuilder().group({
     ...initAuditForm().controls,
@@ -206,6 +229,7 @@ export function masterItemForm(init: MasterItem = masterItemInit,
       uuid: [{value: init.unit.uuid, disabled: disables.unit }, Validators.required]
     }),
     tambahan: [{value: init.tambahan, disabled: disables.tambahan}, Validators.required],
+    warna: new FormBuilder().array(warna)
   });
 
 }

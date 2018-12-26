@@ -72,7 +72,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" >
+          <td colspan="3">
             <table>
               <div *ngFor="let b of data.data.barcode">
                 <tr>
@@ -119,7 +119,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" >
+          <td colspan="3">
             <table>
               <div *ngFor="let b of data.data.namaAlias">
                 <tr>
@@ -238,7 +238,7 @@
     <form class="form-app" [formGroup]="form">
 
       <div class="row">
-        <!--<div class="container-fluid">-->
+
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
 
@@ -319,7 +319,7 @@
                  formArrayName="barcode"
                  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
               <div *ngFor="let temp of reactiveFormUtil.getFormArrays('barcode', form); index as bar">
-                <mat-card id="barcode-card" >
+                <mat-card id="barcode-card">
                   <mat-card-content>
                     <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
                     <button mat-icon-button matTooltip="Hapus Barcode"
@@ -369,7 +369,7 @@
             <div [@aliasExpand]="aliasState" formArrayName="namaAlias"
                  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
               <div *ngFor="let temp of reactiveFormUtil.getFormArrays('namaAlias', form); index as al">
-                <mat-card id="alias-card" >
+                <mat-card id="alias-card">
 
                   <mat-card-content>
                     <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
@@ -408,6 +408,7 @@
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
+
           <!--kategori-->
           <mat-form-field formGroupName="kategori">
             <mat-select #selectKategori
@@ -420,8 +421,8 @@
                 {{v.namaKategori}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option [value]="null" *ngIf="!isLastKategori" (click)="loadMoreKategori()" class="lebih-banyak">
-                <div *ngIf="!waitingLoadMoreKategori; else load" >Muat lebih banyak
+              <mat-option [value]="null" *ngIf="!isLastKategori" (click)="refreshKategori()" class="lebih-banyak">
+                <div *ngIf="!waitingLoadMoreKategori || kategoriFailToFetch; else load">Muat lebih banyak
                   ....
                 </div>
                 <ng-template #load>
@@ -443,10 +444,13 @@
           <!--sub kategori-->
           <mat-form-field formGroupName="subKategori">
             <mat-select #selectKategori
-                        [placeholder]="(isKategoriEnabled()) ? 'Kategori' : (kategoriFailToFetch ? 'Gagal memuat data sub kategori ......' : 'Memuat data sub kategori ......')"
+                        [placeholder]="(isKategoriEnabled()) ? 'Sub Kategori' : (kategoriFailToFetch ? 'Gagal memuat data sub kategori ......' : 'Memuat data sub kategori ......')"
                         formControlName="uuid"
                         [errorStateMatcher]="stateMatchers.subKategori.matcher" [required]="isKategoriEnabled()">
-              <mat-option  class="pilih">--&nbsp; {{(dataSubKategori.length === 0 ? 'Salah satu kategori harus terpilih' : 'Pilih salah satu')}} &nbsp;--</mat-option>
+              <mat-option class="pilih">
+                --&nbsp; {{(dataSubKategori.length === 0 ? 'Salah satu kategori harus terpilih' : 'Pilih salah satu')}}
+                &nbsp;--
+              </mat-option>
               <mat-divider></mat-divider>
               <mat-option [value]="v.uuid" *ngFor="let v of dataSubKategori">
                 {{v.nama}}
@@ -459,7 +463,8 @@
 
           <!--unit-->
           <mat-form-field formGroupName="unit">
-            <mat-select #selectUnit [placeholder]="(isUnitEnabled()) ? 'Unit' : (unitFailToFetch ? 'Gagal memuat data unit ...' : 'Memuat data unit ......')"
+            <mat-select #selectUnit
+                        [placeholder]="(isUnitEnabled()) ? 'Unit' : (unitFailToFetch ? 'Gagal memuat data unit ...' : 'Memuat data unit ......')"
                         formControlName="uuid"
                         [errorStateMatcher]="stateMatchers.unit.matcher" [required]="isUnitEnabled()">
               <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
@@ -468,8 +473,8 @@
                 {{v.name}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option *ngIf="!isLastUnit" (click)="loadMoreUnit()" class="lebih-banyak">
-                <div *ngIf="!waitingLoadMoreUnit; else loadUnit" >Muat lebih banyak
+              <mat-option *ngIf="!isLastUnit" (click)="refreshUnit()" class="lebih-banyak">
+                <div *ngIf="!waitingLoadMoreUnit || unitFailToFetch; else loadUnit">Muat lebih banyak
                   ....
                 </div>
                 <ng-template #loadUnit>
@@ -486,6 +491,54 @@
             <mat-error
               *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'unit'), 'uuid').hasError('required')">
               {{stateMatchers.unit.message}}</mat-error>
+          </mat-form-field>
+
+          <!--warna-->
+          <mat-form-field formArrayName="warna">
+            <mat-chip-list #chipList>
+              <mat-chip [ngStyle]="{ 'background-color': '#' + 'FFE804' }"
+                        *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
+                        (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex)">
+                {{temp.namaWarna}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <div>
+                <input
+                  placeholder="Warna"
+                  #warnaTrigger
+                  (click)="openAutoComplete()"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="addOnBlur">
+
+              </div>
+            </mat-chip-list>
+            <!--&lt;!&ndash;<button *ngIf="warnaFailToFetch"  mat-icon-button matTooltip="Segarkan Warna"&ndash;&gt;-->
+                    <!--&lt;!&ndash;(click)="refreshWarna()"&ndash;&gt;-->
+                    <!--&lt;!&ndash;[matTooltipPosition]="'left'">&ndash;&gt;-->
+            <!--<a *ngIf="warnaFailToFetch"  matSuffix (click)="refreshWarna()">-->
+              <!--<mat-icon  color="primary">refresh</mat-icon>-->
+            <!--</a>-->
+
+            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                              (optionSelected)="selected($event, reactiveFormUtil.getFormArray('warna', form))">
+              <mat-option *ngFor="let temp of dataWarna" [value]="temp">
+                {{temp.namaWarna }}
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="null" *ngIf="!isLastWarna" (click)="refreshWarna()" class="lebih-banyak">
+                <div [ngStyle]="{ 'display': ((!waitingLoadMoreWarna  || warnaFailToFetch) ? 'block' : 'none')}">
+                  Muat lebih banyak ....
+                </div>
+                <div [ngStyle]="{ 'display': ((!waitingLoadMoreWarna || warnaFailToFetch) ? 'none' : 'block')}">
+                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                    mode="indeterminate"></mat-progress-bar>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
 
           <!--benang-->
@@ -542,8 +595,6 @@
         </div>
 
 
-        <!--</div>-->
-
       </div>
 
     </form>
@@ -555,8 +606,11 @@
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
     <button mat-flat-button color="primary" (click)="save(form.value)"
-            [disabled]="simpanButtonCondition(form.valid)">Simpan
+    [disabled]="simpanButtonCondition(form.valid)">Simpan
     </button>
+    <!--<button mat-flat-button color="primary" (click)="save(form.value)"-->
+    <!--&gt;Simpan-->
+    <!--</button>-->
   </mat-dialog-actions>
 
   <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">

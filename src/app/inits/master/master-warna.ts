@@ -88,7 +88,7 @@ export function masterWarnaForm(init: MasterWarna = masterWarnaInit,
   const warnaBarcode = (init.barcode.length === 0) ? [] : generateWarnaBarcode(init.barcode);
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init).controls,
     kodeWarna: [{value: init.kodeWarna, disabled: disables.kodeWarna}, Validators.required],
     namaWarna: [{value: init.namaWarna, disabled: disables.namaWarna}, Validators.required],
     barcode: new FormBuilder().array(warnaBarcode) // init kosong untuk data relasi ke banyak

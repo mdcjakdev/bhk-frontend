@@ -28,6 +28,7 @@ export class MasterGudangDialogComponent extends DialogUtil
   waitingLoadMoreLokasi = false;
   isLastLokasi = false;
   isLokasiUuidTrue = false;
+  lokasiFailToFetch = false;
 
 
 
@@ -59,6 +60,12 @@ export class MasterGudangDialogComponent extends DialogUtil
     } else {
       return !(this.isLokasiUuidTrue && formCondition);
     }
+  }
+
+  refreshLokasi() {
+    this.lokasiFailToFetch = false;
+    this.waitingLoadMoreLokasi = false;
+    this.loadMoreLokasi();
   }
 
   loadMoreLokasi() {
@@ -113,7 +120,7 @@ export class MasterGudangDialogComponent extends DialogUtil
 
         },
         error => {
-
+          this.lokasiFailToFetch = true;
         }
       );
     }, 0)

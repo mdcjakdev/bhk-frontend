@@ -1,7 +1,6 @@
 import {ErrorStateMatcher} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 import * as moment from 'moment';
-import {DATE_PATTERN} from './app-date-adapter';
 
 
 export class AppErrorStateMatcher implements ErrorStateMatcher {
@@ -13,7 +12,7 @@ export class AppErrorStateMatcher implements ErrorStateMatcher {
 
 export function printWord(text: any, showLength) {
   const value = String(text) + '';
-  return (value.length > showLength) ? (value.substring(0, showLength) + ' ....') : value;
+  return (value.length > showLength) ? (value.substring(0, showLength) + '....') : value;
 }
 
 

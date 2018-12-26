@@ -48,7 +48,7 @@ export const appAuditEntityInit = {
 
 
 /** Inisialisasi form rective model dari basic entity */
-export function appBasicEntityForm(init: AppBasicEntity = appBasicEntityInit): FormGroup {
+export function appBasicEntityForm(init: any = appBasicEntityInit): FormGroup {
   return new FormBuilder().group({
     uuid: {value: init.uuid, disabled: false},
     createdDate: {value: init.createdDate, disabled: false},
@@ -61,10 +61,10 @@ export function appBasicEntityForm(init: AppBasicEntity = appBasicEntityInit): F
  * @param initForm Function form init awal yang merupakan AppBasicEntity
  * @param init inisaisasi awal dari basic model entity
  */
-export function appAuditEntityForm(init: AppAuditEntity = appAuditEntityInit,
+export function appAuditEntityForm(init: any = appAuditEntityInit,
                                    initForm: Function = appBasicEntityForm): FormGroup {
   return new FormBuilder().group({
-    ...initForm().controls,
+    ...initForm(init).controls,
     createdBy: {value: init.createdDate, disabled: false},
     lastModifiedBy: {value: init.lastModifiedDate, disabled: false},
   });

@@ -153,7 +153,9 @@
 
           <!--Lokasi-->
           <mat-form-field formGroupName="lokasi">
-            <mat-select #selectLokasi [placeholder]="(isLokasiEnabled()) ? 'Lokasi' : 'Memuat data lokasi ......'" formControlName="uuid"
+            <mat-select #selectLokasi
+                        [placeholder]="(isLokasiEnabled()) ? 'Lokasi' : (lokasiFailToFetch ? 'Gagal memuat data lokasi ....' : 'Memuat data lokasi ......')"
+                        formControlName="uuid"
                         [errorStateMatcher]="stateMatchers.lokasi.matcher" [required]="isLokasiEnabled()">
               <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
               <mat-divider></mat-divider>
@@ -161,8 +163,8 @@
                 {{v.namaLokasi}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option *ngIf="!isLastLokasi" (click)="loadMoreLokasi()" class="lebih-banyak">
-                <div *ngIf="!waitingLoadMoreLokasi; else load" >Muat lebih banyak
+              <mat-option *ngIf="!isLastLokasi" (click)="refreshLokasi()" class="lebih-banyak">
+                <div *ngIf="!waitingLoadMoreLokasi || lokasiFailToFetch; else load" >Muat lebih banyak
                   ....
                 </div>
                 <ng-template #load>
@@ -171,6 +173,11 @@
                 </ng-template>
               </mat-option>
             </mat-select>
+            <button *ngIf="lokasiFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Lokasi"
+                    (click)="refreshLokasi()"
+                    [matTooltipPosition]="'left'">
+              <mat-icon color="primary">refresh</mat-icon>
+            </button>
             <mat-error
               *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'lokasi'), 'uuid').hasError('required')">
               {{stateMatchers.lokasi.message}}</mat-error>

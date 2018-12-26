@@ -1,6 +1,11 @@
 @import "~src/assets/css/dan-theme";
 @import "~src/assets/css/dan-mix";
 
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+
 .mat-dialog-actions {
   padding-bottom: 20px;
 }

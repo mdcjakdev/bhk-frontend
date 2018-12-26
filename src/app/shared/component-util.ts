@@ -145,7 +145,7 @@ export class ComponentUtil<T extends DataSource<any> | any>
   }
 
 
-  printValue(column, columnValue, index, conditionVoid: Function = this.defaultNoActionVoid, showLength = 20) {
+  printValue(column, columnValue, index, conditionVoid: Function = this.defaultNoActionVoid, showLength = 25) {
     let v = conditionVoid(column, columnValue);
     v = (column === UUID_COLUMN) ? (index + 1) : v;
     return printWord(v, showLength);

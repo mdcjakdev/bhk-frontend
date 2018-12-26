@@ -1,8 +1,15 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
+import {
+  MAT_DIALOG_DATA,
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent, MatAutocompleteTrigger,
+  MatChipInputEvent,
+  MatDialogRef,
+  MatSnackBar
+} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
-import {first} from 'rxjs/operators';
+import {first, map, startWith} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar, SNACKBAR_WARNING_STYLE} from '../../../../shared/constants';
 import {MasterItemService} from '../../../../services/master/master-item/master-item.service';
@@ -14,8 +21,12 @@ import {
   masterItemForm,
   masterItemNamaAliasForm
 } from '../../../../inits/master/master-item';
-import {FormArray, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Observable} from 'rxjs';
+import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
+import {MasterWarna, masterWarnaForm} from '../../../../inits/master/master-warna';
 
 
 @Component({
@@ -49,7 +60,6 @@ export class MasterItemDialogComponent extends DialogUtil
   isKategoriUuidTrue = false;
   kategoriFailToFetch = false;
 
-
   dataUnit: any[] = [];
   @ViewChild('selectUnit') selectUnit;
   unitPage = 0;
@@ -58,10 +68,26 @@ export class MasterItemDialogComponent extends DialogUtil
   isUnitUuidTrue = false;
   unitFailToFetch = false;
 
+  dataWarna: any[] = [];
+  @ViewChild('selectWarna') selectWarna;
+  warnaPage = 0;
+  waitingLoadMoreWarna = false;
+  isLastWarna = false;
+  warnaFailToFetch = false;
+
   barcodeState = 'collapsed';
   aliasState = 'collapsed';
 
+  removable = true;
+  addOnBlur = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  @ViewChild('warnaTrigger', { read: MatAutocompleteTrigger }) warnaTrigger: MatAutocompleteTrigger;
+
+
   constructor(public snackBar: MatSnackBar,
+              public masterWarnaService: MasterWarnaService,
               public masterItemService: MasterItemService,
               public masterKategoriService: MasterCategoryService,
               public masterUnitService: MasterUnitService,
@@ -71,12 +97,22 @@ export class MasterItemDialogComponent extends DialogUtil
       data,
       masterItemForm(data.data, data.disables),
       masterItemErrorStateMatchers);
+
+    // subscribe to value change on control
+    // this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+    //   startWith(null),
+    //   map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
   }
+
+
+
 
   ngOnInit() {
     if (this.isInsert() || this.isUpdate()) {
       this._loadMoreKategori(); // load data master kategori
       this._loadMoreUnit(); // load data unit
+
+      this._loadMoreWarna();
     }
 
     /* subscribe perubahan nilai dari kategori*/
@@ -101,6 +137,8 @@ export class MasterItemDialogComponent extends DialogUtil
     });
     /**/
   }
+
+
 
   barcodeClick() {
     this.barcodeState = (this.barcodeState === 'collapsed') ? 'expanded' : 'collapsed';
@@ -301,7 +339,12 @@ export class MasterItemDialogComponent extends DialogUtil
   save(value?): void {
     // jika tidak ada barcode yang di daftarkan
     if (this.barcodeCount() === 0 ) {
-      openAppSnackbar(this.snackBar, 'Barcode belum anda inputkan...', SNACKBAR_WARNING_STYLE);
+      openAppSnackbar(this.snackBar, 'Barcode belum anda inputkan ...', SNACKBAR_WARNING_STYLE);
+      return;
+    }
+
+    if (this.warnaCount() === 0 ) {
+      openAppSnackbar(this.snackBar, 'Pastikan anda memilih warna item ...', SNACKBAR_WARNING_STYLE);
       return;
     }
 
@@ -347,6 +390,85 @@ export class MasterItemDialogComponent extends DialogUtil
         }
       );
     }, delayHttpRequest);
+  }
+
+  displayFn(opt?): any | undefined {
+    return opt ? opt : undefined;
+  }
+
+
+  selected(event: MatAutocompleteSelectedEvent, fa: FormArray): void {
+    if (event.option.value !== null) {
+      this.addNewWarna(fa, event.option.value);
+    }
+  }
+
+  private _filter(value: string) {
+    const filterValue = value.toLowerCase();
+
+    // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+
+  addNewWarna(fa, init: MasterWarna) {
+    this.reactiveFormUtil.addFormArray(masterWarnaForm(init), fa);
+  }
+
+  removeWarna(fa, i) {
+    this.reactiveFormUtil.removeFormArray(fa, i);
+  }
+
+  getWarnaValues(fg: FormGroup, arrayControlName: string) {
+    return (<FormArray> fg.controls[arrayControlName]).value;
+  }
+
+  openAutoComplete() {
+    this.warnaTrigger.openPanel();
+  }
+
+  refreshWarna() {
+    this.warnaTrigger.openPanel();
+    this.warnaFailToFetch = false;
+    this.waitingLoadMoreWarna = false;
+    this.loadMoreWarna();
+  }
+
+  loadMoreWarna() {
+    if (!this.waitingLoadMoreWarna) {
+      // ubah jadi status menunggu proses load warna selesai jadi true
+      this.waitingLoadMoreWarna = true;
+      setTimeout(() => {
+        this._loadMoreWarna();
+      }, 0);
+    }
+  }
+
+  _loadMoreWarna() {
+    setTimeout(() => {
+      this.masterWarnaService.getData(this.warnaPage, 1).subscribe(
+        (value: any) => {
+          this.warnaPage++;
+          if (value !== undefined && value.content !== undefined) {
+            const d = value.content;
+            if (d !== undefined) {
+              this.dataWarna = [...this.dataWarna];
+              d.forEach(v => {
+                this.dataWarna.push(v);
+              });
+              this.isLastWarna = value.last;
+            }
+          }
+          this.waitingLoadMoreWarna = false;
+        },
+        error => {
+          this.warnaFailToFetch = true;
+        }
+      );
+    }, 0)
+  }
+
+  warnaCount() {
+    return (<FormArray> this.form.controls['warna']).length;
   }
 
 }

@@ -22,7 +22,11 @@ export class MiddlewareService implements HttpInterceptor {
             openAppSnackbar(this.snackBar, ERROR_STATUS_CODE_0, SNACKBAR_ERROR_STYLE, 2000);
           } else {
             if (error.status === 500) {
-              openAppSnackbar(this.snackBar, CANNOT_PROCESS, SNACKBAR_ERROR_STYLE, 2000);
+              if (error.error.message === undefined) {
+                openAppSnackbar(this.snackBar, CANNOT_PROCESS, SNACKBAR_ERROR_STYLE, 2000);
+              } else {
+                openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
+              }
             } else {
               openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
             }
