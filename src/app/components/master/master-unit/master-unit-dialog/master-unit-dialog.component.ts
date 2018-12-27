@@ -7,7 +7,6 @@ import {MasterUnitService} from '../../../../services/master/master-unit/master-
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {SUCCESS} from '../../../../shared/utils';
 import {first} from 'rxjs/operators';
-import {masterLokasiForm} from '../../../../inits/master/master-lokasi-init';
 
 
 @Component({

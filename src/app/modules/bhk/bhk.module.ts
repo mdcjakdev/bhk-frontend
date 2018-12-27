@@ -25,6 +25,8 @@ import {MasterLokasiComponent} from '../../components/master/master-lokasi/maste
 import {MasterLokasiDialogComponent} from '../../components/master/master-lokasi/master-lokasi-dialog/master-lokasi-dialog.component';
 import {MasterWarnaComponent} from '../../components/master/master-warna/master-warna.component';
 import {MasterWarnaDialogComponent} from '../../components/master/master-warna/master-warna-dialog/master-warna-dialog.component';
+import {PenggunaComponent} from '../../components/administrator/pengguna/pengguna.component';
+import {PenggunaDialogComponent} from '../../components/administrator/pengguna/pengguna-dialog/pengguna-dialog.component';
 
 
 // import  as moment from 'moment';
@@ -65,6 +67,9 @@ export const MY_FORMATS = {
     MasterLokasiDialogComponent,
     MasterWarnaComponent,
     MasterWarnaDialogComponent,
+
+    PenggunaComponent,
+    PenggunaDialogComponent
   ],
   imports: [
     CommonModule,
@@ -89,7 +94,9 @@ export const MY_FORMATS = {
     MasterKaryawanDialogComponent,
     MasterPelangganDialogComponent,
     MasterLokasiDialogComponent,
-    MasterWarnaDialogComponent
+    MasterWarnaDialogComponent,
+
+    PenggunaDialogComponent
   ],
   exports: [
   ],

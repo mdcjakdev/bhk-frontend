@@ -496,7 +496,8 @@
           <!--warna-->
           <mat-form-field formArrayName="warna">
             <mat-chip-list #chipList>
-              <mat-chip [ngStyle]="{ 'background-color': '#' + 'FFE804' }"
+              <!--'background-color': '#' + 'FFE804'-->
+              <mat-chip [ngStyle]="{  }"
                         *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
                         (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex)">
                 {{temp.namaWarna}}
