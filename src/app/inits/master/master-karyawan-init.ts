@@ -50,17 +50,17 @@ export const masterKaryawanErrorStateMatchers = {
 
 /** Fungsi Init Reactive Form Group untuk data Master Karyawan */
 export function masterKaryawanForm(init: MasterKaryawan = masterKaryawanInit,
-                               disables = masterKaryawanDisables,
-                               initAuditForm: Function = appAuditEntityForm): FormGroup {
+                                   disables = masterKaryawanDisables,
+                                   initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
     ...initAuditForm().controls,
-    nama: [{value: init.nama, disabled: false}, Validators.required],
-    tipeIdentitas: [{value: init.tipeIdentitas, disabled: false}, Validators.required],
-    nomorIdentitas: [{value: init.nomorIdentitas, disabled: false}, Validators.required],
-    alamat: [{value: init.alamat, disabled: false}, Validators.required],
-    telepon: [{value: init.telepon, disabled: false}, Validators.required],
-    status: {value: init.status, disabled: false}
+    nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
+    tipeIdentitas: [{value: init.tipeIdentitas, disabled: disables.tipeIdentitas}, Validators.required],
+    nomorIdentitas: [{value: init.nomorIdentitas, disabled: disables.nomorIdentitas}, Validators.required],
+    alamat: [{value: init.alamat, disabled: disables.alamat}, Validators.required],
+    telepon: [{value: init.telepon, disabled: disables.telepon}, Validators.required],
+    status: {value: init.status, disabled: disables.status}
   });
 
 }

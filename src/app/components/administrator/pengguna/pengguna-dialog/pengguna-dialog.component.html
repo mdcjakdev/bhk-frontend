@@ -1,3 +1,188 @@
-<p>
-  pengguna-dialog works!
-</p>
+<div id="dialog-block">
+
+  <!--<div class="dialog-block-content">-->
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
+  </mat-progress-bar>
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+    <div>
+      <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && isDelete()" style="margin-bottom: 4px;">delete</mat-icon>
+
+      <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
+      <ng-template #elseHeader>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Data Pengguna</strong>
+      </ng-template>
+    </div>
+  </h4>
+
+  <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
+    <div id="table-detail">
+      <table class="full-width-table">
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td style="width: 120px">
+            <strong>Nama Karyawan</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.karyawan.nama}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td >
+            <strong>Alamat</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.karyawan.alamat}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td >
+            <strong>Telepon</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.karyawan.telepon}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td >
+            <strong>Username</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.username}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td >
+            <strong>Password</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td >
+            {{data.data.password}}
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </mat-dialog-content>
+
+
+  <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
+    <form class="form-app" [formGroup]="form">
+
+      <div class="row">
+        <!--<div class="container-fluid">-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <input type="hidden" formControlName="uuid"/>
+
+          <!--Karyawan-->
+          <mat-form-field formGroupName="karyawan">
+            <mat-select #selectKaryawan
+                        [placeholder]="(isKaryawanEnabled()) ? 'Karyawan' : (karyawanFailToFetch ? 'Gagal memuat data karyawan ....' : 'Memuat data karyawan ......')"
+                        formControlName="uuid"
+                        [errorStateMatcher]="stateMatchers.karyawan.matcher" [required]="isKaryawanEnabled()">
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.uuid" *ngFor="let v of dataKaryawan">
+                {{v.nama}}
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option *ngIf="!isLastKaryawan" (click)="refreshKaryawan()" class="lebih-banyak">
+                <div *ngIf="!waitingLoadMoreKaryawan || karyawanFailToFetch; else load" >Muat lebih banyak ....
+                </div>
+                <ng-template #load>
+                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                    mode="indeterminate"></mat-progress-bar>
+                </ng-template>
+              </mat-option>
+            </mat-select>
+            <button *ngIf="karyawanFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Karyawan"
+                    (click)="refreshKaryawan()"
+                    [matTooltipPosition]="'left'">
+              <mat-icon color="primary">refresh</mat-icon>
+            </button>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'karyawan'), 'uuid').hasError('required')">
+              {{stateMatchers.karyawan.message}}</mat-error>
+          </mat-form-field>
+
+          <!--Username-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Username" formControlName="username" required
+                   [errorStateMatcher]="stateMatchers.username.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'username').hasError('required')">
+              {{stateMatchers.username.message}}</mat-error>
+          </mat-form-field>
+
+          <!--Password-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Password</mat-label>
+            <input [type]="hidePassword ? 'password' : 'text'" matInput placeholder="Password" formControlName="password" required
+                   [errorStateMatcher]="stateMatchers.password.matcher">
+            <mat-icon style="cursor: pointer;" matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'password').hasError('required')">
+              {{stateMatchers.password.message}}</mat-error>
+          </mat-form-field>
+
+
+        </div>
+
+
+        <!--</div>-->
+
+      </div>
+
+    </form>
+  </mat-dialog-content>
+  <!--</div>-->
+
+
+  <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
+
+  <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
+    <button mat-flat-button color="primary" (click)="save(form.value)"
+            [disabled]="simpanButtonCondition(form.valid)">Simpan
+    </button>
+  </mat-dialog-actions>
+
+  <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close">
+      <span>Tidak</span>
+    </button>
+    <button mat-button (click)="delete(data.data.uuid)">
+      <span>Ya</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>

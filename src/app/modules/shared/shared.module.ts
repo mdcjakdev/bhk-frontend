@@ -41,6 +41,7 @@ import {MasterWarnaService} from '../../services/master/master-warna/master-warn
 import {ElementFocusDirective} from '../../shared/directives/element-focus.directive';
 import {MasterItemService} from '../../services/master/master-item/master-item.service';
 import {MasterKaryawanService} from '../../services/master/master-karyawan/master-karyawan.service';
+import {PenggunaService} from '../../services/administrator/pengguna/pengguna.service';
 
 
 @NgModule({
@@ -100,7 +101,9 @@ import {MasterKaryawanService} from '../../services/master/master-karyawan/maste
     MasterGudangService,
     MasterWarnaService,
     MasterItemService,
-    MasterKaryawanService
+    MasterKaryawanService,
+
+    PenggunaService
 
 
   ],
