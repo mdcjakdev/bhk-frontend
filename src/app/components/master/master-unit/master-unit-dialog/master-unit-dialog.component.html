@@ -60,7 +60,7 @@
       <!--nama-->
       <mat-form-field [appearance]="formFieldAppearance">
         <mat-label>Nama Unit</mat-label>
-        <input matInput placeholder="Nama Unit" formControlName="name" required
+        <input matInput autocomplete="off" placeholder="Nama Unit" formControlName="name" required
                [errorStateMatcher]="stateMatchers.name.matcher">
 
         <mat-error
@@ -79,7 +79,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="!form.valid">Simpan
     </button>
   </mat-dialog-actions>

@@ -135,7 +135,7 @@
           <!--nama-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Gudang</mat-label>
-            <input matInput placeholder="Nama Gudang" formControlName="nama" required
+            <input matInput autocomplete="off" placeholder="Nama Gudang" formControlName="nama" required
                    [errorStateMatcher]="stateMatchers.nama.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'nama').hasError('required')">{{stateMatchers.nama.message}}</mat-error>
@@ -186,7 +186,7 @@
           <!--Telepon-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Telepon</mat-label>
-            <input matInput placeholder="Telepon" formControlName="telepon" required
+            <input matInput autocomplete="off" placeholder="Telepon" formControlName="telepon" required
                    [errorStateMatcher]="stateMatchers.telepon.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'telepon').hasError('required')">{{stateMatchers.telepon.message}}</mat-error>
@@ -195,7 +195,7 @@
           <!--Auto Replenish-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Auto Replenish</mat-label>
-            <input matInput placeholder="Fax" formControlName="autoReplenish" required
+            <input matInput autocomplete="off" placeholder="Fax" formControlName="autoReplenish" required
                    [errorStateMatcher]="stateMatchers.autoReplenish.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'autoReplenish').hasError('required')">{{stateMatchers.autoReplenish.message}}</mat-error>
@@ -204,7 +204,7 @@
           <!--Kode -->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kode</mat-label>
-            <input matInput placeholder="Kode" formControlName="kode" required
+            <input matInput autocomplete="off" placeholder="Kode" formControlName="kode" required
                    [errorStateMatcher]="stateMatchers.kode.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">
@@ -214,7 +214,7 @@
           <!--Start Operation-->
           <mat-form-field>
             <mat-label>Tanggal Mulai Operasi</mat-label>
-            <input matInput placeholder="Tanggal Operasi" formControlName="tanggalMulai" required
+            <input matInput autocomplete="off" placeholder="Tanggal Operasi" formControlName="tanggalMulai" required
                    (focus)="myDatepicker.open()"
                    (click)="myDatepicker.open()"
                    [errorStateMatcher]="stateMatchers.tanggalMulai.matcher" [matDatepicker]="myDatepicker">
@@ -241,7 +241,7 @@
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="simpanButtonCondition(form.valid)">Simpan
     </button>
   </mat-dialog-actions>

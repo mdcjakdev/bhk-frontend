@@ -3,6 +3,9 @@ import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
+
+export const defaultColor = '#CBCBCB';
+
 /** Model Class Warna Barcode */
 export interface MasterWarnaBarcode extends AppAuditEntity {
   barcode?: string;
@@ -11,6 +14,7 @@ export interface MasterWarnaBarcode extends AppAuditEntity {
 /** Model Class Master Warna */
 export interface MasterWarna extends AppAuditEntity {
   kodeWarna?: string;
+  kodeWarnaHexadecimal?: string;
   namaWarna?: string;
   barcode?: MasterWarnaBarcode[];
 }
@@ -25,6 +29,7 @@ export const masterWarnaBarcodeInit = <MasterWarnaBarcode>{
 export const masterWarnaInit = <MasterWarna>{
   ...appAuditEntityInit,
   kodeWarna: '',
+  kodeWarnaHexadecimal: defaultColor,
   namaWarna: '',
   barcode: []
 };
@@ -38,6 +43,7 @@ export const masterWarnaBarcodeDisables = {
 export const masterWarnaDisables = {
   kodeWarna: false,
   namaWarna: false,
+  kodeWarnaHexadecimal: true,
   barcode: masterWarnaBarcodeDisables
 };
 
@@ -90,6 +96,7 @@ export function masterWarnaForm(init: MasterWarna = masterWarnaInit,
   return new FormBuilder().group({
     ...initAuditForm(init).controls,
     kodeWarna: [{value: init.kodeWarna, disabled: disables.kodeWarna}, Validators.required],
+    kodeWarnaHexadecimal: {value: init.kodeWarnaHexadecimal, disabled: disables.kodeWarnaHexadecimal},
     namaWarna: [{value: init.namaWarna, disabled: disables.namaWarna}, Validators.required],
     barcode: new FormBuilder().array(warnaBarcode) // init kosong untuk data relasi ke banyak
   });

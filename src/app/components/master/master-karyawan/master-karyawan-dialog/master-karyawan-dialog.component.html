@@ -116,7 +116,7 @@
       <!--nama-->
       <mat-form-field [appearance]="formFieldAppearance">
         <mat-label>Nama Karyawan</mat-label>
-        <input matInput placeholder="Nama Karyawan" formControlName="nama" required
+        <input matInput autocomplete="off" placeholder="Nama Karyawan" formControlName="nama" required
                [errorStateMatcher]="stateMatchers.nama.matcher">
         <mat-error
           *ngIf="reactiveFormUtil.formControl(form, 'nama').hasError('required')">
@@ -143,7 +143,7 @@
       <!--nomor identitas-->
       <mat-form-field [appearance]="formFieldAppearance">
         <mat-label>Nomor Identitas</mat-label>
-        <input matInput placeholder="Nomor Identitas" formControlName="nomorIdentitas" required
+        <input matInput autocomplete="off" placeholder="Nomor Identitas" formControlName="nomorIdentitas" required
                [errorStateMatcher]="stateMatchers.nomorIdentitas.matcher">
         <mat-error
           *ngIf="reactiveFormUtil.formControl(form, 'nomorIdentitas').hasError('required')">
@@ -165,7 +165,7 @@
       <!--Telepon-->
       <mat-form-field [appearance]="formFieldAppearance">
         <mat-label>Telepon</mat-label>
-        <input matInput placeholder="Telepon" formControlName="telepon" required
+        <input matInput autocomplete="off" placeholder="Telepon" formControlName="telepon" required
                [errorStateMatcher]="stateMatchers.telepon.matcher">
         <mat-error
           *ngIf="reactiveFormUtil.formControl(form, 'telepon').hasError('required')">
@@ -176,7 +176,7 @@
       <!--Status-->
       <mat-form-field [appearance]="formFieldAppearance">
         <mat-label>Status</mat-label>
-        <input matInput placeholder="Status" formControlName="status">
+        <input matInput autocomplete="off" placeholder="Status" formControlName="status">
       </mat-form-field>
 
 
@@ -184,7 +184,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="!form.valid">Simpan
     </button>
   </mat-dialog-actions>

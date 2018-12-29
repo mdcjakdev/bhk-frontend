@@ -27,7 +27,13 @@
             <strong>:</strong>&nbsp;
           </td>
           <td>
-            {{data.data.namaWarna}}
+            {{data.data.namaWarna}} &nbsp;
+            <input disabled
+                   [ngStyle]="{
+                     'border': '1px solid #D6D6D6',
+                     'width': '50px',
+                     'background': data.data.kodeWarnaHexadecimal
+                   }">
           </td>
         </tr>
         <tr>
@@ -84,8 +90,28 @@
           <!--warna-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Warna</mat-label>
-            <input  matInput  placeholder="Nama Warna" formControlName="namaWarna" required
+            <input matInput placeholder="Nama Warna" formControlName="namaWarna" required autocomplete="off"
                    [errorStateMatcher]="stateMatchers.namaWarna.matcher">
+
+            <div matSuffix style="margin-top: -10px">
+              <input #ignoredInput formControlName="kodeWarnaHexadecimal"
+                     style="margin-left: 3px; height: 0px; width: 0px"
+                     [cpPosition]="'left'"
+                     [cpDisableInput]="true"
+                     [cpIgnoredElements]="[ignoredButton, ignoredInput]"
+                     [(cpToggle)]="toggle"
+                     (colorPickerChange)="colorChanged($event)"
+                     [(colorPicker)]="color"/>
+              <a mat-flat-button
+                 [ngStyle]="{
+                   'margin-left': '-6px',
+                   'background': color,
+                   'color': '#ffffff'
+                 }"
+                 #ignoredButton (click)="toggle=!toggle">
+                <mat-icon>format_color_fill</mat-icon>
+              </a>
+            </div>
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'namaWarna').hasError('required')">{{stateMatchers.namaWarna.message}}</mat-error>
           </mat-form-field>
@@ -94,11 +120,13 @@
           <!--kode-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kode Warna</mat-label>
-            <input matInput placeholder="Kode Warna" formControlName="kodeWarna" required
+            <input matInput placeholder="Kode Warna" formControlName="kodeWarna" required autocomplete="off"
                    [errorStateMatcher]="stateMatchers.kodeWarna.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'kodeWarna').hasError('required')">{{stateMatchers.kodeWarna.message}}</mat-error>
           </mat-form-field>
+
+
         </div>
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -118,11 +146,11 @@
           </div>
 
 
-          <div formArrayName="barcode" >
+          <div formArrayName="barcode">
             <div *ngFor="let temp of reactiveFormUtil.getFormArrays('barcode', form); index as subIndex"
                  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <!--<mat-form-field [appearance]="formFieldAppearance">-->
-              <mat-card id="barcode-card" >
+              <mat-card id="barcode-card">
 
                 <mat-card-content>
                   <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
@@ -173,9 +201,12 @@
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="!form.valid">Simpan
     </button>
+    <!--<button mat-flat-button color="primary" (click)="save(form.getRawValue())"-->
+    <!--&gt;Simpan-->
+    <!--</button>-->
   </mat-dialog-actions>
 
   <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">

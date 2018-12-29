@@ -7,7 +7,8 @@ import {first} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
-import {masterWarnaBarcodeForm, masterWarnaErrorStateMatchers, masterWarnaForm} from '../../../../inits/master/master-warna';
+import {defaultColor, masterWarnaBarcodeForm, masterWarnaErrorStateMatchers, masterWarnaForm} from '../../../../inits/master/master-warna';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-master-warna-dialog',
@@ -18,6 +19,9 @@ export class MasterWarnaDialogComponent extends DialogUtil
   implements OnInit {
 
   close = undefined;
+  color = defaultColor;
+  toggle = false;
+  colorControl = new FormControl(defaultColor);
 
   constructor(public snackBar: MatSnackBar,
               public masterWarnaService: MasterWarnaService,
@@ -27,6 +31,15 @@ export class MasterWarnaDialogComponent extends DialogUtil
       data,
       masterWarnaForm(data.data),
       masterWarnaErrorStateMatchers);
+  }
+
+  ngOnInit() {
+    this.colorControl = <FormControl> this.form.controls['kodeWarnaHexadecimal'];
+    this.color = ((<string> this.colorControl.value).trim().length === 0) ? defaultColor : this.colorControl.value;
+  }
+
+  colorChanged(v) {
+    this.colorControl.setValue(v);
   }
 
   addNewBarcode(fa) {
@@ -88,7 +101,6 @@ export class MasterWarnaDialogComponent extends DialogUtil
     }, delayHttpRequest);
   }
 
-  ngOnInit() {
-  }
+
 
 }

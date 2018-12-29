@@ -104,7 +104,7 @@
           <!--nama-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kategori</mat-label>
-            <input matInput placeholder="Kategori " formControlName="namaKategori" required
+            <input matInput autocomplete="off" placeholder="Kategori " formControlName="namaKategori" required
                    [errorStateMatcher]="stateMatchers.namaKategori.matcher">
 
             <mat-error
@@ -115,7 +115,7 @@
           <!--kode-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kode</mat-label>
-            <input matInput placeholder="Kode " formControlName="kodeKategori" required
+            <input matInput autocomplete="off" placeholder="Kode " formControlName="kodeKategori" required
                    [errorStateMatcher]="stateMatchers.kodeKategori.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'kodeKategori').hasError('required')">{{stateMatchers.kodeKategori.message}}</mat-error>
@@ -125,7 +125,7 @@
           <!--tipe-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Tipe</mat-label>
-            <input matInput placeholder="Tipe " formControlName="tipeKategori" required
+            <input matInput autocomplete="off" placeholder="Tipe " formControlName="tipeKategori" required
                    [errorStateMatcher]="stateMatchers.tipeKategori.matcher">
 
             <mat-error
@@ -182,7 +182,7 @@
                     <!--kode-->
                     <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>Kode</mat-label>
-                      <input matInput placeholder="Kode " formControlName="kode" required
+                      <input matInput autocomplete="off" placeholder="Kode " formControlName="kode" required
                              [errorStateMatcher]="stateMatchers.subKategori.kode.matcher">
 
                       <mat-error
@@ -217,7 +217,7 @@
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="!form.valid">Simpan
     </button>
   </mat-dialog-actions>

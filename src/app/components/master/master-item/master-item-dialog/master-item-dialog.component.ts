@@ -104,10 +104,51 @@ export class MasterItemDialogComponent extends DialogUtil
     //   map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
   }
 
+  forNamaKain() {
+    const controlNamaKain = this.form.controls['namaKain'];
+
+    const namaItem = <string> this.form.controls['namaItem'].value;
+    const ukuran = <string> this.form.controls['ukuran'].value;
+    const benang = <string> this.form.controls['benang'].value;
+    const jenisKain = <string> this.form.controls['jenisKain'].value;
+
+    const namaKain = controlNamaKain.value;
+    const tempNamaKain =
+      namaItem.trim() +
+      (ukuran.trim().length > 0 ? ' ' : '') + ukuran.trim() +
+      (benang.trim().length > 0 ? ' ' : '') + benang.trim() +
+      (jenisKain.trim().length > 0 ? ' ' : '') + jenisKain.trim();
+
+    if (namaKain !== tempNamaKain) {
+      controlNamaKain.setValue(tempNamaKain);
+    }
+  }
+
+  generateNamaKain() {
+    this.form.controls['namaItem'].valueChanges.subscribe(value => {
+      this.forNamaKain();
+    });
+
+    this.form.controls['ukuran'].valueChanges.subscribe(value => {
+      this.forNamaKain();
+    });
+
+    this.form.controls['benang'].valueChanges.subscribe(value => {
+      this.forNamaKain();
+    });
+
+    this.form.controls['jenisKain'].valueChanges.subscribe(value => {
+      this.forNamaKain();
+    });
+  }
+
 
 
 
   ngOnInit() {
+    this.forNamaKain();
+    this.generateNamaKain();
+
     if (this.isInsert() || this.isUpdate()) {
       this._loadMoreKategori(); // load data master kategori
       this._loadMoreUnit(); // load data unit

@@ -133,7 +133,7 @@
           <!--nama-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Pelanggan</mat-label>
-            <input matInput placeholder="Nama Pelanggan " formControlName="nama" required
+            <input matInput autocomplete="off" placeholder="Nama Pelanggan " formControlName="nama" required
                    [errorStateMatcher]="stateMatchers.nama.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'nama').hasError('required')">{{stateMatchers.nama.message}}</mat-error>
@@ -141,9 +141,18 @@
 
           <!--Tipe Pelanggan-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Tipe Pelanggan</mat-label>
-            <input matInput placeholder="Tipe Pelanggan" formControlName="tipePelanggan" required
-                   [errorStateMatcher]="stateMatchers.tipePelanggan.matcher">
+            <mat-select placeholder="Tipe Pelanggan"
+                        formControlName="tipePelanggan"
+                        [errorStateMatcher]="stateMatchers.tipePelanggan.matcher" required>
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v" *ngFor="let v of tipePelanggan">
+                {{v}}
+              </mat-option>
+            </mat-select>
+            <!--<mat-label>Tipe Pelanggan</mat-label>-->
+            <!--<input matInput autocomplete="off" placeholder="Tipe Pelanggan" formControlName="tipePelanggan" required-->
+                   <!--[errorStateMatcher]="stateMatchers.tipePelanggan.matcher">-->
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'tipePelanggan').hasError('required')">
               {{stateMatchers.tipePelanggan.message}}</mat-error>
@@ -161,7 +170,7 @@
           <!--HP-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>HP</mat-label>
-            <input matInput placeholder="Nomor HP" formControlName="hp" required
+            <input matInput autocomplete="off" placeholder="Nomor HP" formControlName="hp" required
                    [errorStateMatcher]="stateMatchers.hp.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'hp').hasError('required')">{{stateMatchers.hp.message}}</mat-error>
@@ -170,21 +179,21 @@
           <!--Telepon-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Telepon</mat-label>
-            <input matInput placeholder="Telepon" formControlName="telepon">
+            <input matInput autocomplete="off" placeholder="Telepon" formControlName="telepon">
 
           </mat-form-field>
 
           <!--Fax-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Fax</mat-label>
-            <input matInput placeholder="Fax" formControlName="fax">
+            <input matInput autocomplete="off" placeholder="Fax" formControlName="fax">
 
           </mat-form-field>
 
           <!--NPWP-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nomor NPWP</mat-label>
-            <input matInput placeholder="Nomor NPWP" formControlName="npwp" required
+            <input matInput autocomplete="off" placeholder="Nomor NPWP" formControlName="npwp" required
                    [errorStateMatcher]="stateMatchers.npwp.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'npwp').hasError('required')">
@@ -203,7 +212,7 @@
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="!form.valid">Simpan
     </button>
   </mat-dialog-actions>

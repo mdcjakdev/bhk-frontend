@@ -63,7 +63,7 @@
           <!--Nama Lokasi -->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Lokasi</mat-label>
-            <input matInput placeholder="Nama Lokasi " formControlName="namaLokasi" required
+            <input matInput autocomplete="off" placeholder="Nama Lokasi " formControlName="namaLokasi" required
                    [errorStateMatcher]="stateMatchers.namaLokasi.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'namaLokasi').hasError('required')">{{stateMatchers.namaLokasi.message}}</mat-error>
@@ -72,7 +72,7 @@
           <!--Tipe Lokasi-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Tipe Lokasi</mat-label>
-            <input matInput placeholder="Tipe Lokasi" formControlName="tipeLokasi" required
+            <input matInput autocomplete="off" placeholder="Tipe Lokasi" formControlName="tipeLokasi" required
                    [errorStateMatcher]="stateMatchers.tipeLokasi.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'tipeLokasi').hasError('required')">
@@ -93,7 +93,7 @@
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="!form.valid">Simpan
     </button>
   </mat-dialog-actions>

@@ -5,7 +5,7 @@ import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
-import {masterPelangganErrorStateMatchers, masterPelangganForm} from '../../../../inits/master/master-pelanggan-init';
+import {masterPelangganErrorStateMatchers, masterPelangganForm, tipePelanggan} from '../../../../inits/master/master-pelanggan-init';
 import {MasterPelangganService} from '../../../../services/master/master-pelanggan/master-pelanggan.service';
 
 @Component({
@@ -16,6 +16,7 @@ import {MasterPelangganService} from '../../../../services/master/master-pelangg
 export class MasterPelangganDialogComponent extends DialogUtil
   implements OnInit {
 
+  tipePelanggan = tipePelanggan;
   close = undefined;
 
   constructor(public snackBar: MatSnackBar,

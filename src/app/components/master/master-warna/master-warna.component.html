@@ -160,8 +160,13 @@
                         <td>
                           <strong>:</strong>&nbsp;
                         </td>
-                        <td>
-                          {{element.namaWarna}}
+                        <td valign="top">
+                          {{element.namaWarna}} &nbsp;
+                          <input disabled [ngStyle]="{
+                            'border': '1px solid #D6D6D6',
+                            'width': '50px',
+                            'background': element.kodeWarnaHexadecimal
+                          }">
                         </td>
                       </tr>
                       <tr>

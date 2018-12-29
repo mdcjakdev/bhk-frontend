@@ -19,17 +19,7 @@
   <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
     <div id="table-detail">
       <table class="full-width-table">
-        <tr>
-          <td style="width: 150px">
-            <li><strong>Nama Item</strong></li>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.namaItem}}
-          </td>
-        </tr>
+        <!--nama kain-->
         <tr>
           <td>
             <li><strong>Nama Kain</strong></li>
@@ -41,6 +31,54 @@
             {{data.data.namaKain}}
           </td>
         </tr>
+        <!--nama item-->
+        <tr>
+          <td style="width: 150px">
+            <li><strong>Nama Item</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.namaItem}}
+          </td>
+        </tr>
+        <!--ukuran-->
+        <tr>
+          <td>
+            <li><strong>Ukuran</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.ukuran}}
+          </td>
+        </tr>
+        <!--benang-->
+        <tr>
+          <td>
+            <li><strong>Benang</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.benang}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li><strong>Jenis Kain</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.jenisKain}}
+          </td>
+        </tr>
+
         <tr>
           <td>
             <li><strong>Kode</strong></li>
@@ -64,6 +102,9 @@
           </td>
         </tr>
         <!--BARCODE-->
+        <tr>
+          <td colspan="3" style="height: 10px"></td>
+        </tr>
         <tr *ngIf="data.data.barcode.length > 0">
           <td colspan="3">
             <li class="primary">
@@ -72,11 +113,11 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3">
+          <td colspan="3" >
             <table>
               <div *ngFor="let b of data.data.barcode">
                 <tr>
-                  <td colspan="2" style="padding-left: 20px">
+                  <td colspan="2" style="padding-left: 34px">
                                   <span class="accent" style="text-decoration: underline;">
                                     {{b.barcode}}
                                   </span>
@@ -87,30 +128,12 @@
             </table>
           </td>
         </tr>
-        <!--kode item alias-->
-        <tr>
-          <td>
-            <li><strong>Jenis Kain</strong></li>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.jenisKain}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li><strong>Ukuran</strong></li>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.ukuran}}
-          </td>
-        </tr>
+
+
         <!--nama alias-->
+        <tr>
+          <td colspan="3" style="height: 10px"></td>
+        </tr>
         <tr *ngIf="data.data.barcode.length > 0">
           <td colspan="3">
             <li class="primary">
@@ -119,11 +142,11 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3">
+          <td colspan="3" >
             <table>
               <div *ngFor="let b of data.data.namaAlias">
                 <tr>
-                  <td colspan="2" style="padding-left: 20px">
+                  <td colspan="2" style="padding-left: 34px">
                                   <span class="accent" style="text-decoration: underline;">
                                     {{b.namaAlias}}
                                   </span>
@@ -170,18 +193,35 @@
             {{data.data.unit.name}}
           </td>
         </tr>
-        <!--benang-->
+        <!--warna-->
         <tr>
-          <td>
-            <li><strong>Benang</strong></li>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.benang}}
+          <td colspan="3" style="height: 10px"></td>
+        </tr>
+        <tr *ngIf="data.data.barcode.length > 0">
+          <td colspan="3">
+            <li class="primary">
+              <strong class="primary">Warna &nbsp;({{data.data.warna.length}})</strong>
+            </li>
           </td>
         </tr>
+        <tr>
+          <td colspan="3" >
+            <table>
+              <div *ngFor="let b of data.data.warna">
+                <tr>
+                  <td colspan="2" style="padding-left: 34px">
+                                  <span class="accent" style="text-decoration: underline;">
+                                    {{b.namaWarna}}
+                                  </span>
+                  </td>
+                </tr>
+
+              </div>
+            </table>
+          </td>
+        </tr>
+
+
         <!--gramasi-->
         <tr>
           <td>
@@ -242,61 +282,61 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
 
-          <!--nama item-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Nama Item</mat-label>
-            <input matInput placeholder="Nama Item" formControlName="namaItem" required
-                   [errorStateMatcher]="stateMatchers.namaItem.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'namaItem').hasError('required')">{{stateMatchers.namaItem.message}}</mat-error>
-          </mat-form-field>
-
           <!--nama kain-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Kain</mat-label>
-            <input matInput placeholder="Nama Kain" formControlName="namaKain" required
+            <input matInput autocomplete="off" placeholder="Nama Kain" formControlName="namaKain" required
                    [errorStateMatcher]="stateMatchers.namaKain.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'namaKain').hasError('required')">{{stateMatchers.namaKain.message}}</mat-error>
           </mat-form-field>
 
-          <!--Kode-->
+          <!--nama item-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode</mat-label>
-            <input matInput placeholder="Kode" formControlName="kode" required
-                   [errorStateMatcher]="stateMatchers.kode.matcher">
+            <mat-label>Nama Item</mat-label>
+            <input (keyup)="generateNamaKain()" matInput placeholder="Nama Item" formControlName="namaItem" required
+                   [errorStateMatcher]="stateMatchers.namaItem.matcher">
             <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">{{stateMatchers.kode.message}}</mat-error>
+              *ngIf="reactiveFormUtil.formControl(form, 'namaItem').hasError('required')">{{stateMatchers.namaItem.message}}</mat-error>
           </mat-form-field>
 
-          <!--Kode Alias -->
+          <!--ukuran-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode Alias</mat-label>
-            <input matInput placeholder="Kode Alias" formControlName="kodeItemAlias" required
-                   [errorStateMatcher]="stateMatchers.kodeItemAlias.matcher">
+            <mat-label>Ukuran</mat-label>
+            <input matInput autocomplete="off" placeholder="Ukuran" formControlName="ukuran" required
+                   [errorStateMatcher]="stateMatchers.ukuran.matcher">
             <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kodeItemAlias').hasError('required')">
-              {{stateMatchers.kodeItemAlias.message}}</mat-error>
+              *ngIf="reactiveFormUtil.formControl(form, 'ukuran').hasError('required')">
+              {{stateMatchers.ukuran.message}}</mat-error>
+          </mat-form-field>
+
+          <!--benang-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Benang</mat-label>
+            <input matInput autocomplete="off" placeholder="Benang" formControlName="benang" required
+                   [errorStateMatcher]="stateMatchers.benang.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'benang').hasError('required')">
+              {{stateMatchers.benang.message}}</mat-error>
           </mat-form-field>
 
           <!--jenis kain-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Jenis Kain</mat-label>
-            <input matInput placeholder="Jenis Kain" formControlName="jenisKain" required
+            <input matInput autocomplete="off" placeholder="Jenis Kain" formControlName="jenisKain" required
                    [errorStateMatcher]="stateMatchers.jenisKain.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'jenisKain').hasError('required')">
               {{stateMatchers.jenisKain.message}}</mat-error>
           </mat-form-field>
 
-          <!--ukuran-->
+          <!--Kode-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Ukuran</mat-label>
-            <input matInput placeholder="Ukuran" formControlName="ukuran" required
-                   [errorStateMatcher]="stateMatchers.ukuran.matcher">
+            <mat-label>Kode</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode" formControlName="kode" required
+                   [errorStateMatcher]="stateMatchers.kode.matcher">
             <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'ukuran').hasError('required')">
-              {{stateMatchers.ukuran.message}}</mat-error>
+              *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">{{stateMatchers.kode.message}}</mat-error>
           </mat-form-field>
 
           <!--barcode-->
@@ -407,6 +447,16 @@
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+          <!--Kode Alias -->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode Alias</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode Alias" formControlName="kodeItemAlias" required
+                   [errorStateMatcher]="stateMatchers.kodeItemAlias.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeItemAlias').hasError('required')">
+              {{stateMatchers.kodeItemAlias.message}}</mat-error>
+          </mat-form-field>
 
 
           <!--kategori-->
@@ -542,20 +592,12 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <!--benang-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Benang</mat-label>
-            <input matInput placeholder="Benang" formControlName="benang" required
-                   [errorStateMatcher]="stateMatchers.benang.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'benang').hasError('required')">
-              {{stateMatchers.benang.message}}</mat-error>
-          </mat-form-field>
+
 
           <!--gramasi-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Gramasi</mat-label>
-            <input matInput placeholder="Gramasi" formControlName="gramasi" required
+            <input matInput autocomplete="off" placeholder="Gramasi" formControlName="gramasi" required
                    [errorStateMatcher]="stateMatchers.gramasi.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'gramasi').hasError('required')">
@@ -565,7 +607,7 @@
           <!--setting-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Setting</mat-label>
-            <input matInput placeholder="Setting" formControlName="setting" required
+            <input matInput autocomplete="off" placeholder="Setting" formControlName="setting" required
                    [errorStateMatcher]="stateMatchers.setting.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'setting').hasError('required')">
@@ -575,7 +617,7 @@
           <!--handfeel-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Handfeel</mat-label>
-            <input matInput placeholder="Handfeel" formControlName="handfeel" required
+            <input matInput autocomplete="off" placeholder="Handfeel" formControlName="handfeel" required
                    [errorStateMatcher]="stateMatchers.handfeel.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'handfeel').hasError('required')">
@@ -585,7 +627,7 @@
           <!--tambahan-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Additional</mat-label>
-            <input matInput placeholder="Additional" formControlName="tambahan" required
+            <input matInput autocomplete="off" placeholder="Additional" formControlName="tambahan" required
                    [errorStateMatcher]="stateMatchers.tambahan.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'tambahan').hasError('required')">
@@ -606,7 +648,7 @@
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
     [disabled]="simpanButtonCondition(form.valid)">Simpan
     </button>
     <!--<button mat-flat-button color="primary" (click)="save(form.value)"-->

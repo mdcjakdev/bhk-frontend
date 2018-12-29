@@ -27,6 +27,7 @@ import {MasterWarnaComponent} from '../../components/master/master-warna/master-
 import {MasterWarnaDialogComponent} from '../../components/master/master-warna/master-warna-dialog/master-warna-dialog.component';
 import {PenggunaComponent} from '../../components/administrator/pengguna/pengguna.component';
 import {PenggunaDialogComponent} from '../../components/administrator/pengguna/pengguna-dialog/pengguna-dialog.component';
+import {ColorPickerModule} from 'ngx-color-picker';
 
 
 // import  as moment from 'moment';
@@ -78,7 +79,9 @@ export const MY_FORMATS = {
     SharedModule,
     // MatMomentDateModule
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+
+    ColorPickerModule
 
 
 

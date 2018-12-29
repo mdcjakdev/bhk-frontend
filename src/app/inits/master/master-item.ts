@@ -91,7 +91,7 @@ export const masterItemNamaAliasDisables = {
 /** Init nilai awal status disable formcontrol Kategori */
 export const masterItemDisables = {
   kode: false,
-  namaKain: false,
+  namaKain: true,
   kodeItemAlias: false,
   namaItem: false,
   ukuran: false,

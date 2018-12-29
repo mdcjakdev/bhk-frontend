@@ -2,6 +2,13 @@ import {AppErrorStateMatcher} from '../../shared/utils';
 import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
+
+export const tipePelanggan = [
+  'CV',
+  'PT',
+  'PERSONAL'
+];
+
 export interface MasterPelanggan extends AppAuditEntity {
   alamat?: string;
   fax?: string;
