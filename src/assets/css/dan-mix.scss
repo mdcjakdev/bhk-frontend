@@ -15,6 +15,11 @@ $header-color: rgba(0, 0, 0, 0.05);
   $warn: map-get($theme, warn);
 
 
+  ::ng-deep .mat-flat-button  {
+    padding: 0 20px;
+    border-radius: 100px;
+  }
+
   .load-more {
     color: mat-color($accent);
     font-style: italic;
