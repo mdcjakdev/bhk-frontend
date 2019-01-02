@@ -1,18 +1,22 @@
 import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
-import {MasterCategory, masterCategoryInit, MasterSubCategory, masterSubCategoryInit} from '../master/master-category-init';
 import {MasterUnit, masterUnitInit} from '../master/master-unit-init';
-import {MasterWarna, masterWarnaForm, masterWarnaInit} from '../master/master-warna';
+import {MasterWarna, masterWarnaInit} from '../master/master-warna';
+import {MasterItem, masterItemInit} from '../master/master-item';
+import {Pengguna, penggunaInit} from '../administrator/pengguna-init';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MasterItem} from '../master/master-item';
-import * as STATUS from '../../shared/settings/document.status.json';
-import { statusDokumen } from '../../shared/utils';
 
+export const statusDokumen = {
+  DRAFT: 'DRAFT',
+  APPROVED: 'APPROVED',
+  CHECKED: 'CHECKED',
+  CANCELED: 'CANCELED'
+};
 
 /** Model Class PR Detail Warna */
 export interface PermintaanPembelianDetailWarna extends AppAuditEntity {
   warna?: MasterWarna;
-  jumlah?: number;
+  jumlah?: any;
   unit?: MasterUnit;
   catatan?: string;
 }
@@ -26,223 +30,187 @@ export interface PermintaanPembelianDetail extends AppAuditEntity {
 
 /** Model Class PR */
 export interface PermintaanPembelian extends AppAuditEntity {
-  catatan: '',
-  counterPr: 0,
-  detail: [],
-  marketing: {
-    uuid: ''
-  },
-  nomorDokumenPr: '',
-  prApprovedBy: {
-    uuid: ''
-  },
-  prApprovedDate: '',
-  prCanceledDate,
-  '',
-  prCanceledReason: '',
-  prCancelledBy: {
-    uuid: ''
-  },
-  prPengguna: {
-    uuid: ''
-  }
-  prefixNomorPr: '',
-  // @ts-ignore
-  statusDokumenPr: statusDokumen.DRAFT,
-  tanggalPermintaan: '',
+  catatan?: string;
+  counterPr?: any;
+  detail?: PermintaanPembelianDetail[];
+  salesman?: Pengguna;
+  nomorDokumenPr?: string;
+  prApprovedBy?: Pengguna;
+  prApprovedDate?: any;
+  prCanceledDate?: any;
+  prCanceledReason?: string;
+  prCancelledBy?: Pengguna;
+  nomorPrefixPr?: string;
+  statusDokumenPr?: string;
+  tanggalPermintaan?: any;
 }
-//
-// /** Init nilai awal  */
-// export const masterItemBarcodeInit = <MasterItemBarcode>{
-//   ...appAuditEntityInit,
-//   barcode: ''
-// };
-//
-// /** Init nilai awal Master Item Nama Alias */
-// export const masterItemNamaAliasInit = <MasterItemNamaAlias>{
-//   ...appAuditEntityInit,
-//   namaAlias: ''
-// };
-//
-// /** Init nilai awal Master Item */
-// export const masterItemInit = <MasterItem>{
-//   ...appAuditEntityInit,
-//   kode: '',
-//   barcode: [],
-//   namaKain: '',
-//   kodeItemAlias: '',
-//   namaAlias: [],
-//   namaItem: '',
-//   ukuran: '',
-//   benang: '',
-//   jenisKain: '',
-//   gramasi: '',
-//   setting: '',
-//   handfeel: '',
-//   kategori: masterCategoryInit,
-//   subKategori: masterSubCategoryInit,
-//   unit: masterUnitInit,
-//   tambahan: '',
-//   warna: []
-// };
-//
-// /** Init nilai awal status disable formcontrol Master Item Barcode */
-// export const masterItemBarcodeDisables = {
-//   barcode: false
-// };
-//
-// /** Init nilai awal status disable formcontrol Master Item Nama Alias */
-// export const masterItemNamaAliasDisables = {
-//   namaAlias: false
-// };
-//
-// /** Init nilai awal status disable formcontrol Kategori */
-// export const masterItemDisables = {
-//   kode: false,
-//   namaKain: false,
-//   kodeItemAlias: false,
-//   namaItem: false,
-//   ukuran: false,
-//   benang: false,
-//   jenisKain: false,
-//   gramasi: false,
-//   setting: false,
-//   handfeel: false,
-//   kategori: false,
-//   subKategori: false,
-//   unit: false,
-//   tambahan: false,
-//   warna: false
-// };
-//
-// /** Init StateMatcher formcontrol Master Item Barcode */
-// export const masterItemBarcodeErrorStateMatchers = {
-//   barcode: {
-//     matcher: new AppErrorStateMatcher(),
-//     message: 'Pastikan anda menginputkan barcode'
-//   }
-// };
-//
-// /** Init StateMatcher formcontrol Master Item Nama Alias */
-// export const masterItemNamaAliasErrorStateMatchers = {
-//   namaAlias: {
-//     matcher: new AppErrorStateMatcher(),
-//     message: 'Pastikan anda menginputkan nama alias'
-//   }
-// };
-//
-// /** Init StateMatcher formcontrol Master Item */
-// export const masterItemErrorStateMatchers = {
-//   kode: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   barcode: masterItemBarcodeErrorStateMatchers,
-//   namaKain: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   kodeItemAlias: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   namaAlias: masterItemNamaAliasErrorStateMatchers,
-//   namaItem: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   ukuran: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   benang: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   jenisKain: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   gramasi: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   setting: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   handfeel: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   kategori: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kategori'},
-//   subKategori: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan sub kategori'},
-//   unit: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih unit'},
-//   tambahan: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-//   warna: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan memilih warna'},
-// };
-//
-//
-// /** Fungsi Init Reactive Form Group untuk data Master Item Barcode  */
-// export function masterItemBarcodeForm(init: MasterItemBarcode = masterItemBarcodeInit,
-//                                       disables = masterItemBarcodeDisables,
-//                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
-//   return new FormBuilder().group({
-//     ...initAuditForm().controls,
-//     barcode: [{value: init.barcode, disabled: disables.barcode}, Validators.required]
-//   });
-// }
-//
-// function generateMasterItemBarcode(temp: MasterItemBarcode[]) {
-//   const data = [];
-//   temp.forEach(value => data.push(masterItemBarcodeForm(value)));
-//   return data;
-// }
-//
-//
-// /** Fungsi Init Reactive Form Group untuk data Master Item Nama Alias */
-// export function masterItemNamaAliasForm(init: MasterItemNamaAlias = masterItemNamaAliasInit,
-//                                         disables = masterItemNamaAliasDisables,
-//                                         initAuditForm: Function = appAuditEntityForm): FormGroup {
-//   return new FormBuilder().group({
-//     ...initAuditForm().controls,
-//     namaAlias: [{value: init.namaAlias, disabled: disables.namaAlias}, Validators.required]
-//   });
-// }
-//
-// function generateMasterItemNamaAlias(temp: MasterItemNamaAlias[]) {
-//   const data = [];
-//   temp.forEach(value => data.push(masterItemNamaAliasForm(value)));
-//   return data;
-// }
-//
-// /** Fungsi Init Reactive Form Group untuk data Master Item Nama Alias */
-// export function masterItemWarnaRelationForm(init: MasterWarna = masterWarnaInit,
-//                                             initAuditForm: Function = appAuditEntityForm): FormGroup {
-//   return new FormBuilder().group({
-//     ...initAuditForm().controls,
-//     uuid: [{value: init.uuid, disabled: true}, Validators.required]
-//   });
-// }
-//
-// export function generateMasterItemWarnaRelation(temp: MasterWarna[]) {
-//   const data = [];
-//   temp.forEach(value => data.push(masterWarnaForm(value)));
-//   return data;
-// }
-//
-//
-// /** Fungsi Init Reactive Form Group untuk data Master Item */
-// export function masterItemForm(init: MasterItem = masterItemInit,
-//                                disables = masterItemDisables,
-//                                initAuditForm: Function = appAuditEntityForm): FormGroup {
-//
-//   /** megeneralisasi nilai2 array dari barcode */
-//   const barcode = (init.barcode.length === 0) ? [] : generateMasterItemBarcode(init.barcode);
-//
-//   /** megeneralisasi nilai2 array dari nama alias */
-//   const namaAlias = (init.namaAlias.length === 0) ? [] : generateMasterItemNamaAlias(init.namaAlias);
-//
-//   /** megeneralisasi nilai2 array dari nama alias */
-//   const warna = (init.warna.length === 0) ? [] : generateMasterItemWarnaRelation(init.warna);
-//
-//   return new FormBuilder().group({
-//     ...initAuditForm().controls,
-//     kode: [{value: init.kode, disabled: disables.kode}, Validators.required],
-//     barcode: new FormBuilder().array(barcode),
-//     namaKain: [{value: init.namaKain, disabled: disables.namaKain}, Validators.required],
-//     kodeItemAlias: [{value: init.kodeItemAlias, disabled: disables.kodeItemAlias}, Validators.required],
-//     namaAlias: new FormBuilder().array(namaAlias),
-//     namaItem: [{value: init.namaItem, disabled: disables.namaItem}, Validators.required],
-//     ukuran: [{value: init.ukuran, disabled: disables.ukuran}, Validators.required],
-//     benang: [{value: init.benang, disabled: disables.benang}, Validators.required],
-//     jenisKain: [{value: init.jenisKain, disabled: disables.jenisKain}, Validators.required],
-//     gramasi: [{value: init.gramasi, disabled: disables.gramasi}, Validators.required],
-//     setting: [{value: init.setting, disabled: disables.setting}, Validators.required],
-//     handfeel: [{value: init.handfeel, disabled: disables.handfeel}, Validators.required],
-//     kategori: new FormBuilder().group({
-//       uuid: [{value: init.kategori.uuid, disabled: disables.kategori}, Validators.required]
-//     }),
-//     subKategori: new FormBuilder().group({
-//       uuid: [{value: init.subKategori.uuid, disabled: disables.subKategori}, Validators.required]
-//     }),
-//     unit: new FormBuilder().group({
-//       uuid: [{value: init.unit.uuid, disabled: disables.unit}, Validators.required]
-//     }),
-//     tambahan: [{value: init.tambahan, disabled: disables.tambahan}, Validators.required],
-//     warna: new FormBuilder().array(warna)
-//   });
-//
-// }
-//
-//
+
+/** Init nilai awal Permintaan Pembelian Detail Warna  */
+export const permintaanPembelianDetailWarnaInit = <PermintaanPembelianDetailWarna>{
+  ...appAuditEntityInit,
+  warna: masterWarnaInit,
+  jumlah: '',
+  unit: masterUnitInit,
+  catatan: ''
+};
+
+/** Init nilai awal Master Item Nama Alias */
+export const permintaanPembelianDetailInit = <PermintaanPembelianDetail>{
+  ...appAuditEntityInit,
+  item: masterItemInit,
+  catatan: '',
+  detailWarna: []
+};
+
+/** Init nilai awal Permintaan Pembelian */
+export const permintaanPembelianInit = <PermintaanPembelian>{
+  ...appAuditEntityInit,
+  catatan: '',
+  counterPr: '',
+  detail: [],
+  salesman: penggunaInit,
+  nomorDokumenPr: '',
+  prApprovedBy: penggunaInit,
+  prApprovedDate: '',
+  prCanceledDate: '',
+  prCanceledReason: '',
+  prCancelledBy: penggunaInit,
+  nomorPrefixPr: '',
+  statusDokumenPr: '',
+  tanggalPermintaan: ''
+};
+
+/** Init nilai awal status disable formcontrol Permintaan Pembelian Detail Warna */
+export const permintaanPembelianDetailWarnaDisables = {
+  warna: false,
+  jumlah: false,
+  unit: false,
+  catatan: false
+};
+
+/** Init nilai awal status disable formcontrol Permintaan Pembelian Detail */
+export const permintaanPembelianDetailDisables = {
+  item: false,
+  catatan: false
+};
+
+/** Init nilai awal status disable formcontrol Permintaan Pembelian */
+export const permintaanPembelianDisables = {
+  catatan: false,
+  counterPr: false,
+  salesman: true,
+  nomorDokumenPr: true,
+  prApprovedBy: false,
+  prApprovedDate: false,
+  prCanceledDate: false,
+  prCanceledReason: false,
+  prCancelledBy: false,
+  nomorPrefixPr: false,
+  statusDokumenPr: false,
+  tanggalPermintaan: true,
+};
+
+/** Init StateMatcher formcontrol permintaanPembelianDetailWarna */
+export const permintaanPembelianDetailWarnaErrorStateMatchers = {
+  warna: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih warna'},
+  jumlah: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan jumlah data'},
+  unit: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih unit'}
+};
+
+/** Init StateMatcher formcontrol permintaanPembelianDetail */
+export const permintaanPembelianDetailErrorStateMatchers = {
+  item: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih item'}
+};
+
+/** Init StateMatcher formcontrol Permintaan Pembelian */
+export const permintaanPembelianErrorStateMatchers = {
+  counterPr: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda counter ada'},
+  detail: [],
+  salesman: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih salesman'},
+  nomorDokumenPr: {matcher: new AppErrorStateMatcher(), message: 'Nomor dokumen tidak boleh kosong'},
+  nomorPrefixPr: {matcher: new AppErrorStateMatcher(), message: 'Nomor prefix tidak boleh kosong'},
+  tanggalPermintaan: {matcher: new AppErrorStateMatcher(), message: 'Tanggal permintaan tidak boleh kosong'}
+};
+
+
+/** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian Detail Warna*/
+export function permintaanPembelianDetailWarnaForm(init: PermintaanPembelianDetailWarna = permintaanPembelianDetailWarnaInit,
+                                                   disables = permintaanPembelianDetailWarnaDisables,
+                                                   initAuditForm: Function = appAuditEntityForm): FormGroup {
+  return new FormBuilder().group({
+    ...initAuditForm().controls,
+    warna: new FormBuilder().group({
+      uuid: [{value: init.warna.uuid, disabled: disables.warna}, Validators.required]
+    }),
+    jumlah: [{value: init.jumlah, disabled: disables.jumlah}, Validators.required],
+    unit: new FormBuilder().group({
+      uuid: [{value: init.unit.uuid, disabled: disables.unit}, Validators.required]
+    }),
+    catatan: {value: init.catatan, disabled: disables.catatan}
+  });
+}
+
+function generatePermintaanPembelianDetailWarna(temp: PermintaanPembelianDetailWarna[]) {
+  const data = [];
+  temp.forEach(value => data.push(permintaanPembelianDetailWarnaForm(value)));
+  return data;
+}
+
+
+/** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian Detail*/
+export function permintaanPembelianDetailForm(init: PermintaanPembelianDetail = permintaanPembelianDetailInit,
+                                        disables = permintaanPembelianDetailDisables,
+                                        initAuditForm: Function = appAuditEntityForm): FormGroup {
+
+  const detailWarna = (init.detailWarna.length === 0) ? [] : generatePermintaanPembelianDetailWarna(init.detailWarna);
+
+  return new FormBuilder().group({
+    ...initAuditForm().controls,
+    item: new FormBuilder().group({
+      uuid: [{value: init.item.uuid, disabled: disables.item}, Validators.required]
+    }),
+    catatan: {value: init.catatan, disabled: disables.catatan},
+    detailWarna: new FormBuilder().array(detailWarna)
+  });
+}
+
+function generatePermintaanPembelianDetail(temp: PermintaanPembelianDetail[]) {
+  const data = [];
+  temp.forEach(value => data.push(permintaanPembelianDetailForm(value)));
+  return data;
+}
+
+/** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian */
+export function permintaanPembelianForm(init: PermintaanPembelian = permintaanPembelianInit,
+                               disables = permintaanPembelianDisables,
+                               initAuditForm: Function = appAuditEntityForm): FormGroup {
+
+  /** megeneralisasi nilai2 array dari detail item */
+  const detail = (init.detail.length === 0) ? [] : generatePermintaanPembelianDetail(init.detail);
+
+  return new FormBuilder().group({
+    ...initAuditForm().controls,
+    catatan: {value: init.catatan, disabled: disables.catatan},
+    counterPr: [{value: init.counterPr, disabled: disables.counterPr}, Validators.required],
+    detail: new FormBuilder().array(detail),
+    salesman: new FormBuilder().group({
+      uuid: [{value: init.salesman.uuid, disabled: disables.salesman}, Validators.required]
+    }),
+    nomorDokumenPr: [{value: init.nomorDokumenPr, disabled: disables.nomorDokumenPr}, Validators.required],
+    prApprovedBy: new FormBuilder().group({
+      uuid: {value: init.prApprovedBy.uuid, disabled: disables.prApprovedBy}
+    }),
+    prApprovedDate: {value: init.prApprovedDate, disabled: disables.prApprovedDate},
+    prCanceledDate: {value: init.prCanceledDate, disabled: disables.prCanceledDate},
+    prCanceledReason: {value: init.prCanceledReason, disabled: disables.prCanceledReason},
+    prCancelledBy: new FormBuilder().group({
+      uuid: {value: init.prCancelledBy.uuid, disabled: disables.prCancelledBy},
+    }),
+    nomorPrefixPr: [{value: init.nomorPrefixPr, disabled: disables.nomorPrefixPr}, Validators.required],
+    statusDokumenPr: {value: init.statusDokumenPr, disabled: disables.statusDokumenPr},
+    tanggalPermintaan: [{value: init.tanggalPermintaan, disabled: disables.tanggalPermintaan}, Validators.required]
+  });
+
+}
+
+

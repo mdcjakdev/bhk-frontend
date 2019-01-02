@@ -43,7 +43,7 @@ export const masterWarnaBarcodeDisables = {
 export const masterWarnaDisables = {
   kodeWarna: false,
   namaWarna: false,
-  kodeWarnaHexadecimal: true,
+  kodeWarnaHexadecimal: false,
   barcode: masterWarnaBarcodeDisables
 };
 

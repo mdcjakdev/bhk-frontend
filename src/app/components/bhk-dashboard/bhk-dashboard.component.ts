@@ -3,7 +3,6 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {MenuList} from '../../shared/menu-list';
 import {ComponentUtil} from '../../shared/component-util';
 import {NgScrollbar} from 'ngx-scrollbar';
-import {MatMenuTrigger} from '@angular/material';
 
 @Component({
   selector: 'app-bhk-dashboard',

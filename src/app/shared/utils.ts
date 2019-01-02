@@ -23,12 +23,7 @@ export function momentParsingDate(v) {
 }
 
 
-export const statusDokumen = {
-  DRAFT: 'DRAFT',
-  APPROVED: 'APPROVED',
-  CHECKED: 'CHECKED',
-  CANCELED: 'CANCELED'
-}
+
 
 export const SUCCESS = 'SUCCESS';
 export const ERROR = 'ERROR';

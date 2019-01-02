@@ -26,7 +26,7 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
   MatSortModule,
-  MatTableModule,
+  MatTableModule, MatTabsModule,
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
@@ -42,6 +42,8 @@ import {ElementFocusDirective} from '../../shared/directives/element-focus.direc
 import {MasterItemService} from '../../services/master/master-item/master-item.service';
 import {MasterKaryawanService} from '../../services/master/master-karyawan/master-karyawan.service';
 import {PenggunaService} from '../../services/administrator/pengguna/pengguna.service';
+import {PermintaanPembelianService} from '../../services/pr/permintaan-pembelian.service';
+import {ServerService} from '../../services/server.service';
 
 
 @NgModule({
@@ -87,7 +89,9 @@ import {PenggunaService} from '../../services/administrator/pengguna/pengguna.se
 
     MatSnackBarModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+
+    MatTabsModule
 
     // Md2DatepickerModule
 
@@ -103,7 +107,9 @@ import {PenggunaService} from '../../services/administrator/pengguna/pengguna.se
     MasterItemService,
     MasterKaryawanService,
 
-    PenggunaService
+    PenggunaService,
+    PermintaanPembelianService,
+    ServerService
 
 
   ],
@@ -152,6 +158,9 @@ import {PenggunaService} from '../../services/administrator/pengguna/pengguna.se
     MatSnackBarModule,
     MatOptionModule,
     MatSelectModule,
+
+
+    MatTabsModule
 
 
     // Md2DatepickerModule

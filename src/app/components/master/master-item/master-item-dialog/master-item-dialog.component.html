@@ -113,7 +113,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" >
+          <td colspan="3">
             <table>
               <div *ngFor="let b of data.data.barcode">
                 <tr>
@@ -142,7 +142,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" >
+          <td colspan="3">
             <table>
               <div *ngFor="let b of data.data.namaAlias">
                 <tr>
@@ -205,18 +205,19 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" >
+          <td colspan="3">
             <table>
-              <div *ngFor="let b of data.data.warna">
-                <tr>
-                  <td colspan="2" style="padding-left: 34px">
-                                  <span class="accent" style="text-decoration: underline;">
-                                    {{b.namaWarna}}
-                                  </span>
-                  </td>
-                </tr>
-
-              </div>
+              <tr>
+                <td colspan="2" style="padding-left: 34px">
+                  <mat-chip-list>
+                    <mat-chip
+                      [ngStyle]="{ 'background-color': b.kodeWarnaHexadecimal }"
+                      *ngFor="let b of data.data.warna">
+                      {{b.namaWarna}}
+                    </mat-chip>
+                  </mat-chip-list>
+                </td>
+              </tr>
             </table>
           </td>
         </tr>
@@ -546,10 +547,10 @@
           <!--warna-->
           <mat-form-field formArrayName="warna">
             <mat-chip-list #chipList>
-              <!--'background-color': '#' + 'FFE804'-->
-              <mat-chip [ngStyle]="{  }"
-                        *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
-                        (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex)">
+              <mat-chip
+                [ngStyle]="{ 'background-color': temp.kodeWarnaHexadecimal }"
+                *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
+                (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex, temp)">
                 {{temp.namaWarna}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
               </mat-chip>
@@ -565,15 +566,6 @@
 
               </div>
             </mat-chip-list>
-            <!--&lt;!&ndash;<button *ngIf="warnaFailToFetch"  mat-icon-button matTooltip="Segarkan Warna"&ndash;&gt;-->
-                    <!--&lt;!&ndash;(click)="refreshWarna()"&ndash;&gt;-->
-                    <!--&lt;!&ndash;[matTooltipPosition]="'left'">&ndash;&gt;-->
-            <!--<a *ngIf="warnaFailToFetch"  matSuffix (click)="refreshWarna()">-->
-              <!--<mat-icon  color="primary">refresh</mat-icon>-->
-            <!--</a>-->
-
-            <!--&lt;!&ndash;</button>&ndash;&gt;-->
-
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
                               (optionSelected)="selected($event, reactiveFormUtil.getFormArray('warna', form))">
               <mat-option *ngFor="let temp of dataWarna" [value]="temp">
@@ -591,7 +583,6 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-
 
 
           <!--gramasi-->
@@ -649,7 +640,7 @@
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
     <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
-    [disabled]="simpanButtonCondition(form.valid)">Simpan
+            [disabled]="simpanButtonCondition(form.valid)">Simpan
     </button>
     <!--<button mat-flat-button color="primary" (click)="save(form.value)"-->
     <!--&gt;Simpan-->

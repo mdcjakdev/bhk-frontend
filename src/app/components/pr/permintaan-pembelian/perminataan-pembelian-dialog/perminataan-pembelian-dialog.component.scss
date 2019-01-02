@@ -63,13 +63,16 @@
 #dialog-block {
 
   .mat-dialog-title {
-    padding: 24px;
+    padding: 20px 24px 24px 24px;
     margin: 0;
+    background-color: mat-color($dan-app-primary);
+    color: #ffffff;
   }
 
   .mat-dialog-content {
+    //height: 500px;
     margin: 0;
-    padding: 24px;
+    padding: 0px;
   }
 
   .mat-divider.divider-actions {
@@ -78,9 +81,7 @@
   }
 
   .mat-dialog-actions {
-    padding-right: 24px;
-    padding-top: 14px;
-    padding-bottom: 18px;
+    padding: 14px 24px 18px 30px;
     background: rgba(0, 0, 0, 0.07);
   }
 
@@ -145,4 +146,53 @@
   padding-right: 15px;
   font-style: italic;
   color: mat-color($dan-app-primary);
+}
+//
+
+
+//customize mat tab
+
+
+.mat-tab {
+  height: 100px;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  height: 4px;
+}
+
+::ng-deep .mat-tab-body-wrapper {
+  font-size: $standard-font-size !important;
+  margin-top: 44px;
+  padding: 5px 0px 0px 25px;
+  z-index: 0;
+}
+
+// buat tab container fixed
+::ng-deep .mat-tab-header {
+  position: fixed !important;
+  flex-shrink: 0;
+  width: 70%;
+  z-index: 3 !important;
+  background-color: #ffffff;
+  padding-left: 25px;
+}
+
+// end of cusomize tab
+
+::ng-deep .row {
+  height: 450px;
+  padding: 15px 20px 0px 10px;
+}
+
+.container-row {
+  padding: 0px 15px;
+}
+
+form {
+  width: 100% ;
+}
+
+textarea {
+  height: 75px;
 }

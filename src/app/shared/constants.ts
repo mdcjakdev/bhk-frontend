@@ -13,7 +13,7 @@ export const apiPort = '8000';
 // export const apiPort = '5000';
 
 export const delayHttpRequest = 200;
-export const delayAnotherProcess = 5000;
+export const delayAnotherProcess = 3000;
 
 export const defaultNavSideBarSize = 250;
 export const defaultMainContentPadding = 35;

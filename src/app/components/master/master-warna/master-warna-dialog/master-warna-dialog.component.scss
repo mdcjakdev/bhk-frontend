@@ -79,7 +79,7 @@
 #table-detail {
   margin-left: 40px;
   table  {
-    font-size: 13px;
+    font-size: $standard-font-size;
     td {
       vertical-align: top;
       li {
@@ -92,4 +92,5 @@
 .barcode {
   padding-left: 40px;
 }
+
 

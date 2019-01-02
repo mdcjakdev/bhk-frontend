@@ -50,9 +50,7 @@ export class MasterGudangDialogComponent extends DialogUtil
     }
   }
 
-  isLokasiEnabled() {
-    return !(<FormGroup> this.form.controls['lokasi']).controls['uuid'].disabled;
-  }
+
 
   simpanButtonCondition(formCondition) {
     if (this.isInsert()) {
@@ -60,6 +58,10 @@ export class MasterGudangDialogComponent extends DialogUtil
     } else {
       return !(this.isLokasiUuidTrue && formCondition);
     }
+  }
+
+  isLokasiEnabled() {
+    return !(<FormGroup> this.form.controls['lokasi']).controls['uuid'].disabled;
   }
 
   refreshLokasi() {

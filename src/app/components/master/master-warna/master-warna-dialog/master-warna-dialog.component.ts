@@ -56,7 +56,7 @@ export class MasterWarnaDialogComponent extends DialogUtil
    * @param value: data
    */
   save(value?): void {
-    console.log(value)
+    // console.log(value)
     this.dialogRef.disableClose = true;
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 

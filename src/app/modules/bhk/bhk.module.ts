@@ -28,6 +28,8 @@ import {MasterWarnaDialogComponent} from '../../components/master/master-warna/m
 import {PenggunaComponent} from '../../components/administrator/pengguna/pengguna.component';
 import {PenggunaDialogComponent} from '../../components/administrator/pengguna/pengguna-dialog/pengguna-dialog.component';
 import {ColorPickerModule} from 'ngx-color-picker';
+import {PermintaanPembelianComponent} from '../../components/pr/permintaan-pembelian/permintaan-pembelian.component';
+import {PermintaanPembelianDialogComponent} from '../../components/pr/permintaan-pembelian/perminataan-pembelian-dialog/perminataan-pembelian-dialog.component';
 
 
 // import  as moment from 'moment';
@@ -70,7 +72,10 @@ export const MY_FORMATS = {
     MasterWarnaDialogComponent,
 
     PenggunaComponent,
-    PenggunaDialogComponent
+    PenggunaDialogComponent,
+
+    PermintaanPembelianComponent,
+    PermintaanPembelianDialogComponent
   ],
   imports: [
     CommonModule,
@@ -99,7 +104,8 @@ export const MY_FORMATS = {
     MasterLokasiDialogComponent,
     MasterWarnaDialogComponent,
 
-    PenggunaDialogComponent
+    PenggunaDialogComponent,
+    PermintaanPembelianDialogComponent
   ],
   exports: [
   ],

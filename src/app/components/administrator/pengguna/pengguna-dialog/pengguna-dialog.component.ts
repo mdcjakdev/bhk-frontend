@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {FormGroup} from '@angular/forms';
@@ -16,7 +16,7 @@ import {penggunaErrorStateMatchers, penggunaForm} from '../../../../inits/admini
   styleUrls: ['./pengguna-dialog.component.scss']
 })
 export class PenggunaDialogComponent extends DialogUtil
-  implements OnInit {
+  implements OnInit, OnDestroy {
 
   close = undefined;
 
@@ -31,7 +31,6 @@ export class PenggunaDialogComponent extends DialogUtil
   karyawanFailToFetch = false;
 
 
-
   constructor(public snackBar: MatSnackBar,
               public penggunaService: PenggunaService,
               public masterKaryawanService: MasterKaryawanService,
@@ -43,6 +42,8 @@ export class PenggunaDialogComponent extends DialogUtil
       penggunaErrorStateMatchers);
   }
 
+  ngOnDestroy(): void {
+  }
 
   ngOnInit() {
     if (this.isInsert() || this.isUpdate()) {

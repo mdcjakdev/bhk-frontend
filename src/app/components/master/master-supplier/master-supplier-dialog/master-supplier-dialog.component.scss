@@ -1,4 +1,5 @@
 @import "~src/assets/css/dan-theme";
+@import "~src/assets/css/dan-mix";
 
 .mat-dialog-actions {
   padding-bottom: 20px;
@@ -19,7 +20,7 @@
 #table-detail {
   margin-left: 40px;
   table  {
-    font-size: 13px;
+    font-size: $standard-font-size;
     td {
       vertical-align: top;
       li {

@@ -8,8 +8,8 @@ export class MasterItemService {
   constructor(private http: HttpClient) { }
 
 
-  getData(page = 0, size = 10) {
-    return this.http.get(apiHost + ':' + apiPort + '/api/master/item/?page=' + page + '&size=' + size);
+  getData(page = 0, size = 10, http = this.http) {
+    return http.get(apiHost + ':' + apiPort + '/api/master/item/?page=' + page + '&size=' + size);
   }
 
   postData(body) {
