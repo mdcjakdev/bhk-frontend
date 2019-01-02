@@ -78,6 +78,16 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   }
 
 
+  generateDocumentProperties() {
+    this.form.controls['tanggalPermintaan'].setValue('');
+    this.form.controls['nomorDokumenPr'].setValue('');
+    this.form.controls['counterPr'].setValue('');
+    this.form.controls['nomorPrefixPr'].setValue('');
+
+    this.documentProperties.generate();
+  }
+
+
   onTabChanged(index) {
     if (index === 1) { // tab data permintaan pembelian
 
@@ -92,7 +102,7 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
       }
 
       /* generate properti dokumen dari server */
-      this.documentProperties.generate();
+      this.generateDocumentProperties();
     }
 
 
@@ -111,6 +121,22 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   selanjutnyaCondition() {
     if (this.selectedIndex === 0) {
       return this.jenisPermintaan.invalid;
+    } else if (this.selectedIndex === 1) {
+      if (this.isInsert()) {
+        return (
+          (this.documentProperties.waiting || this.documentProperties.failed) ||
+          this.salesmanLazy.failToFetch ||
+          this.form.invalid
+        );
+      } else {
+        return (
+          (this.documentProperties.waiting || this.documentProperties.failed) ||
+          (!this.salesmanLazy.isUuidTrue) ||
+          this.form.invalid
+        );
+      }
+    } else {
+
     }
   }
 

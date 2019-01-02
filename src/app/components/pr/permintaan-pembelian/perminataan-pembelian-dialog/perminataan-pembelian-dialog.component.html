@@ -133,9 +133,9 @@
                      [selectedIndex]="selectedIndex"
                      [animationDuration]="'500ms'"
                      color="primary">
-        <mat-tab>
+        <mat-tab disabled>
           <ng-template mat-tab-label>
-            Jenis Permintaan Pembelian
+            <span class="mat-tab-label-text">Jenis Permintaan Pembelian</span>
           </ng-template>
           <div>
             <div class="container-row">
@@ -167,9 +167,9 @@
           </div>
         </mat-tab>
 
-        <mat-tab>
+        <mat-tab disabled>
           <ng-template mat-tab-label>
-            Data Permintaan Pembelian
+            <span class="mat-tab-label-text">Data Permintaan Pembelian</span>
           </ng-template>
           <div class="container-row">
             <div class="row">
@@ -179,7 +179,7 @@
                   <!--tanggal PR-->
                   <mat-form-field [appearance]="formFieldAppearance">
                     <mat-label>{{
-                      (documentProperties.waiting) ? 'Mengambil tanggal PR dari server' : ((documentProperties.failed) ? 'Gagal mengambil tanggal PR' : 'Tanggal Permintaan Pembelian')
+                      (documentProperties.waiting) ? 'Mengambil tanggal PR dari server' : ((documentProperties.failed) ? 'Gagal mengambil tanggal PR dari server' : 'Tanggal Permintaan Pembelian')
                       }}</mat-label>
                     <input matInput autocomplete="off"
                            formControlName="tanggalPermintaan" required
@@ -207,7 +207,7 @@
                   <!--salesman-->
                   <mat-form-field formGroupName="salesman" [appearance]="formFieldAppearance">
                     <mat-select #selectSalesman
-                                [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......')"
+                                [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.waitingLoadMore ? 'Memuat data salesman ......': 'Gagal memuat data salesman ....' )"
                                 formControlName="uuid"
                                 [errorStateMatcher]="stateMatchers.salesman.matcher" [required]="salesmanLazy.isEnabled()">
                       <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
@@ -256,9 +256,9 @@
           </div>
         </mat-tab>
 
-        <mat-tab>
+        <mat-tab disabled>
           <ng-template mat-tab-label>
-            Pratinjau
+            <span class="mat-tab-label-text">Pratinjau</span>
           </ng-template>
           <div class="container-row">
             <div class="row">
@@ -299,7 +299,7 @@
             [disabled]="selanjutnyaCondition()"
             (click)="next()"
             color="primary">
-      Selanjutnya
+      {{(selectedIndex === 2) ? 'Simpan' : 'Selanjutnya'}}
       <!--<mat-icon>chevron_right</mat-icon>-->
     </button>
   </mat-dialog-actions>
