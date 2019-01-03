@@ -13,6 +13,7 @@ import {MasterLokasiService} from '../../../services/master/master-lokasi/master
 import {masterLokasiInit} from '../../../inits/master/master-lokasi-init';
 import {MasterLokasiDialogComponent} from './master-lokasi-dialog/master-lokasi-dialog.component';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-lokasi',
@@ -25,9 +26,9 @@ import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ]
-  
+
 })
-export class MasterLokasiComponent 
+export class MasterLokasiComponent
   extends ComponentUtil<AppTableDataSource>
   implements OnInit {
 
@@ -45,12 +46,14 @@ export class MasterLokasiComponent
   private isRightClick;
 
 
-  constructor(private masterLokasiService: MasterLokasiService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterLokasiService: MasterLokasiService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
 
@@ -71,7 +74,7 @@ export class MasterLokasiComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -80,7 +83,7 @@ export class MasterLokasiComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -93,12 +96,12 @@ export class MasterLokasiComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**

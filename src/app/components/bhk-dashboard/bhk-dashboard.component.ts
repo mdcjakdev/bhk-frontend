@@ -3,6 +3,8 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {MenuList} from '../../shared/menu-list';
 import {ComponentUtil} from '../../shared/component-util';
 import {NgScrollbar} from 'ngx-scrollbar';
+import {DashboardSharedService} from '../../services/dashboard-shared.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-bhk-dashboard',
@@ -16,19 +18,16 @@ export class BhkDashboardComponent
   // mengambil instance dari menu list yang diinisialisasi
   menus = MenuList.getInstance();
 
-
   @ViewChild('mainScroll', {read: NgScrollbar}) scrollRef: NgScrollbar;
-
 
   @ViewChild("sidenav") snav;
 
-  scrolledByUser = 0;
-
-
   start = false;
   constructor(
+    private router: Router,
+    private bhkSharedService: DashboardSharedService,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
-    super(changeDetectorRef, media);
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
   ngOnInit() {
@@ -43,24 +42,34 @@ export class BhkDashboardComponent
       this.start = true;
       setTimeout(() => this.start = false, 2000);
     }, 2000);
+
+    // passing element sidenavbar ke child
+    this.bhkSharedService.addSideNav(this.snav);
   }
 
   ngAfterViewInit(): void {
   }
 
-
-
   getSidenavMode() {
     return (this.mobileQuery.matches) ? 'over' : 'side';
   }
 
+  /** redirect page to specific url */
+  navigating(routeUrl, params?) {
+    if (routeUrl === undefined || routeUrl.trim().length === 0) {
+      return;
+    }
+
+    if (routeUrl !== this.router.url) {
+        this.router.navigate([routeUrl]);
+    }
+  }
 
   toggle(sidenav) {
-    console.log(sidenav.opened);
     sidenav.toggle();
   }
 
-  onMenuSelected(m, sidenav) {
+  onMenuSelected(m, sidenav, url?) {
     if (this.mobileQuery.matches) {
       if (m.isBackButton || m.childs ) {
       } else {
@@ -69,13 +78,15 @@ export class BhkDashboardComponent
     }
 
     this.menus.selectMenu(m, sidenav, this.mobileQuery);
+
+    this.navigating(url);
   }
 
 
   @HostListener('scroll', ['$event'])
   onScroll(event) {
-    this.scrolledByUser = event.target.scrollTop;
-    // console.log('tinggi', event.target.scrollTop );
+    // tambah nilai perubahan pada setiap aksi user yang melakukan scroll pada page
+    this.bhkSharedService.addScrolledByUser(event.target.scrollTop);
   }
 
 }

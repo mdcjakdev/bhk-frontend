@@ -92,9 +92,9 @@
       <mat-nav-list>
         <!--Looping for menu item-->
 
-        <mat-list-item [ngClass]="m.cssClassOfColor " routerLink="."
+        <mat-list-item [ngClass]="m.cssClassOfColor "
                        *ngFor="let m of menus.showedMenu"
-                       (click)="onMenuSelected(m, sidenav)">
+                       (click)="onMenuSelected(m, sidenav, m.url)">
 
           <mat-icon mat-list-icon>{{m.icon}}</mat-icon>
           <!--<p ></p>-->
@@ -116,6 +116,7 @@
                     barClass="scroll-bar" thumbClass="scroll-thumbs"
                     [overlay]="true" [trackX]="true" [autoHide]="true">
         <div class="main-content">
+          <router-outlet></router-outlet>
           <!--<app-master-karyawan [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-master-karyawan>-->
           <!--<app-pengguna [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-pengguna>-->
           <!--<app-master-unit [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-master-unit>-->
@@ -127,7 +128,7 @@
           <!--<app-master-warna [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-master-warna>-->
           <!--<br>-->
           <!--<app-master-item [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-master-item>-->
-          <app-permintaan-pembelian [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-permintaan-pembelian>
+          <!--<app-permintaan-pembelian [scrolled]="scrolledByUser" [sideNav]="sidenav"></app-permintaan-pembelian>-->
 
 
 

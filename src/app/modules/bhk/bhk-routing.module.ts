@@ -5,7 +5,21 @@ import {BhkDashboardComponent} from '../../components/bhk-dashboard/bhk-dashboar
 const routes: Routes = [
   {
     path: '',
-    component: BhkDashboardComponent
+    component: BhkDashboardComponent,
+    children: [
+      {
+        path: 'master',
+        loadChildren: 'src\\app\\modules\\bhk\\master\\master.module#MasterModule'
+      },
+      {
+        path: 'administrator',
+        loadChildren: 'src\\app\\modules\\bhk\\administrator\\administrator.module#AdministratorModule'
+      },
+      {
+        path: 'pr',
+        loadChildren: 'src\\app\\modules\\bhk\\pr\\pr.module#PrModule'
+      }
+    ]
   }
 ]
 

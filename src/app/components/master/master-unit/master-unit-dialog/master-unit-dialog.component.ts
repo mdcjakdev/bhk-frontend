@@ -5,7 +5,7 @@ import {masterUnitErrorStateMatchers, masterUnitForm} from '../../../../inits/ma
 import {Ui} from '../../../../shared/ui';
 import {MasterUnitService} from '../../../../services/master/master-unit/master-unit.service';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {first} from 'rxjs/operators';
 
 
@@ -39,7 +39,7 @@ export class MasterUnitDialogComponent
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterUnitService.postData(value).pipe(first()).subscribe(
+      this.masterUnitService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

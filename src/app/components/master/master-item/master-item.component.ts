@@ -12,6 +12,7 @@ import {masterItemDisables, masterItemInit} from '../../../inits/master/master-i
 import {MasterItemDialogComponent} from './master-item-dialog/master-item-dialog.component';
 import {masterGudangDisables} from '../../../inits/master/master-gudang-init';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-item',
@@ -43,12 +44,14 @@ export class MasterItemComponent
   private isRightClick;
 
 
-  constructor(private masterItemService: MasterItemService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterItemService: MasterItemService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
 
@@ -109,7 +112,7 @@ export class MasterItemComponent
         : ((action === Action.INSERT || action === Action.UPDATE) ? '900px' : '500px'),
       data: {
         action: action, data: data,
-        disables: {...masterItemDisables, kategori: true, unit: true, subKategori: true }
+        disables: {...masterItemDisables, kategori: true, unit: true, subKategori: true}
       },
       autoFocus: false,
       position: {bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px'}

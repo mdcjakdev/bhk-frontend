@@ -11,6 +11,7 @@ import {PermintaanPembelianDialogComponent} from './perminataan-pembelian-dialog
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {PermintaanPembelianService} from '../../../services/pr/permintaan-pembelian.service';
 import {permintaanPembelianDisables, permintaanPembelianInit} from '../../../inits/pr/pr-init';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-permintaan-pembelian',
@@ -46,12 +47,14 @@ export class PermintaanPembelianComponent
   private isRightClick;
 
 
-  constructor(private permintaanPembelianService: PermintaanPembelianService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private permintaanPembelianService: PermintaanPembelianService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
 

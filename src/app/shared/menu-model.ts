@@ -5,6 +5,9 @@
  */
 export interface MenuModel {
 
+  // url link
+  url?: string;
+
   // icon gambar yang akan digunakan pada menu
   icon?: string;
 

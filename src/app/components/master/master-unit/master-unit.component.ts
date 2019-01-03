@@ -13,6 +13,7 @@ import {masterLokasiInit} from '../../../inits/master/master-lokasi-init';
 import {MasterLokasiDialogComponent} from '../master-lokasi/master-lokasi-dialog/master-lokasi-dialog.component';
 import {masterUnitInit} from '../../../inits/master/master-unit-init';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 
 @Component({
@@ -46,12 +47,14 @@ export class MasterUnitComponent
   private isRightClick;
 
 
-  constructor(private masterUnitHttpService: MasterUnitService,
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterUnitHttpService: MasterUnitService,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               public snackBar: MatSnackBar,
               public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
 

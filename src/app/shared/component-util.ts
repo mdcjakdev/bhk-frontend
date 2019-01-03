@@ -7,6 +7,7 @@ import {Ui} from './ui';
 import {Observable} from 'rxjs';
 import {first} from 'rxjs/operators';
 import {printWord} from './utils';
+import {DashboardSharedService} from '../services/dashboard-shared.service';
 
 
 /** */
@@ -75,9 +76,6 @@ export class ComponentUtil<T extends DataSource<any> | any>
   @ViewChild('triggerMenuRow', {read: MatMenuTrigger}) menuData: MatMenuTrigger;
 
 
-
-
-
   /**
    * Status ketika sedang menunggu proses refresh data sampai selesai
    */
@@ -109,10 +107,11 @@ export class ComponentUtil<T extends DataSource<any> | any>
   dataSource: T;
 
 
-  @Input()
-  private sideNav;
+  // @Input()
+  public sideNav;
 
-  @Input() private scrolled = 0;
+  // @Input()
+  public scrolled = 0;
 
 
   private CARD_WRAPPER_ID = '#card-wrapper';
@@ -125,6 +124,7 @@ export class ComponentUtil<T extends DataSource<any> | any>
    * @param maxWidth, ukuran batas minimum dari media (default = 900)
    */
   constructor(
+    dashboardSharedService: DashboardSharedService,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
     maxWidth = 900) {
 
@@ -134,6 +134,13 @@ export class ComponentUtil<T extends DataSource<any> | any>
     this.mobileQuery = media.matchMedia(this.mediaMaxWidth);
     this.__mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this.__mobileQueryListener);
+
+    /* subscribe parameter yang di sharing dari dashboard*/
+    if (dashboardSharedService !== undefined) {
+      dashboardSharedService.scrolledByUser.subscribe(value => this.scrolled = value);
+      dashboardSharedService.sideNav.subscribe(value => this.sideNav = value);
+    }
+    /**/
   }
 
   defaultNoActionVoid(column, value) {

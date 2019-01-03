@@ -10,7 +10,7 @@ export class MenuList {
 
   private back = <MenuModel> { ...createMenu, menu: 'Back', icon: 'arrow_back', divider: true, isBackButton: true};
 
-  private home = <MenuModel> { ...createMenu, selector: ['app'], menu: 'Home', icon: 'domain', };
+  private home = <MenuModel> { ...createMenu, url: '/app', selector: ['app'], menu: 'Home', icon: 'domain', };
 
   protected mainDataRootSelector = 'mainData';
   private mainData = <MenuModel> { ...createMenu, selector: [this.mainDataRootSelector], menu: 'Main Data', icon: 'vertical_split',
@@ -32,19 +32,24 @@ export class MenuList {
   };
 
   protected masterDataRootSelector = 'masterData';
-  private masterData = <MenuModel> { ...createMenu, selector: ['masterData'], menu: 'Master Data', icon: 'blur_linear',
+  private masterData = <MenuModel> { ...createMenu, selector: ['masterData'], menu: 'Master', icon: 'blur_linear',
     childs: [
       this.back,
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'customer'], menu: 'Master Pelanggan', icon: 'looks_one'},
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'unit'], menu: 'Master Unit', icon: 'looks_two'},
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'category'], menu: 'Master Kategori', icon: 'looks_3'},
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'item'], menu: 'Master Item', icon: 'looks_4'},
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'coloritem'], menu: 'Master Item Warna', icon: 'looks_5'},
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'supplier'], menu: 'Master Suplier', icon: 'looks_5'},
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'location'], menu: 'Master Location', icon: 'looks_5'},
-      <MenuModel> { ...createMenu, selector: [this.masterDataRootSelector, 'warehouse'], menu: 'Master Gudang', icon: 'looks_5'}
+      <MenuModel> { ...createMenu, url: '/app/master/unit', selector: [this.masterDataRootSelector, 'unit'], menu: 'Unit', icon: 'meeting_room'},
+      <MenuModel> { ...createMenu, url: '/app/master/lokasi', selector: [this.masterDataRootSelector, 'lokasi'], menu: 'Lokasi', icon: 'map'},
+      <MenuModel> { ...createMenu, url: '/app/master/supplier', selector: [this.masterDataRootSelector, 'supplier'], menu: 'Supplier', icon: 'local_shipping'},
+      <MenuModel> { ...createMenu, url: '/app/master/category', selector: [this.masterDataRootSelector, 'category'], menu: 'Kategori', icon: 'category'},
+      <MenuModel> { ...createMenu, url: '/app/master/pelanggan', selector: [this.masterDataRootSelector, 'pelanggan'], menu: 'Pelanggan', icon: 'accessibility'},
+      <MenuModel> { ...createMenu, url: '/app/master/karyawan', selector: [this.masterDataRootSelector, 'karyawan'], menu: 'Karyawan', icon: 'supervisor_account'},
+      <MenuModel> { ...createMenu, url: '/app/master/gudang', selector: [this.masterDataRootSelector, 'gudang'], menu: 'Gudang', icon: 'store_mall_directory'},
+      <MenuModel> { ...createMenu, url: '/app/master/warna', selector: [this.masterDataRootSelector, 'warna'], menu: 'Warna', icon: 'color_lens'},
+      <MenuModel> { ...createMenu, url: '/app/master/item', selector: [this.masterDataRootSelector, 'item'], menu: 'Item', icon: 'local_laundry_service'},
     ]
   };
+
+  private po = <MenuModel> { ...createMenu, url: '/app/po', selector: ['po'], menu: 'Pemesanan', icon: 'account_balance_wallet'};
+
+  private pr = <MenuModel> { ...createMenu, url: '/app/pr', selector: ['pr'], menu: 'Permintaan', icon: 'chrome_reader_mode'};
 
   private administrator = <MenuModel> { ...createMenu, selector: ['administrator'], menu: 'Administrator', icon: 'supervised_user_circle'};
 
@@ -73,8 +78,10 @@ export class MenuList {
   getMenus() {
     return [
       this.home, // menu home
-      this.mainData, // menu main data
+      // this.mainData, // menu main data
       this.masterData, // menu master data
+      this.pr,
+      this.po,
       this.administrator // menu administrator
     ];
   }

@@ -3,7 +3,7 @@ import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {masterLokasiErrorStateMatchers, masterLokasiForm} from '../../../../inits/master/master-lokasi-init';
 import {MasterLokasiService} from '../../../../services/master/master-lokasi/master-lokasi.service';
@@ -37,7 +37,7 @@ export class MasterLokasiDialogComponent extends DialogUtil
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterLokasiService.postData(value).pipe(first()).subscribe(
+      this.masterLokasiService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

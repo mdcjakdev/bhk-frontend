@@ -1,13 +1,15 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
+  DateAdapter,
+  MAT_DIALOG_DATA,
   MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
-  MatChipsModule,
+  MatChipsModule, MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
   MatExpansionModule,
@@ -44,6 +46,9 @@ import {MasterKaryawanService} from '../../services/master/master-karyawan/maste
 import {PenggunaService} from '../../services/administrator/pengguna/pengguna.service';
 import {PermintaanPembelianService} from '../../services/pr/permintaan-pembelian.service';
 import {ServerService} from '../../services/server.service';
+import {MiddlewareService} from '../../shared/middleware.service';
+import {DashboardSharedService} from '../../services/dashboard-shared.service';
+import {AppDateAdapter} from '../../shared/app-date-adapter';
 
 
 @NgModule({
@@ -52,7 +57,14 @@ import {ServerService} from '../../services/server.service';
   ],
   imports: [
     CommonModule,
+
+    MatDatepickerModule,
+    MatNativeDateModule,
+
+
     HttpClientModule,
+
+    FormsModule,
 
     ReactiveFormsModule,
 
@@ -97,18 +109,16 @@ import {ServerService} from '../../services/server.service';
 
   ],
   providers: [
-    MasterUnitService,
-    MasterCategoryService,
-    MasterSupplierService,
-    MasterPelangganService,
-    MasterLokasiService,
-    MasterGudangService,
-    MasterWarnaService,
-    MasterItemService,
-    MasterKaryawanService,
+    { provide: HTTP_INTERCEPTORS, useClass: MiddlewareService, multi: true },
 
-    PenggunaService,
-    PermintaanPembelianService,
+    {
+      provide: MAT_DIALOG_DATA, // providing untuk data inject ke dialog
+      useValue: {} // Add any data you wish to test if it is passed/used correctly
+    },
+    // { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+    { provide: DateAdapter, useClass: AppDateAdapter },
+
+
     ServerService
 
 
@@ -118,9 +128,14 @@ import {ServerService} from '../../services/server.service';
   exports: [
     ElementFocusDirective,
 
+    MatDatepickerModule,
+    MatNativeDateModule,
+
     HttpClientModule,
 
     ReactiveFormsModule,
+
+    FormsModule,
 
     MatDialogModule,
 

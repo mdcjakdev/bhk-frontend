@@ -7,7 +7,7 @@ import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {AppErrorStateMatcher, SUCCESS} from '../../../../shared/utils';
 import {ServerService} from '../../../../services/server.service';
 import {PermintaanPembelianService} from '../../../../services/pr/permintaan-pembelian.service';
-import {permintaanPembelianDisables, permintaanPembelianErrorStateMatchers, permintaanPembelianForm} from '../../../../inits/pr/pr-init';
+import {permintaanPembelianErrorStateMatchers, permintaanPembelianForm} from '../../../../inits/pr/pr-init';
 import {FormControl, Validators} from '@angular/forms';
 import {SelectLazy} from '../../../../shared/select-lazy';
 import {Pengguna} from '../../../../inits/administrator/pengguna-init';
@@ -42,7 +42,6 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
 
 
   constructor(public snackBar: MatSnackBar,
-              public serverService: ServerService,
               public penggunaService: PenggunaService,
               public permintaanPembelianService: PermintaanPembelianService,
               dialogRef: MatDialogRef<PermintaanPembelianDialogComponent>,

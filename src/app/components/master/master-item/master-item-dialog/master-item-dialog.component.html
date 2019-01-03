@@ -295,7 +295,7 @@
           <!--nama item-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Item</mat-label>
-            <input (keyup)="generateNamaKain()" matInput placeholder="Nama Item" formControlName="namaItem" required
+            <input (keyup)="generateNamaKain()" autocomplete="off"  matInput placeholder="Nama Item" formControlName="namaItem" required
                    [errorStateMatcher]="stateMatchers.namaItem.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'namaItem').hasError('required')">{{stateMatchers.namaItem.message}}</mat-error>

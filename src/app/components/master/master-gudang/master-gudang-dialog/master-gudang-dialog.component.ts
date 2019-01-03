@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import {DATE_PATTERN} from '../../../../shared/app-date-adapter';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {MasterGudangService} from '../../../../services/master/master-gudang/master-gudang.service';
 import {masterGudangErrorStateMatchers, masterGudangForm} from '../../../../inits/master/master-gudang-init';
@@ -31,7 +31,6 @@ export class MasterGudangDialogComponent extends DialogUtil
   lokasiFailToFetch = false;
 
 
-
   constructor(public snackBar: MatSnackBar,
               public masterGudangService: MasterGudangService,
               public masterLokasiService: MasterLokasiService,
@@ -51,7 +50,6 @@ export class MasterGudangDialogComponent extends DialogUtil
   }
 
 
-
   simpanButtonCondition(formCondition) {
     if (this.isInsert()) {
       return !formCondition;
@@ -61,7 +59,7 @@ export class MasterGudangDialogComponent extends DialogUtil
   }
 
   isLokasiEnabled() {
-    return !(<FormGroup> this.form.controls['lokasi']).controls['uuid'].disabled;
+    return !(<FormGroup>this.form.controls['lokasi']).controls['uuid'].disabled;
   }
 
   refreshLokasi() {
@@ -99,12 +97,12 @@ export class MasterGudangDialogComponent extends DialogUtil
                 }
 
                 if (this.isInsert()) {
-                  (<FormGroup> this.form.controls['lokasi']).controls['uuid'].enable();
+                  (<FormGroup>this.form.controls['lokasi']).controls['uuid'].enable();
                 } else if (this.isUpdate()) {
                   if (this.isLokasiUuidTrue) {
-                    (<FormGroup> this.form.controls['lokasi']).controls['uuid'].enable();
+                    (<FormGroup>this.form.controls['lokasi']).controls['uuid'].enable();
                   } else {
-                    (<FormGroup> this.form.controls['lokasi']).controls['uuid'].disable();
+                    (<FormGroup>this.form.controls['lokasi']).controls['uuid'].disable();
                   }
                 }
 
@@ -125,13 +123,15 @@ export class MasterGudangDialogComponent extends DialogUtil
           this.lokasiFailToFetch = true;
         }
       );
-    }, 0)
+    }, 0);
   }
 
   date(v) {
     moment.locale('id');
     return moment(v).format(DATE_PATTERN);
   }
+
+
 
   /**
    * Funsi yang digunakan untuk menyimpan data
@@ -142,7 +142,7 @@ export class MasterGudangDialogComponent extends DialogUtil
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterGudangService.postData(value).pipe(first()).subscribe(
+      this.masterGudangService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

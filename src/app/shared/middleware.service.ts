@@ -12,8 +12,6 @@ export class MiddlewareService implements HttpInterceptor {
   constructor(public snackBar: MatSnackBar) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-
     return next.handle(req).pipe(
       catchError(
         error => {

@@ -180,8 +180,12 @@
 
 // end of cusomize tab
 
-::ng-deep .row {
-  height: 450px;
+.row-height {
+  height: 450px !important;
+}
+
+::ng-deep .row-permintaan {
+  height: 450px !important;
   padding: 15px 20px 0px 10px;
 }
 

@@ -1,14 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {masterCategoryErrorStateMatchers, masterCategoryForm, masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {SUCCESS} from '../../../../shared/utils';
-import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
+import {delayHttpRequest, openAppSnackbar, SNACKBAR_WARNING_STYLE} from '../../../../shared/constants';
 import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
 import {defaultColor, masterWarnaBarcodeForm, masterWarnaErrorStateMatchers, masterWarnaForm} from '../../../../inits/master/master-warna';
-import {FormControl} from '@angular/forms';
+import {FormArray, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-master-warna-dialog',
@@ -56,12 +55,17 @@ export class MasterWarnaDialogComponent extends DialogUtil
    * @param value: data
    */
   save(value?): void {
-    // console.log(value)
+    // jika tidak ada barcode yang di daftarkan
+    if (this.barcodeCount() === 0 ) {
+      openAppSnackbar(this.snackBar, 'Barcode belum anda inputkan ...', SNACKBAR_WARNING_STYLE);
+      return;
+    }
+
     this.dialogRef.disableClose = true;
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterWarnaService.postData(value).pipe(first()).subscribe(
+      this.masterWarnaService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
@@ -74,6 +78,10 @@ export class MasterWarnaDialogComponent extends DialogUtil
         }
       );
     }, delayHttpRequest );
+  }
+
+  barcodeCount() {
+    return (<FormArray> this.form.controls['barcode']).length;
   }
 
 

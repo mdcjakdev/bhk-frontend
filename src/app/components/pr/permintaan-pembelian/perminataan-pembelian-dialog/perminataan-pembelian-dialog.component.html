@@ -17,110 +17,8 @@
   </h4>
 
   <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
-    <div id="table-detail">
-      <table class="full-width-table">
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td style="width: 160px">
-            <strong>Nama Gudang</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.nama}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td>
-            <strong>Alamat</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.alamat}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td>
-            <strong>Auto Replenish</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.autoReplenish}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td>
-            <strong>Lokasi</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.lokasi.namaLokasi}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td>
-            <strong>Tanggal Pengoperasioan</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{date(data.data.tanggalMulai)}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td>
-            <strong>Kode</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.kode}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td>
-            <strong>Telepon</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.telepon}}
-          </td>
-        </tr>
 
 
-      </table>
-    </div>
   </mat-dialog-content>
 
 
@@ -139,7 +37,7 @@
           </ng-template>
           <div>
             <div class="container-row">
-              <div class="row">
+              <div class="row row-permintaan">
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                   <mat-form-field [appearance]="formFieldAppearance">
                     <mat-select placeholder="Jenis Permintaan Pembelian"
@@ -172,7 +70,7 @@
             <span class="mat-tab-label-text">Data Permintaan Pembelian</span>
           </ng-template>
           <div class="container-row">
-            <div class="row">
+            <div class="row row-permintaan">
               <form [formGroup]="form">
                 <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 
@@ -207,7 +105,7 @@
                   <!--salesman-->
                   <mat-form-field formGroupName="salesman" [appearance]="formFieldAppearance">
                     <mat-select #selectSalesman
-                                [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.waitingLoadMore ? 'Memuat data salesman ......': 'Gagal memuat data salesman ....' )"
+                                [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......' )"
                                 formControlName="uuid"
                                 [errorStateMatcher]="stateMatchers.salesman.matcher" [required]="salesmanLazy.isEnabled()">
                       <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
@@ -261,7 +159,7 @@
             <span class="mat-tab-label-text">Pratinjau</span>
           </ng-template>
           <div class="container-row">
-            <div class="row">
+            <div class="row row-permintaan">
               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <mat-form-field [appearance]="formFieldAppearance">
                   <mat-label>Kategori</mat-label>

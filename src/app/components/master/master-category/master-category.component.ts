@@ -10,7 +10,8 @@ import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {MasterCategoryDialogComponent} from './master-category-dialog/master-category-dialog.component';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {masterCategoryInit} from '../../../inits/master/master-category-init';
-import {openAppSnackbar, SNACKBAR_ERROR_STYLE, UUID_COLUMN} from '../../../shared/constants';
+import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-category',
@@ -42,16 +43,15 @@ export class MasterCategoryComponent
   selectedValue: any = null;
   private isRightClick;
 
-  constructor(private masterCategoryHttpService: MasterCategoryService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterCategoryHttpService: MasterCategoryService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
-
-
-
 
 
   /** menghilangkan hover style pada row jika menu telah tertutup */
@@ -71,7 +71,7 @@ export class MasterCategoryComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -80,7 +80,7 @@ export class MasterCategoryComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -93,12 +93,12 @@ export class MasterCategoryComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**
@@ -109,7 +109,7 @@ export class MasterCategoryComponent
       width: (action === Action.DELETE) ? '250px' : '500px',
       data: {action: action, data: data},
       autoFocus: false,
-      position: { bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px' }
+      position: {bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px'}
     });
 
     // callback closing dari dialog

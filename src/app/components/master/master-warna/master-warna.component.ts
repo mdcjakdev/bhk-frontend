@@ -11,6 +11,7 @@ import {MasterWarnaService} from '../../../services/master/master-warna/master-w
 import {masterWarnaInit} from '../../../inits/master/master-warna';
 import {MasterWarnaDialogComponent} from './master-warna-dialog/master-warna-dialog.component';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-warna',
@@ -42,12 +43,15 @@ export class MasterWarnaComponent
   private isRightClick;
 
 
-  constructor(private masterWarnaService: MasterWarnaService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterWarnaService: MasterWarnaService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
+
   }
 
 
@@ -58,6 +62,11 @@ export class MasterWarnaComponent
   }
 
   ngOnInit() {
+    // /* subscribe parameter yang di sharing dari dashboard*/
+    // this.bhkSharedService.scrolledByUser.subscribe(value => this.scrolled = value);
+    // this.bhkSharedService.sideNav.subscribe(value => this.sideNav = value);
+    // /**/
+
     this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
   }
@@ -68,7 +77,7 @@ export class MasterWarnaComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -77,7 +86,7 @@ export class MasterWarnaComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -90,12 +99,12 @@ export class MasterWarnaComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**
@@ -106,7 +115,7 @@ export class MasterWarnaComponent
       width: (action === Action.DELETE) ? '250px' : '500px',
       data: {action: action, data: data},
       autoFocus: false,
-      position: { bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px' }
+      position: {bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px'}
     });
 
     // callback closing dari dialog

@@ -13,6 +13,7 @@ import {masterSupplierInit} from '../../../inits/master/master-supplier';
 import * as moment from 'moment';
 import {DATE_PATTERN} from '../../../shared/app-date-adapter';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-supplier',
@@ -38,18 +39,20 @@ export class MasterSupplierComponent
     displayedColumns: ['uuid', 'nama', 'picName', 'kodeSupplier', 'email', 'telepon'],
     displayedHeaders: ['No', 'Nama', 'PIC', 'Kode Supplier', 'Email', 'Telepon'],
     levelsOnData: [['uuid'], ['nama'], ['picName'], ['kodeSupplier'], ['email'], ['telepon']],
-    isStringDataTypes: [true, true, true, true,  true, true]
+    isStringDataTypes: [true, true, true, true, true, true]
   };
   selectedValue: any = null;
   private isRightClick;
 
 
-  constructor(private masterSupplierService: MasterSupplierService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterSupplierService: MasterSupplierService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
   date(v) {
@@ -74,7 +77,7 @@ export class MasterSupplierComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -83,7 +86,7 @@ export class MasterSupplierComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -96,12 +99,12 @@ export class MasterSupplierComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**
@@ -112,7 +115,7 @@ export class MasterSupplierComponent
       width: (action === Action.DELETE) ? '250px' : '500px',
       data: {action: action, data: data},
       autoFocus: false,
-      position: { bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px' }
+      position: {bottom: '50px', top: (action === Action.DELETE) ? '150px' : '50px'}
     });
 
     // callback closing dari dialog

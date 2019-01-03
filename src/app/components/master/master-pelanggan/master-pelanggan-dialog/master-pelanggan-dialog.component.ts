@@ -3,7 +3,7 @@ import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {masterPelangganErrorStateMatchers, masterPelangganForm, tipePelanggan} from '../../../../inits/master/master-pelanggan-init';
 import {MasterPelangganService} from '../../../../services/master/master-pelanggan/master-pelanggan.service';
@@ -38,7 +38,7 @@ export class MasterPelangganDialogComponent extends DialogUtil
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterPelangganService.postData(value).pipe(first()).subscribe(
+      this.masterPelangganService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

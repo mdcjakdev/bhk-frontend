@@ -5,7 +5,7 @@ import {MasterCategoryService} from '../../../../services/master/master-category
 import {masterCategoryErrorStateMatchers, masterCategoryForm, masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 
 @Component({
@@ -47,7 +47,7 @@ export class MasterCategoryDialogComponent extends DialogUtil
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterCategoryService.postData(value).pipe(first()).subscribe(
+      this.masterCategoryService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

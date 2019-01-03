@@ -14,6 +14,7 @@ import {Ui} from '../../../shared/ui';
 import {MasterKaryawanService} from '../../../services/master/master-karyawan/master-karyawan.service';
 import {masterKaryawanInit} from '../../../inits/master/master-karyawan-init';
 import {MasterKaryawanDialogComponent} from './master-karyawan-dialog/master-karyawan-dialog.component';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-karyawan',
@@ -46,12 +47,14 @@ export class MasterKaryawanComponent
   private isRightClick;
 
 
-  constructor(private masterKaryawanService: MasterKaryawanService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterKaryawanService: MasterKaryawanService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
 
@@ -72,7 +75,7 @@ export class MasterKaryawanComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -81,7 +84,7 @@ export class MasterKaryawanComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -94,12 +97,12 @@ export class MasterKaryawanComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**

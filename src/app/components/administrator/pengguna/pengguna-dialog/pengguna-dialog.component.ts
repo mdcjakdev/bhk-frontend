@@ -5,7 +5,7 @@ import {FormGroup} from '@angular/forms';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {PenggunaService} from '../../../../services/administrator/pengguna/pengguna.service';
 import {MasterKaryawanService} from '../../../../services/master/master-karyawan/master-karyawan.service';
 import {penggunaErrorStateMatchers, penggunaForm} from '../../../../inits/administrator/pengguna-init';
@@ -138,7 +138,7 @@ export class PenggunaDialogComponent extends DialogUtil
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.penggunaService.postData(value).pipe(first()).subscribe(
+      this.penggunaService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

@@ -4,7 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {masterSupplierErrorStateMatchers, masterSupplierForm} from '../../../../inits/master/master-supplier';
 import {MasterSupplierService} from '../../../../services/master/master-supplier/master-supplier.service';
@@ -46,7 +46,7 @@ export class MasterSupplierDialogComponent extends DialogUtil
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterSupplier.postData(value).pipe(first()).subscribe(
+      this.masterSupplier.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

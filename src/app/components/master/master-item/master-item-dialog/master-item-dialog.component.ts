@@ -1,16 +1,16 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {
   MAT_DIALOG_DATA,
   MatAutocomplete,
-  MatAutocompleteSelectedEvent, MatAutocompleteTrigger,
-  MatChipInputEvent,
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
   MatDialogRef,
   MatSnackBar
 } from '@angular/material';
 import {Ui} from '../../../../shared/ui';
-import {first, map, startWith} from 'rxjs/operators';
-import {SUCCESS} from '../../../../shared/utils';
+import {first} from 'rxjs/operators';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar, SNACKBAR_WARNING_STYLE} from '../../../../shared/constants';
 import {MasterItemService} from '../../../../services/master/master-item/master-item.service';
 import {MasterCategoryService} from '../../../../services/master/master-category/master-category.service';
@@ -21,10 +21,9 @@ import {
   masterItemForm,
   masterItemNamaAliasForm
 } from '../../../../inits/master/master-item';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormGroup} from '@angular/forms';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Observable} from 'rxjs';
 import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
 import {MasterWarna, masterWarnaForm} from '../../../../inits/master/master-warna';
 
@@ -390,7 +389,7 @@ export class MasterItemDialogComponent extends DialogUtil
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterItemService.postData(value).pipe(first()).subscribe(
+      this.masterItemService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

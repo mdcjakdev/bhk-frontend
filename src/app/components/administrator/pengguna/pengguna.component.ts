@@ -2,18 +2,16 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ComponentUtil} from '../../../shared/component-util';
 import {AppTableDataSource} from '../../../shared/table-data-source';
-import {MasterKaryawanService} from '../../../services/master/master-karyawan/master-karyawan.service';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
-import {masterKaryawanInit} from '../../../inits/master/master-karyawan-init';
 import {Action} from '../../../shared/action.enum';
-import {MasterKaryawanDialogComponent} from '../../master/master-karyawan/master-karyawan-dialog/master-karyawan-dialog.component';
 import {Ui} from '../../../shared/ui';
 import {PenggunaService} from '../../../services/administrator/pengguna/pengguna.service';
 import {penggunaInit} from '../../../inits/administrator/pengguna-init';
 import {PenggunaDialogComponent} from './pengguna-dialog/pengguna-dialog.component';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-pengguna',
@@ -46,12 +44,14 @@ export class PenggunaComponent
   private isRightClick;
 
 
-  constructor(private penggunaService: PenggunaService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private penggunaService: PenggunaService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
 
@@ -72,7 +72,7 @@ export class PenggunaComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -81,7 +81,7 @@ export class PenggunaComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -94,12 +94,12 @@ export class PenggunaComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**

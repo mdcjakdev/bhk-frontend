@@ -5,7 +5,7 @@ import {masterUnitErrorStateMatchers, masterUnitForm} from '../../../../inits/ma
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
-import {SUCCESS} from '../../../../shared/utils';
+import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {MasterKaryawanService} from '../../../../services/master/master-karyawan/master-karyawan.service';
 import {masterKaryawanErrorStateMatchers, masterKaryawanForm, tipeIdentitas} from '../../../../inits/master/master-karyawan-init';
 
@@ -40,7 +40,7 @@ export class MasterKaryawanDialogComponent
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterKaryawanService.postData(value).pipe(first()).subscribe(
+      this.masterKaryawanService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

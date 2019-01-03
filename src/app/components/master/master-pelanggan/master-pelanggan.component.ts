@@ -12,6 +12,7 @@ import {MasterPelangganService} from '../../../services/master/master-pelanggan/
 import {MasterPelangganDialogComponent} from './master-pelanggan-dialog/master-pelanggan-dialog.component';
 import {masterPelangganInit} from '../../../inits/master/master-pelanggan-init';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-pelanggan',
@@ -43,12 +44,14 @@ export class MasterPelangganComponent
   private isRightClick;
 
 
-  constructor(private masterPelangganService: MasterPelangganService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterPelangganService: MasterPelangganService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
   /** menghilangkan hover style pada row jika menu telah tertutup */
@@ -68,7 +71,7 @@ export class MasterPelangganComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -77,7 +80,7 @@ export class MasterPelangganComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -90,12 +93,12 @@ export class MasterPelangganComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**

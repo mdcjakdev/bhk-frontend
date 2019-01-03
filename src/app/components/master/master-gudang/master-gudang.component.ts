@@ -2,22 +2,19 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ComponentUtil} from '../../../shared/component-util';
 import {AppTableDataSource} from '../../../shared/table-data-source';
-import {MasterSupplierService} from '../../../services/master/master-supplier/master-supplier.service';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
 import {DATE_PATTERN} from '../../../shared/app-date-adapter';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
-import {masterSupplierInit} from '../../../inits/master/master-supplier';
 import {Action} from '../../../shared/action.enum';
-import {MasterSupplierDialogComponent} from '../master-supplier/master-supplier-dialog/master-supplier-dialog.component';
 import {Ui} from '../../../shared/ui';
 import {MasterGudangService} from '../../../services/master/master-gudang/master-gudang.service';
 import {masterGudangDisables, masterGudangInit} from '../../../inits/master/master-gudang-init';
-import {MasterLokasiService} from '../../../services/master/master-lokasi/master-lokasi.service';
 import {MasterGudangDialogComponent} from './master-gudang-dialog/master-gudang-dialog.component';
 import {momentParsingDate} from '../../../shared/utils';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
   selector: 'app-master-gudang',
@@ -42,19 +39,21 @@ export class MasterGudangComponent
   tableProperties = {
     displayedColumns: ['uuid', 'nama', 'kode', 'lokasi', 'tanggalMulai'],
     displayedHeaders: ['No', 'Nama Gudang', 'Kode', 'Lokasi', 'Tanggal Pengoperasian'],
-    levelsOnData: [['uuid'], ['nama'], ['kode'], ['lokasi', 'namaLokasi'], ['tanggalMulai'] ],
-    isStringDataTypes: [true, true, true, true,  true]
+    levelsOnData: [['uuid'], ['nama'], ['kode'], ['lokasi', 'namaLokasi'], ['tanggalMulai']],
+    isStringDataTypes: [true, true, true, true, true]
   };
   selectedValue: any = null;
   private isRightClick;
 
 
-  constructor(private masterGudangService: MasterGudangService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
-    super(changeDetectorRef, media);
+  constructor(
+    private bhkSharedService: DashboardSharedService,
+    private masterGudangService: MasterGudangService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog) {
+    super(bhkSharedService, changeDetectorRef, media);
   }
 
   date(v) {
@@ -89,7 +88,7 @@ export class MasterGudangComponent
     } else {
       openAppSnackbar(this.snackBar, error.error.message, SNACKBAR_ERROR_STYLE, 2000);
     }
-  }
+  };
 
   /**
    * Callback ketika proses pengambilan data ke server berhasil
@@ -98,7 +97,7 @@ export class MasterGudangComponent
   callbackGetDataSuccess =
     (response) => {
       this.dataSource = new AppTableDataSource(response['content'], this.tableProperties, this.paginator, this.sort);
-    }
+    };
 
 
   /**
@@ -111,12 +110,12 @@ export class MasterGudangComponent
     this.isRightClick = true;
     this.selectedValue = row;
     this.showTableMenuOnRightClick(event, this.menuData);
-  }
+  };
 
   onTableLeftClick = (row) => {
     this.isRightClick = false;
     this.selectedValue = (this.selectedValue === row ? null : row);
-  }
+  };
 
 
   /**
@@ -127,7 +126,7 @@ export class MasterGudangComponent
       width: (action === Action.DELETE) ? '250px' : '500px',
       data: {action: action, data: data, disables: {...masterGudangDisables, lokasi: true}},
       autoFocus: false,
-      position: { bottom: '40px', top: (action === Action.DELETE) ? '150px' : '40px' }
+      position: {bottom: '40px', top: (action === Action.DELETE) ? '150px' : '40px'}
     });
 
     // callback closing dari dialog

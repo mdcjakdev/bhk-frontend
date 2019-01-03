@@ -13,7 +13,7 @@ export const apiPort = '8000';
 // export const apiPort = '5000';
 
 export const delayHttpRequest = 200;
-export const delayAnotherProcess = 3000;
+export const delayAnotherProcess = 1000;
 
 export const defaultNavSideBarSize = 250;
 export const defaultMainContentPadding = 35;
@@ -27,6 +27,7 @@ export const SNACKBAR_WARNING_STYLE = 'warning-snackbar';
  * Buat menu default
  */
 export const createMenu = <MenuModel> {
+  url: undefined,
   selector: [],
   menu: undefined,
   icon: undefined,

@@ -22,6 +22,38 @@ export function momentParsingDate(v) {
   return moment(v).format('LL');
 }
 
+/**
+ * Melakukan trim pada object data dari reactive form
+ */
+export function trimReactiveObject(object) {
+  let returnObject = {};
+
+  for (const k in object) {
+    if (object.hasOwnProperty(k)) {
+      if (typeof object[k] === 'string') {
+        returnObject = { ...returnObject, [k]: object[k].trim() };
+      } else if (typeof object[k] === 'object') {
+        if (object[k].length !== undefined) { // object array
+          const arrays = [];
+          for (const array of object[k]) {
+            arrays.push({...trimReactiveObject(array)});
+          }
+          returnObject = { ...returnObject, [k]: arrays };
+        } else { // normal object
+          returnObject = { ...returnObject, [k]: {...trimReactiveObject(object[k])} };
+        }
+      } else {
+        returnObject = { ...returnObject, [k]: object[k] };
+      }
+
+
+    }
+  }
+
+  return returnObject;
+}
+
+
 
 
 
