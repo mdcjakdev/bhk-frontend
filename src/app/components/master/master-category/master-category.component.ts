@@ -63,6 +63,9 @@ export class MasterCategoryComponent
   ngOnInit() {
     this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
+
+    /* set indicator, bahwa page telah berhasil di load */
+    this.bhkSharedService.addLoadingBarIndicator(false);
   }
 
   callbackGetDataError = (error) => {

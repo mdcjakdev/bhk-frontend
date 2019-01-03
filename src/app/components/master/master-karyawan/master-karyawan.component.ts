@@ -2,14 +2,11 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ComponentUtil} from '../../../shared/component-util';
 import {AppTableDataSource} from '../../../shared/table-data-source';
-import {MasterUnitService} from '../../../services/master/master-unit/master-unit.service';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
-import {masterUnitInit} from '../../../inits/master/master-unit-init';
 import {Action} from '../../../shared/action.enum';
-import {MasterUnitDialogComponent} from '../master-unit/master-unit-dialog/master-unit-dialog.component';
 import {Ui} from '../../../shared/ui';
 import {MasterKaryawanService} from '../../../services/master/master-karyawan/master-karyawan.service';
 import {masterKaryawanInit} from '../../../inits/master/master-karyawan-init';
@@ -67,6 +64,9 @@ export class MasterKaryawanComponent
   ngOnInit() {
     this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
+
+    /* set indicator, bahwa page telah berhasil di load */
+    this.bhkSharedService.addLoadingBarIndicator(false);
   }
 
   callbackGetDataError = (error) => {

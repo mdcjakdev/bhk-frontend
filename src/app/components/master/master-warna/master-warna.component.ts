@@ -62,13 +62,11 @@ export class MasterWarnaComponent
   }
 
   ngOnInit() {
-    // /* subscribe parameter yang di sharing dari dashboard*/
-    // this.bhkSharedService.scrolledByUser.subscribe(value => this.scrolled = value);
-    // this.bhkSharedService.sideNav.subscribe(value => this.sideNav = value);
-    // /**/
-
     this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
+
+    /* set indicator, bahwa page telah berhasil di load */
+    this.bhkSharedService.addLoadingBarIndicator(false);
   }
 
   callbackGetDataError = (error) => {

@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MenuList} from '../../shared/menu-list';
 import {ComponentUtil} from '../../shared/component-util';
@@ -13,7 +13,7 @@ import {Router} from '@angular/router';
 })
 export class BhkDashboardComponent
   extends ComponentUtil<any>
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit, AfterViewChecked {
 
   // mengambil instance dari menu list yang diinisialisasi
   menus = MenuList.getInstance();
@@ -26,8 +26,13 @@ export class BhkDashboardComponent
   constructor(
     private router: Router,
     private bhkSharedService: DashboardSharedService,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+    public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     super(bhkSharedService, changeDetectorRef, media);
+
+    // console.log('aaaaaaaaaaa')
+
+    // /* set indicator, bahwa page telah berhasil di load */
+    // this.bhkSharedService.addLoadingBarIndicator(true);
   }
 
   ngOnInit() {
@@ -38,9 +43,9 @@ export class BhkDashboardComponent
 
     // init menu awal yang terpilih
     this.menus.selectMenu(['app']);
+
     setTimeout(() => {
-      this.start = true;
-      setTimeout(() => this.start = false, 2000);
+      this.bhkSharedService.addLoadingBarIndicator(false);
     }, 2000);
 
     // passing element sidenavbar ke child
@@ -61,6 +66,12 @@ export class BhkDashboardComponent
     }
 
     if (routeUrl !== this.router.url) {
+        if (routeUrl !== "/app") {
+          /* mengaktifkan loading bar */
+          this.bhkSharedService.addLoadingBarIndicator(true);
+        }
+
+        /* navigate ke url yang dituju */
         this.router.navigate([routeUrl]);
     }
   }
@@ -87,6 +98,11 @@ export class BhkDashboardComponent
   onScroll(event) {
     // tambah nilai perubahan pada setiap aksi user yang melakukan scroll pada page
     this.bhkSharedService.addScrolledByUser(event.target.scrollTop);
+  }
+
+  ngAfterViewChecked(): void {
+    // console.log('asas')
+    this.changeDetectorRef.detectChanges();
   }
 
 }

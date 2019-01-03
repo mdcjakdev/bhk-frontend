@@ -5,9 +5,7 @@ import {AppTableDataSource} from '../../../shared/table-data-source';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
-import {masterSupplierInit} from '../../../inits/master/master-supplier';
 import {Action} from '../../../shared/action.enum';
-import {MasterPelangganDialogComponent} from '../master-pelanggan/master-pelanggan-dialog/master-pelanggan-dialog.component';
 import {Ui} from '../../../shared/ui';
 import {MasterLokasiService} from '../../../services/master/master-lokasi/master-lokasi.service';
 import {masterLokasiInit} from '../../../inits/master/master-lokasi-init';
@@ -66,6 +64,9 @@ export class MasterLokasiComponent
   ngOnInit() {
     this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
+
+    /* set indicator, bahwa page telah berhasil di load */
+    this.bhkSharedService.addLoadingBarIndicator(false);
   }
 
   callbackGetDataError = (error) => {

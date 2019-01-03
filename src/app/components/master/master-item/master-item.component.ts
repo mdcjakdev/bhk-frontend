@@ -10,7 +10,6 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MasterItemService} from '../../../services/master/master-item/master-item.service';
 import {masterItemDisables, masterItemInit} from '../../../inits/master/master-item';
 import {MasterItemDialogComponent} from './master-item-dialog/master-item-dialog.component';
-import {masterGudangDisables} from '../../../inits/master/master-gudang-init';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
@@ -64,6 +63,9 @@ export class MasterItemComponent
   ngOnInit() {
     this.dataSource = new AppTableDataSource([], this.tableProperties, this.paginator, this.sort);
     this.getData();
+
+    /* set indicator, bahwa page telah berhasil di load */
+    this.bhkSharedService.addLoadingBarIndicator(false);
   }
 
   callbackGetDataError = (error) => {
