@@ -1,7 +1,6 @@
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {FormGroup} from '@angular/forms';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
@@ -9,6 +8,8 @@ import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {PenggunaService} from '../../../../services/administrator/pengguna/pengguna.service';
 import {MasterKaryawanService} from '../../../../services/master/master-karyawan/master-karyawan.service';
 import {penggunaErrorStateMatchers, penggunaForm} from '../../../../inits/administrator/pengguna-init';
+import {SelectLazy} from '../../../../shared/select-lazy';
+import {MasterKaryawan} from '../../../../inits/master/master-karyawan-init';
 
 @Component({
   selector: 'app-pengguna-dialog',
@@ -16,19 +17,13 @@ import {penggunaErrorStateMatchers, penggunaForm} from '../../../../inits/admini
   styleUrls: ['./pengguna-dialog.component.scss']
 })
 export class PenggunaDialogComponent extends DialogUtil
-  implements OnInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy {
 
   close = undefined;
-
   hidePassword = true;
 
-  dataKaryawan: any[] = [];
   @ViewChild('selectKaryawan') selectKaryawan;
-  karyawanPage = 0;
-  waitingLoadMoreKaryawan = false;
-  isLastKaryawan = false;
-  isKaryawanUuidTrue = false;
-  karyawanFailToFetch = false;
+  karyawanLazy: SelectLazy<MasterKaryawan>;
 
 
   constructor(public snackBar: MatSnackBar,
@@ -40,91 +35,41 @@ export class PenggunaDialogComponent extends DialogUtil
       data,
       penggunaForm(data.data, data.disables),
       penggunaErrorStateMatchers);
+
+    // init untuk data karyawan
+    this.karyawanLazy = new SelectLazy(
+      this.form,
+      'karyawan',
+      masterKaryawanService.http,
+      masterKaryawanService.getData,
+      data.data.karyawan.uuid,
+      this.isInsert());
   }
 
   ngOnDestroy(): void {
   }
 
+  simpanButtonCondition(formCondition) {
+    if (this.karyawanLazy.waitingLoadMore) {
+      return true;
+    }
+
+    if (this.isInsert()) {
+      return !(formCondition && !this.karyawanLazy.failToFetch);
+    } else {
+      return !(this.karyawanLazy.isUuidTrue && formCondition);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.karyawanLazy.select = this.selectKaryawan;
+  }
+
+
   ngOnInit() {
     if (this.isInsert() || this.isUpdate()) {
-      this._loadMoreKaryawan();
+      this.karyawanLazy._loadMore();
     }
-  }
-
-  isKaryawanEnabled() {
-    return !(<FormGroup> this.form.controls['karyawan']).controls['uuid'].disabled;
-  }
-
-  simpanButtonCondition(formCondition) {
-    if (this.isInsert()) {
-      return !formCondition;
-    } else {
-      return !(this.isKaryawanUuidTrue && formCondition);
-    }
-  }
-
-  refreshKaryawan() {
-    this.karyawanFailToFetch = false;
-    this.waitingLoadMoreKaryawan = false;
-    this.loadMoreKaryawan();
-  }
-
-  loadMoreKaryawan() {
-    this.selectKaryawan.open();
-    if (!this.waitingLoadMoreKaryawan) {
-      // ubah jadi status menunggu proses load lokasi selesai jadi true
-      this.waitingLoadMoreKaryawan = true;
-      setTimeout(() => {
-        this._loadMoreKaryawan();
-      }, 0);
-    }
-  }
-
-  _loadMoreKaryawan() {
-    setTimeout(() => {
-      this.masterKaryawanService.getData(this.karyawanPage, 3).subscribe(
-        (value: any) => {
-          this.karyawanPage++;
-          if (value !== undefined && value.content !== undefined) {
-            const d = value.content;
-            if (d !== undefined) {
-              this.dataKaryawan = [...this.dataKaryawan];
-              d.forEach(v => {
-                this.dataKaryawan.push(v);
-
-                // mengubah status pengambilan karyawan apakah sudah ditemukan atau belum
-                if (!this.isKaryawanUuidTrue) {
-                  this.isKaryawanUuidTrue = this.data.data['karyawan'].uuid === v.uuid;
-                }
-
-                if (this.isInsert()) {
-                  (<FormGroup> this.form.controls['karyawan']).controls['uuid'].enable();
-                } else if (this.isUpdate()) {
-                  if (this.isKaryawanUuidTrue) {
-                    (<FormGroup> this.form.controls['karyawan']).controls['uuid'].enable();
-                  } else {
-                    (<FormGroup> this.form.controls['karyawan']).controls['uuid'].disable();
-                  }
-                }
-
-              });
-              this.isLastKaryawan = value.last;
-
-              // jika proses update, load trs datanya sampai dengan sama lokasi dari data yang akan diupdate
-              if (!this.isLastKaryawan && this.isUpdate() && !this.isKaryawanUuidTrue) {
-                this._loadMoreKaryawan();
-              }
-            }
-          }
-          this.waitingLoadMoreKaryawan = false;
-
-
-        },
-        error => {
-          this.karyawanFailToFetch = true;
-        }
-      );
-    }, 0)
   }
 
 

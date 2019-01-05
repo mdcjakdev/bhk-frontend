@@ -7,7 +7,7 @@ export const UUID_COLUMN = 'uuid';
 
 // export const apiHost = 'http://206.189.144.26';
 export const apiHost = 'http://localhost';
-// export const apiHost = 'http://192.168.0.24';
+// export const apiHost = 'http://192.168.0.29';
 // export const apiPort = '4200';
 export const apiPort = '8000';
 // export const apiPort = '5000';

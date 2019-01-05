@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
@@ -8,9 +8,10 @@ import {first} from 'rxjs/operators';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {MasterGudangService} from '../../../../services/master/master-gudang/master-gudang.service';
-import {masterGudangErrorStateMatchers, masterGudangForm} from '../../../../inits/master/master-gudang-init';
+import {masterGudangErrorStateMatchers, masterGudangForm, tipeGudang} from '../../../../inits/master/master-gudang-init';
 import {MasterLokasiService} from '../../../../services/master/master-lokasi/master-lokasi.service';
-import {FormGroup} from '@angular/forms';
+import {SelectLazy} from '../../../../shared/select-lazy';
+import {MasterLokasi} from '../../../../inits/master/master-lokasi-init';
 
 @Component({
   selector: 'app-master-gudang-dialog',
@@ -18,17 +19,21 @@ import {FormGroup} from '@angular/forms';
   styleUrls: ['./master-gudang-dialog.component.scss']
 })
 export class MasterGudangDialogComponent extends DialogUtil
-  implements OnInit {
+  implements OnInit, AfterViewInit {
 
   close = undefined;
+  tipeGudang = tipeGudang;
 
-  dataLokasi: any[] = [];
+  public maskFax = ['(', '0', /[1-9]/, /\d/, ')', ' ',
+    /\d/, /\d/, /\d/, /\d/,  /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+  faxAndPhoneMasking = {
+    mask: this.maskFax,
+    guide: false,
+    placeholderChar: '\u2000'
+  };
+
   @ViewChild('selectLokasi') selectLokasi;
-  lokasiPage = 0;
-  waitingLoadMoreLokasi = false;
-  isLastLokasi = false;
-  isLokasiUuidTrue = false;
-  lokasiFailToFetch = false;
+  lokasiLazy: SelectLazy<MasterLokasi>;
 
 
   constructor(public snackBar: MatSnackBar,
@@ -40,91 +45,45 @@ export class MasterGudangDialogComponent extends DialogUtil
       data,
       masterGudangForm(data.data, data.disables),
       masterGudangErrorStateMatchers);
+
+    // init untuk data lokasi
+    this.lokasiLazy = new SelectLazy(
+      this.form,
+      'lokasi',
+      masterLokasiService.http,
+      masterLokasiService.getData,
+      data.data.lokasi.uuid,
+      this.isInsert());
+  }
+
+  ngAfterViewInit(): void {
+    // init select komponent dari lokasi
+    this.lokasiLazy.select = this.selectLokasi;
   }
 
 
+
   ngOnInit() {
+
     if (this.isInsert() || this.isUpdate()) {
-      this._loadMoreLokasi();
+      this.lokasiLazy._loadMore();
     }
   }
 
 
   simpanButtonCondition(formCondition) {
+    if (this.lokasiLazy.waitingLoadMore) {
+      return true;
+    }
+
     if (this.isInsert()) {
-      return !formCondition;
+      return !(formCondition && !this.lokasiLazy.failToFetch);
     } else {
-      return !(this.isLokasiUuidTrue && formCondition);
+      return !(this.lokasiLazy.isUuidTrue && formCondition);
     }
   }
 
-  isLokasiEnabled() {
-    return !(<FormGroup>this.form.controls['lokasi']).controls['uuid'].disabled;
-  }
 
-  refreshLokasi() {
-    this.lokasiFailToFetch = false;
-    this.waitingLoadMoreLokasi = false;
-    this.loadMoreLokasi();
-  }
-
-  loadMoreLokasi() {
-    this.selectLokasi.open();
-    if (!this.waitingLoadMoreLokasi) {
-      // ubah jadi status menunggu proses load lokasi selesai jadi true
-      this.waitingLoadMoreLokasi = true;
-      setTimeout(() => {
-        this._loadMoreLokasi();
-      }, 0);
-    }
-  }
-
-  _loadMoreLokasi() {
-    setTimeout(() => {
-      this.masterLokasiService.getData(this.lokasiPage, 3).subscribe(
-        (value: any) => {
-          this.lokasiPage++;
-          if (value !== undefined && value.content !== undefined) {
-            const d = value.content;
-            if (d !== undefined) {
-              this.dataLokasi = [...this.dataLokasi];
-              d.forEach(v => {
-                this.dataLokasi.push(v);
-
-                // mengubah status pengambilan lokasi apakah sudah ditemukan atau belum
-                if (!this.isLokasiUuidTrue) {
-                  this.isLokasiUuidTrue = this.data.data.lokasi.uuid === v.uuid;
-                }
-
-                if (this.isInsert()) {
-                  (<FormGroup>this.form.controls['lokasi']).controls['uuid'].enable();
-                } else if (this.isUpdate()) {
-                  if (this.isLokasiUuidTrue) {
-                    (<FormGroup>this.form.controls['lokasi']).controls['uuid'].enable();
-                  } else {
-                    (<FormGroup>this.form.controls['lokasi']).controls['uuid'].disable();
-                  }
-                }
-
-              });
-              this.isLastLokasi = value.last;
-
-              // jika proses update, load trs datanya sampai dengan sama lokasi dari data yang akan diupdate
-              if (!this.isLastLokasi && this.isUpdate() && !this.isLokasiUuidTrue) {
-                this._loadMoreLokasi();
-              }
-            }
-          }
-          this.waitingLoadMoreLokasi = false;
-
-
-        },
-        error => {
-          this.lokasiFailToFetch = true;
-        }
-      );
-    }, 0);
-  }
 
   date(v) {
     moment.locale('id');
@@ -132,17 +91,29 @@ export class MasterGudangDialogComponent extends DialogUtil
   }
 
 
+  getTipeGudang(value) {
+    for (const tipe of tipeGudang) {
+      if (tipe.value === value) {
+        return tipe.display;
+      }
+    }
+
+    return 'Unknown'
+  }
+
 
   /**
    * Funsi yang digunakan untuk menyimpan data
    * @param value: data
    */
   save(value?): void {
+    // console.log(value)
+
     this.dialogRef.disableClose = true;
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterGudangService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
+      this.masterGudangService.postData(trimReactiveObject(value, ['tanggalMulai'])).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

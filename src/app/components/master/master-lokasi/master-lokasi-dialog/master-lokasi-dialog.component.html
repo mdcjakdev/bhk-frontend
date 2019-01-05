@@ -71,13 +71,28 @@
 
           <!--Tipe Lokasi-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Tipe Lokasi</mat-label>
-            <input matInput autocomplete="off" placeholder="Tipe Lokasi" formControlName="tipeLokasi" required
-                   [errorStateMatcher]="stateMatchers.tipeLokasi.matcher">
+            <mat-select placeholder="Tipe Lokasi"
+                        formControlName="tipeLokasi"
+                        [errorStateMatcher]="stateMatchers.tipeLokasi.matcher" required>
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v" *ngFor="let v of tipeLokasi">
+                {{v}}
+              </mat-option>
+            </mat-select>
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'tipeLokasi').hasError('required')">
               {{stateMatchers.tipeLokasi.message}}</mat-error>
           </mat-form-field>
+
+          <!--<mat-form-field [appearance]="formFieldAppearance">-->
+            <!--<mat-label>Tipe Lokasi</mat-label>-->
+            <!--<input matInput autocomplete="off" placeholder="Tipe Lokasi" formControlName="tipeLokasi" required-->
+                   <!--[errorStateMatcher]="stateMatchers.tipeLokasi.matcher">-->
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'tipeLokasi').hasError('required')">-->
+              <!--{{stateMatchers.tipeLokasi.message}}</mat-error>-->
+          <!--</mat-form-field>-->
 
 
 

@@ -25,12 +25,22 @@ export function momentParsingDate(v) {
 /**
  * Melakukan trim pada object data dari reactive form
  */
-export function trimReactiveObject(object) {
+export function trimReactiveObject(object, skipProperties = []) {
   let returnObject = {};
 
   for (const k in object) {
     if (object.hasOwnProperty(k)) {
-      if (typeof object[k] === 'string') {
+      let find = false;
+      for (const skip of skipProperties) {
+        if (skip === k) {
+          find = true;
+          break;
+        }
+      }
+
+      if (find) { // jika di skip properti nya
+        returnObject = { ...returnObject, [k]: object[k] };
+      } else if (typeof object[k] === 'string') {
         returnObject = { ...returnObject, [k]: object[k].trim() };
       } else if (typeof object[k] === 'object') {
         if (object[k].length !== undefined) { // object array

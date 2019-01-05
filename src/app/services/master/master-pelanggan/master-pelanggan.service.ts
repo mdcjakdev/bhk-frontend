@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 @Injectable()
 export class MasterPelangganService {
 
-  constructor(private http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
   getData(page = 0, size = 10, http = this.http) {
     return http.get(apiHost + ':' + apiPort + '/api/master/pelanggan/?page=' + page + '&size=' + size);

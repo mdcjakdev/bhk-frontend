@@ -9,8 +9,6 @@ import {MasterUnitDialogComponent} from './master-unit-dialog/master-unit-dialog
 import {Action} from '../../../shared/action.enum';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {masterLokasiInit} from '../../../inits/master/master-lokasi-init';
-import {MasterLokasiDialogComponent} from '../master-lokasi/master-lokasi-dialog/master-lokasi-dialog.component';
 import {masterUnitInit} from '../../../inits/master/master-unit-init';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 import {DashboardSharedService} from '../../../services/dashboard-shared.service';
@@ -93,8 +91,21 @@ export class MasterUnitComponent
   /**
    * Service untuk mengambil data ke server
    */
-  getData = () => this.serviceGetData(this.masterUnitHttpService.getData(), this.callbackGetDataSuccess, this.callbackGetDataError);
+  getData = (page = this.pageIndex, size = this.pageSize) =>
+    this.serviceGetData(this.masterUnitHttpService.getData(page, size), this.callbackGetDataSuccess, this.callbackGetDataError);
 
+
+  onDataSizeChanged(pagination) {
+    if (pagination.pageIndex !== this.pageIndex) {
+      this.pageIndex = pagination.pageIndex;
+      this.pageSize = pagination.pageSize;
+    } else {
+      this.pageIndex = 0;
+      this.pageSize = pagination.pageSize;
+    }
+
+    this.getData();
+  }
 
   onTableRightClicked = (event, row) => {
     this.isRightClick = true;
@@ -139,6 +150,7 @@ export class MasterUnitComponent
   delete() {
     this.openDialogData(this.selectedValue, Action.DELETE);
   }
+
 
 
   tes2() {

@@ -18,6 +18,20 @@ export class MasterPelangganDialogComponent extends DialogUtil
 
   tipePelanggan = tipePelanggan;
   close = undefined;
+  public mask = ['(', '+', '6', '2', ')', ' ', /[1-9]/, /\d/, /\d/, '-', /\d/, /\d/,  /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+  hpMasking = {
+    mask: this.mask,
+    guide: false,
+    placeholderChar: '\u2000'
+  };
+
+  public maskFax = ['(', '0', /[1-9]/, /\d/, ')', ' ',
+    /\d/, /\d/, /\d/, /\d/,  /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+  faxAndPhoneMasking = {
+    mask: this.maskFax,
+    guide: false,
+    placeholderChar: '\u2000'
+  };
 
   constructor(public snackBar: MatSnackBar,
               public masterPelangganService: MasterPelangganService,

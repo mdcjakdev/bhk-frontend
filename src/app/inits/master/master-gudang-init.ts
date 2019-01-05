@@ -3,20 +3,36 @@ import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MasterLokasi} from './master-lokasi-init';
 
+export const tipeGudang = [
+  {
+    value: 1,
+    display: 'Commercial'
+  },
+  {
+    value: 2,
+    display: 'Transit'
+  },
+  {
+    value: 3,
+    display: 'Reject'
+  }
+];
+
 export interface MasterGudang extends AppAuditEntity {
   alamat?: string;
-  autoReplenish?: any;
+  autoReplenish?: boolean;
   kode?: string;
   lokasi?: MasterLokasi;
   nama?: string;
   tanggalMulai?: string;
   telepon?: string;
+  tipeGudang?: any;
 }
 
 export const masterGudangInit = {
   ...appAuditEntityInit,
   alamat: '',
-  autoReplenish: '',
+  autoReplenish: false,
   kode: '',
   lokasi: <MasterLokasi> {
     uuid: ''
@@ -24,6 +40,7 @@ export const masterGudangInit = {
   nama: '',
   tanggalMulai: '',
   telepon: '',
+  tipeGudang: ''
 };
 
 export const masterGudangDisables = {
@@ -34,6 +51,7 @@ export const masterGudangDisables = {
   nama: false,
   tanggalMulai: false,
   telepon: false,
+  tipeGudang: false
 };
 
 /** Init StateMatcher formcontrol Master Gudang */
@@ -66,6 +84,10 @@ export const masterGudangErrorStateMatchers = {
     matcher: new AppErrorStateMatcher(),
     message: 'Harap masukan nomor telepon'
   },
+  tipeGudang: {
+    matcher: new AppErrorStateMatcher(),
+    message: 'Tipe gudang tidak boleh kosong'
+  },
 };
 
 
@@ -85,6 +107,7 @@ export function masterGudangForm(init: MasterGudang = masterGudangInit,
     nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
     tanggalMulai: [{value: init.tanggalMulai, disabled: disables.tanggalMulai}, Validators.required],
     telepon: [{value: init.telepon, disabled: disables.telepon}, Validators.required],
+    tipeGudang: [{value: init.tipeGudang, disabled: disables.tipeGudang}, Validators.required],
   });
 
 }

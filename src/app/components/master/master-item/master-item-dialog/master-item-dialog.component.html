@@ -92,7 +92,7 @@
         </tr>
         <tr>
           <td>
-            <li><strong>Kode Alias Item</strong></li>
+            <li><strong>Kode Inventori</strong></li>
           </td>
           <td>
             <strong>:</strong>&nbsp;
@@ -226,7 +226,7 @@
         <!--gramasi-->
         <tr>
           <td>
-            <li><strong>Gramasi</strong></li>
+            <li><strong>Proses</strong></li>
           </td>
           <td>
             <strong>:</strong>&nbsp;
@@ -250,7 +250,7 @@
         <!--handfeel-->
         <tr>
           <td>
-            <li><strong>Handfeel</strong></li>
+            <li><strong>Tekstur</strong></li>
           </td>
           <td>
             <strong>:</strong>&nbsp;
@@ -282,7 +282,85 @@
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
+          <!--kategori-->
+          <mat-form-field formGroupName="kategori">
+            <mat-select #selectKategori
+                        [placeholder]="(kategoriLazy.isEnabled()) ? 'Kategori' : (kategoriLazy.failToFetch ? 'Gagal memuat data kategori ......' : 'Memuat data kategori ......')"
+                        formControlName="uuid"
+                        [errorStateMatcher]="stateMatchers.kategori.matcher" [required]="kategoriLazy.isEnabled()">
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.uuid" *ngFor="let v of kategoriLazy.data">
+                {{v.namaKategori}}
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="null" *ngIf="!kategoriLazy.isLast" (click)="kategoriLazy.refresh()" class="lebih-banyak">
+                <div *ngIf="!kategoriLazy.waitingLoadMore || kategoriLazy.failToFetch; else load">Muat lebih banyak
+                  ....
+                </div>
+                <ng-template #load>
+                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                    mode="indeterminate"></mat-progress-bar>
+                </ng-template>
+              </mat-option>
+            </mat-select>
+            <button *ngIf="kategoriLazy.failToFetch" matSuffix mat-icon-button matTooltip="Segarkan Kategori"
+                    (click)="kategoriLazy.refresh()"
+                    [matTooltipPosition]="'left'">
+              <mat-icon color="primary">refresh</mat-icon>
+            </button>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'kategori'), 'uuid').hasError('required')">
+              {{stateMatchers.kategori.message}}</mat-error>
+          </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--sub kategori-->
+          <mat-form-field formGroupName="subKategori">
+            <mat-select #selectKategori
+                        [placeholder]="(kategoriLazy.isEnabled()) ? 'Sub Kategori' : (kategoriLazy.failToFetch ? 'Gagal memuat data sub kategori ......' : 'Memuat data sub kategori ......')"
+                        formControlName="uuid"
+                        [errorStateMatcher]="stateMatchers.subKategori.matcher" [required]="kategoriLazy.isEnabled()">
+              <mat-option class="pilih">
+                --&nbsp; {{(kategoriLazy.dataChild['subKategori'].length === 0 ? 'Salah satu kategori harus terpilih' : 'Pilih salah satu')}}
+                &nbsp;--
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.uuid" *ngFor="let v of kategoriLazy.dataChild['subKategori']">
+                {{v.nama}}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'subKategori'), 'uuid').hasError('required')">
+              {{stateMatchers.subKategori.message}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--Kode-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode" formControlName="kode" required
+                   [errorStateMatcher]="stateMatchers.kode.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">{{stateMatchers.kode.message}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--Kode Inventori -->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode Inventori</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode Inventori" formControlName="kodeItemAlias" required
+                   [errorStateMatcher]="stateMatchers.kodeItemAlias.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeItemAlias').hasError('required')">
+              {{stateMatchers.kodeItemAlias.message}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <!--nama kain-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Kain</mat-label>
@@ -291,7 +369,9 @@
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'namaKain').hasError('required')">{{stateMatchers.namaKain.message}}</mat-error>
           </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <!--nama item-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Item</mat-label>
@@ -300,7 +380,9 @@
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'namaItem').hasError('required')">{{stateMatchers.namaItem.message}}</mat-error>
           </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <!--ukuran-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Ukuran</mat-label>
@@ -310,7 +392,9 @@
               *ngIf="reactiveFormUtil.formControl(form, 'ukuran').hasError('required')">
               {{stateMatchers.ukuran.message}}</mat-error>
           </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <!--benang-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Benang</mat-label>
@@ -320,7 +404,9 @@
               *ngIf="reactiveFormUtil.formControl(form, 'benang').hasError('required')">
               {{stateMatchers.benang.message}}</mat-error>
           </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <!--jenis kain-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Jenis Kain</mat-label>
@@ -330,220 +416,9 @@
               *ngIf="reactiveFormUtil.formControl(form, 'jenisKain').hasError('required')">
               {{stateMatchers.jenisKain.message}}</mat-error>
           </mat-form-field>
-
-          <!--Kode-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode</mat-label>
-            <input matInput autocomplete="off" placeholder="Kode" formControlName="kode" required
-                   [errorStateMatcher]="stateMatchers.kode.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">{{stateMatchers.kode.message}}</mat-error>
-          </mat-form-field>
-
-          <!--barcode-->
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 15px 0px 0px 0px">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px">
-              <a (click)="barcodeClick()">
-                <strong class="primary">Barcode
-                  &nbsp;
-                  {{(barcodeCount() > 0) ? ('(' + barcodeCount() + ')') : ''}}
-                </strong>
-              </a>
-              <button class="float-right"
-                      *ngIf="barcodeState === 'expanded'" mat-icon-button matTooltip="Tambah Barcode"
-                      [matTooltipPosition]="'left'"
-                      (click)="addNewBarcode(reactiveFormUtil.getFormArray('barcode', form))">
-                <mat-icon color="primary">add</mat-icon>
-              </button>
-            </div>
-            <div [@barcodeExpand]="barcodeState"
-                 formArrayName="barcode"
-                 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
-              <div *ngFor="let temp of reactiveFormUtil.getFormArrays('barcode', form); index as bar">
-                <mat-card id="barcode-card">
-                  <mat-card-content>
-                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                    <button mat-icon-button matTooltip="Hapus Barcode"
-                            [matTooltipPosition]="'below'"
-                            (click)="removeBarcode(reactiveFormUtil.getFormArray('barcode', form), bar)">
-                      <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
-                    </button>
-                    <!--</div>-->
-                    <div [formGroupName]="bar" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <input type="hidden" formControlName="uuid">
-
-                      <!--barcode-->
-                      <mat-form-field [appearance]="formFieldAppearance">
-                        <mat-label>Barcode</mat-label>
-                        <input appElementFocus
-                               [isInsert]="isInsert()"
-                               matInput placeholder="Barcode " formControlName="barcode" required
-                               [errorStateMatcher]="stateMatchers.barcode.barcode.matcher">
-
-                        <mat-error
-                          *ngIf="reactiveFormUtil.formControl(temp, 'barcode').hasError('required')">{{stateMatchers.barcode.barcode.message}}</mat-error>
-                      </mat-form-field>
-
-                    </div>
-
-                  </mat-card-content>
-                </mat-card>
-              </div>
-            </div>
-          </div>
-
-          <!--nama alias-->
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 15px 0px 20px 0px">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px">
-              <a (click)="aliasClick()">
-                <strong class="primary">Nama Alias
-                  &nbsp;
-                  {{(aliasCount() > 0) ? ('(' + aliasCount() + ')') : ''}}</strong>
-              </a>
-              <button class="float-right"
-                      *ngIf="aliasState === 'expanded'" mat-icon-button matTooltip="Tambah Nama Alias"
-                      [matTooltipPosition]="'left'"
-                      (click)="addNewNamaAlias(reactiveFormUtil.getFormArray('namaAlias', form))">
-                <mat-icon color="primary">add</mat-icon>
-              </button>
-            </div>
-            <div [@aliasExpand]="aliasState" formArrayName="namaAlias"
-                 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
-              <div *ngFor="let temp of reactiveFormUtil.getFormArrays('namaAlias', form); index as al">
-                <mat-card id="alias-card">
-
-                  <mat-card-content>
-                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-                    <button mat-icon-button matTooltip="Hapus Nama Alias"
-                            [matTooltipPosition]="'below'"
-                            (click)="removeNamaAlias(reactiveFormUtil.getFormArray('namaAlias', form), al)">
-                      <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
-                    </button>
-                    <!--</div>-->
-                    <div [formGroupName]="al" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <input type="hidden" formControlName="uuid">
-
-                      <!--barcode-->
-                      <mat-form-field [appearance]="formFieldAppearance">
-                        <mat-label>Nama Alias</mat-label>
-                        <input appElementFocus
-                               [isInsert]="isInsert()"
-                               matInput placeholder="Nama Alias " formControlName="namaAlias" required
-                               [errorStateMatcher]="stateMatchers.namaAlias.namaAlias.matcher">
-
-                        <mat-error
-                          *ngIf="reactiveFormUtil.formControl(temp, 'namaAlias').hasError('required')">
-                          {{stateMatchers.namaAlias.namaAlias.message}}</mat-error>
-                      </mat-form-field>
-
-                    </div>
-
-                  </mat-card-content>
-
-                </mat-card>
-              </div>
-            </div>
-          </div>
-
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-
-          <!--Kode Alias -->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode Alias</mat-label>
-            <input matInput autocomplete="off" placeholder="Kode Alias" formControlName="kodeItemAlias" required
-                   [errorStateMatcher]="stateMatchers.kodeItemAlias.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kodeItemAlias').hasError('required')">
-              {{stateMatchers.kodeItemAlias.message}}</mat-error>
-          </mat-form-field>
-
-
-          <!--kategori-->
-          <mat-form-field formGroupName="kategori">
-            <mat-select #selectKategori
-                        [placeholder]="(isKategoriEnabled()) ? 'Kategori' : (kategoriFailToFetch ? 'Gagal memuat data kategori ......' : 'Memuat data kategori ......')"
-                        formControlName="uuid"
-                        [errorStateMatcher]="stateMatchers.kategori.matcher" [required]="isKategoriEnabled()">
-              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
-              <mat-divider></mat-divider>
-              <mat-option [value]="v.uuid" *ngFor="let v of dataKategori">
-                {{v.namaKategori}}
-              </mat-option>
-              <mat-divider></mat-divider>
-              <mat-option [value]="null" *ngIf="!isLastKategori" (click)="refreshKategori()" class="lebih-banyak">
-                <div *ngIf="!waitingLoadMoreKategori || kategoriFailToFetch; else load">Muat lebih banyak
-                  ....
-                </div>
-                <ng-template #load>
-                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
-                                    mode="indeterminate"></mat-progress-bar>
-                </ng-template>
-              </mat-option>
-            </mat-select>
-            <button *ngIf="kategoriFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Kategori"
-                    (click)="refreshKategori()"
-                    [matTooltipPosition]="'left'">
-              <mat-icon color="primary">refresh</mat-icon>
-            </button>
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'kategori'), 'uuid').hasError('required')">
-              {{stateMatchers.kategori.message}}</mat-error>
-          </mat-form-field>
-
-          <!--sub kategori-->
-          <mat-form-field formGroupName="subKategori">
-            <mat-select #selectKategori
-                        [placeholder]="(isKategoriEnabled()) ? 'Sub Kategori' : (kategoriFailToFetch ? 'Gagal memuat data sub kategori ......' : 'Memuat data sub kategori ......')"
-                        formControlName="uuid"
-                        [errorStateMatcher]="stateMatchers.subKategori.matcher" [required]="isKategoriEnabled()">
-              <mat-option class="pilih">
-                --&nbsp; {{(dataSubKategori.length === 0 ? 'Salah satu kategori harus terpilih' : 'Pilih salah satu')}}
-                &nbsp;--
-              </mat-option>
-              <mat-divider></mat-divider>
-              <mat-option [value]="v.uuid" *ngFor="let v of dataSubKategori">
-                {{v.nama}}
-              </mat-option>
-            </mat-select>
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'subKategori'), 'uuid').hasError('required')">
-              {{stateMatchers.subKategori.message}}</mat-error>
-          </mat-form-field>
-
-          <!--unit-->
-          <mat-form-field formGroupName="unit">
-            <mat-select #selectUnit
-                        [placeholder]="(isUnitEnabled()) ? 'Unit' : (unitFailToFetch ? 'Gagal memuat data unit ...' : 'Memuat data unit ......')"
-                        formControlName="uuid"
-                        [errorStateMatcher]="stateMatchers.unit.matcher" [required]="isUnitEnabled()">
-              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
-              <mat-divider></mat-divider>
-              <mat-option [value]="v.uuid" *ngFor="let v of dataUnit">
-                {{v.name}}
-              </mat-option>
-              <mat-divider></mat-divider>
-              <mat-option *ngIf="!isLastUnit" (click)="refreshUnit()" class="lebih-banyak">
-                <div *ngIf="!waitingLoadMoreUnit || unitFailToFetch; else loadUnit">Muat lebih banyak
-                  ....
-                </div>
-                <ng-template #loadUnit>
-                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
-                                    mode="indeterminate"></mat-progress-bar>
-                </ng-template>
-              </mat-option>
-            </mat-select>
-            <button *ngIf="unitFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Unit"
-                    (click)="refreshUnit()"
-                    [matTooltipPosition]="'left'">
-              <mat-icon color="primary">refresh</mat-icon>
-            </button>
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'unit'), 'uuid').hasError('required')">
-              {{stateMatchers.unit.message}}</mat-error>
-          </mat-form-field>
-
           <!--warna-->
           <mat-form-field formArrayName="warna">
             <mat-chip-list #chipList>
@@ -583,49 +458,194 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
+        </div>
 
-
-          <!--gramasi-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Gramasi</mat-label>
-            <input matInput autocomplete="off" placeholder="Gramasi" formControlName="gramasi" required
-                   [errorStateMatcher]="stateMatchers.gramasi.matcher">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--unit-->
+          <mat-form-field formGroupName="unit">
+            <mat-select #selectUnit
+                        [placeholder]="(unitLazy.isEnabled()) ? 'Unit' : (unitLazy.failToFetch ? 'Gagal memuat data unit ...' : 'Memuat data unit ......')"
+                        formControlName="uuid"
+                        [errorStateMatcher]="stateMatchers.unit.matcher" [required]="unitLazy.isEnabled()">
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.uuid" *ngFor="let v of unitLazy.data">
+                {{v.name}}
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option *ngIf="!unitLazy.isLast" (click)="unitLazy.refresh()" class="lebih-banyak">
+                <div *ngIf="!unitLazy.waitingLoadMore || unitLazy.failToFetch; else loadUnit">Muat lebih banyak
+                  ....
+                </div>
+                <ng-template #loadUnit>
+                  <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                    mode="indeterminate"></mat-progress-bar>
+                </ng-template>
+              </mat-option>
+            </mat-select>
+            <button *ngIf="unitLazy.failToFetch" matSuffix mat-icon-button matTooltip="Segarkan Unit"
+                    (click)="unitLazy.refresh()"
+                    [matTooltipPosition]="'left'">
+              <mat-icon color="primary">refresh</mat-icon>
+            </button>
             <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'gramasi').hasError('required')">
-              {{stateMatchers.gramasi.message}}</mat-error>
+              *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'unit'), 'uuid').hasError('required')">
+              {{stateMatchers.unit.message}}</mat-error>
           </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <!--setting-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Setting</mat-label>
-            <input matInput autocomplete="off" placeholder="Setting" formControlName="setting" required
-                   [errorStateMatcher]="stateMatchers.setting.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'setting').hasError('required')">
-              {{stateMatchers.setting.message}}</mat-error>
+            <input matInput autocomplete="off" placeholder="Setting" formControlName="setting">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'setting').hasError('required')">-->
+              <!--{{stateMatchers.setting.message}}</mat-error>-->
           </mat-form-field>
+        </div>
 
-          <!--handfeel-->
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--handfeel/tekstur-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Handfeel</mat-label>
-            <input matInput autocomplete="off" placeholder="Handfeel" formControlName="handfeel" required
-                   [errorStateMatcher]="stateMatchers.handfeel.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'handfeel').hasError('required')">
-              {{stateMatchers.handfeel.message}}</mat-error>
+            <mat-label>Tekstur</mat-label>
+            <input matInput autocomplete="off" placeholder="Tekstur" formControlName="handfeel">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'handfeel').hasError('required')">-->
+              <!--{{stateMatchers.handfeel.message}}</mat-error>-->
           </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--gramasi-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Proses</mat-label>
+            <input matInput autocomplete="off" placeholder="Proses" formControlName="gramasi">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'gramasi').hasError('required')">-->
+              <!--{{stateMatchers.gramasi.message}}</mat-error>-->
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <!--tambahan-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Additional</mat-label>
-            <input matInput autocomplete="off" placeholder="Additional" formControlName="tambahan" required
-                   [errorStateMatcher]="stateMatchers.tambahan.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'tambahan').hasError('required')">
-              {{stateMatchers.tambahan.message}}</mat-error>
+            <input matInput autocomplete="off" placeholder="Additional" formControlName="tambahan">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'tambahan').hasError('required')">-->
+              <!--{{stateMatchers.tambahan.message}}</mat-error>-->
           </mat-form-field>
+        </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--barcode-->
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 15px 0px 0px 0px">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px">
+              <a (click)="barcodeClick()">
+                <strong class="primary">Barcode
+                  &nbsp;
+                  {{(barcodeCount() > 0) ? ('(' + barcodeCount() + ')') : ''}}
+                </strong>
+              </a>
+              <button class="float-right"
+                      *ngIf="barcodeState === 'expanded'" mat-icon-button matTooltip="Tambah Barcode"
+                      [matTooltipPosition]="'left'"
+                      (click)="addNewBarcode(reactiveFormUtil.getFormArray('barcode', form))">
+                <mat-icon color="primary">add</mat-icon>
+              </button>
+            </div>
+            <div [@barcodeExpand]="barcodeState"
+                 formArrayName="barcode"
+                 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
+              <div *ngFor="let temp of reactiveFormUtil.getFormArrays('barcode', form); index as bar">
+                <mat-card id="barcode-card">
+                  <mat-card-content>
+                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                    <button mat-icon-button matTooltip="Hapus Barcode"
+                            [matTooltipPosition]="'below'"
+                            (click)="removeBarcode(reactiveFormUtil.getFormArray('barcode', form), bar)">
+                      <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
+                    </button>
+                    <!--</div>-->
+                    <div [formGroupName]="bar" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <input type="hidden" formControlName="uuid">
 
+                      <!--barcode-->
+                      <mat-form-field [appearance]="formFieldAppearance">
+                        <mat-label>Barcode</mat-label>
+                        <input appElementFocus
+                               [isInsert]="isInsert()"
+                               autocomplete="off"
+                               matInput placeholder="Barcode " formControlName="barcode" required
+                               [errorStateMatcher]="stateMatchers.barcode.barcode.matcher">
+
+                        <mat-error
+                          *ngIf="reactiveFormUtil.formControl(temp, 'barcode').hasError('required')">{{stateMatchers.barcode.barcode.message}}</mat-error>
+                      </mat-form-field>
+
+                    </div>
+
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <!--nama alias-->
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 15px 0px 20px 0px">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px">
+              <a (click)="aliasClick()">
+                <strong class="primary">Nama Alias
+                  &nbsp;
+                  {{(aliasCount() > 0) ? ('(' + aliasCount() + ')') : ''}}</strong>
+              </a>
+              <button class="float-right"
+                      *ngIf="aliasState === 'expanded'" mat-icon-button matTooltip="Tambah Nama Alias"
+                      [matTooltipPosition]="'left'"
+                      (click)="addNewNamaAlias(reactiveFormUtil.getFormArray('namaAlias', form))">
+                <mat-icon color="primary">add</mat-icon>
+              </button>
+            </div>
+            <div [@aliasExpand]="aliasState" formArrayName="namaAlias"
+                 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 15px 20px 0px">
+              <div *ngFor="let temp of reactiveFormUtil.getFormArrays('namaAlias', form); index as al">
+                <mat-card id="alias-card">
+
+                  <mat-card-content>
+                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                    <button mat-icon-button matTooltip="Hapus Nama Alias"
+                            [matTooltipPosition]="'below'"
+                            (click)="removeNamaAlias(reactiveFormUtil.getFormArray('namaAlias', form), al)">
+                      <mat-icon class="icon-delete-subcategory">delete_sweep</mat-icon>
+                    </button>
+                    <!--</div>-->
+                    <div [formGroupName]="al" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <input type="hidden" formControlName="uuid">
+
+                      <!--barcode-->
+                      <mat-form-field [appearance]="formFieldAppearance">
+                        <mat-label>Nama Alias</mat-label>
+                        <input appElementFocus
+                               [isInsert]="isInsert()"
+                               matInput autocomplete="off" placeholder="Nama Alias " formControlName="namaAlias" required
+                               [errorStateMatcher]="stateMatchers.namaAlias.namaAlias.matcher">
+
+                        <mat-error
+                          *ngIf="reactiveFormUtil.formControl(temp, 'namaAlias').hasError('required')">
+                          {{stateMatchers.namaAlias.namaAlias.message}}</mat-error>
+                      </mat-form-field>
+
+                    </div>
+
+                  </mat-card-content>
+
+                </mat-card>
+              </div>
+            </div>
+          </div>
         </div>
 
 
@@ -633,8 +653,6 @@
 
     </form>
   </mat-dialog-content>
-  <!--</div>-->
-
 
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 

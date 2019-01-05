@@ -25,14 +25,10 @@ export class BhkDashboardComponent
   start = false;
   constructor(
     private router: Router,
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     super(bhkSharedService, changeDetectorRef, media);
 
-    // console.log('aaaaaaaaaaa')
-
-    // /* set indicator, bahwa page telah berhasil di load */
-    // this.bhkSharedService.addLoadingBarIndicator(true);
   }
 
   ngOnInit() {
@@ -69,6 +65,8 @@ export class BhkDashboardComponent
         if (routeUrl !== "/app") {
           /* mengaktifkan loading bar */
           this.bhkSharedService.addLoadingBarIndicator(true);
+        } else {
+          this.bhkSharedService.addLoadingBarIndicator(false);
         }
 
         /* navigate ke url yang dituju */
@@ -101,7 +99,6 @@ export class BhkDashboardComponent
   }
 
   ngAfterViewChecked(): void {
-    // console.log('asas')
     this.changeDetectorRef.detectChanges();
   }
 

@@ -165,7 +165,7 @@
       <!--Telepon-->
       <mat-form-field [appearance]="formFieldAppearance">
         <mat-label>Telepon</mat-label>
-        <input matInput autocomplete="off" placeholder="Telepon" formControlName="telepon" required
+        <input [textMask]="hpMasking" matInput autocomplete="off" placeholder="Telepon" formControlName="telepon" required
                [errorStateMatcher]="stateMatchers.telepon.matcher">
         <mat-error
           *ngIf="reactiveFormUtil.formControl(form, 'telepon').hasError('required')">

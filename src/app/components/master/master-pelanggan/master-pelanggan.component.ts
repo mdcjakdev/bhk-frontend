@@ -4,7 +4,6 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {AppTableDataSource} from '../../../shared/table-data-source';
-import {masterSupplierInit} from '../../../inits/master/master-supplier';
 import {Action} from '../../../shared/action.enum';
 import {Ui} from '../../../shared/ui';
 import {ComponentUtil} from '../../../shared/component-util';
@@ -89,8 +88,21 @@ export class MasterPelangganComponent
   /**
    * Service untuk mengambil data ke server
    */
-  getData = () => this.serviceGetData(this.masterPelangganService.getData(), this.callbackGetDataSuccess, this.callbackGetDataError);
+  getData = (page = this.pageIndex, size = this.pageSize) =>
+    this.serviceGetData(this.masterPelangganService.getData(page, size), this.callbackGetDataSuccess, this.callbackGetDataError);
 
+
+  onDataSizeChanged(pagination) {
+    if (pagination.pageIndex !== this.pageIndex) {
+      this.pageIndex = pagination.pageIndex;
+      this.pageSize = pagination.pageSize;
+    } else {
+      this.pageIndex = 0;
+      this.pageSize = pagination.pageSize;
+    }
+
+    this.getData();
+  }
 
   onTableRightClicked = (event, row) => {
     this.isRightClick = true;

@@ -5,7 +5,7 @@ import {apiHost, apiPort} from '../../../shared/constants';
 @Injectable()
 export class MasterSupplierService {
 
-  constructor(private http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
   getData(page = 0, size = 10, http = this.http) {
     return http.get(apiHost + ':' + apiPort + '/api/master/supplier/?page=' + page + '&size=' + size);

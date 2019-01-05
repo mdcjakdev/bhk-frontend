@@ -2,6 +2,11 @@ import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppErrorStateMatcher} from '../../shared/utils';
 
+export const tipeKategori = [
+  'Raw Material',
+  'Work in progress',
+  'Finish Good'
+];
 
 /** Model Class Sub Kategori */
 export interface MasterSubCategory extends AppAuditEntity {

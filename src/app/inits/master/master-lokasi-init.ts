@@ -2,6 +2,12 @@ import {AppErrorStateMatcher} from '../../shared/utils';
 import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
+export const tipeLokasi = [
+  'Gudang',
+  'Gudang & Toko',
+  'Toko'
+];
+
 export interface MasterLokasi extends AppAuditEntity {
   namaLokasi?: string;
   tipeLokasi?: string;

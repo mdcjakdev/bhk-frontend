@@ -2,11 +2,17 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {MasterCategoryService} from '../../../../services/master/master-category/master-category.service';
-import {masterCategoryErrorStateMatchers, masterCategoryForm, masterSubCategoryForm} from '../../../../inits/master/master-category-init';
+import {
+  masterCategoryErrorStateMatchers,
+  masterCategoryForm,
+  masterSubCategoryForm,
+  tipeKategori
+} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
-import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
+import {delayHttpRequest, openAppSnackbar, SNACKBAR_WARNING_STYLE} from '../../../../shared/constants';
+import {FormArray} from '@angular/forms';
 
 @Component({
   selector: 'app-master-category-dialog',
@@ -17,6 +23,7 @@ export class MasterCategoryDialogComponent extends DialogUtil
   implements OnInit {
 
   close = undefined;
+  tipeKategori = tipeKategori;
 
   constructor(public snackBar: MatSnackBar,
               public masterCategoryService: MasterCategoryService,
@@ -36,13 +43,21 @@ export class MasterCategoryDialogComponent extends DialogUtil
     this.reactiveFormUtil.removeFormArray(fa, i);
   }
 
+  subKategoriCount() {
+    return (<FormArray> this.form.controls['subKategori']).length;
+  }
 
   /**
    * Funsi yang digunakan untuk menyimpan data
    * @param value: data
    */
   save(value?): void {
-    // console.log(value)
+    // jika tidak ada barcode yang di daftarkan
+    if (this.subKategoriCount() === 0 ) {
+      openAppSnackbar(this.snackBar, 'Sub Kategori belum ada ...', SNACKBAR_WARNING_STYLE);
+      return;
+    }
+
     this.dialogRef.disableClose = true;
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 

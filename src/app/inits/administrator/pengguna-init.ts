@@ -22,7 +22,7 @@ export const penggunaInit = {
 export const penggunaDisables = {
   username: false,
   password: false,
-  karyawan: false
+  karyawan: true
 };
 
 /** Init StateMatcher formcontrol Pengguna */

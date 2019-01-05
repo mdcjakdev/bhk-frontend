@@ -20,6 +20,14 @@ export class MasterSupplierDialogComponent extends DialogUtil
   implements OnInit {
 
   close = undefined;
+  public maskFax = ['(', '0', /[1-9]/, /\d/, ')', ' ',
+    /\d/, /\d/, /\d/, /\d/,  /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+  faxAndPhoneMasking = {
+    mask: this.maskFax,
+    guide: false,
+    placeholderChar: '\u2000'
+  };
+
 
   constructor(public snackBar: MatSnackBar,
               public masterSupplier: MasterSupplierService,
@@ -42,11 +50,14 @@ export class MasterSupplierDialogComponent extends DialogUtil
    * @param value: data
    */
   save(value?): void {
+    // console.log(value)
+
     this.dialogRef.disableClose = true;
     Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
 
     setTimeout(() => {
-      this.masterSupplier.postData(trimReactiveObject(value)).pipe(first()).subscribe(
+      this.masterSupplier.postData(trimReactiveObject(value, ['paymentDueDate']))
+        .pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');

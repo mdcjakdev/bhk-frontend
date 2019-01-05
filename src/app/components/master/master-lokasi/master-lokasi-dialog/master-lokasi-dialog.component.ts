@@ -5,7 +5,7 @@ import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
-import {masterLokasiErrorStateMatchers, masterLokasiForm} from '../../../../inits/master/master-lokasi-init';
+import {masterLokasiErrorStateMatchers, masterLokasiForm, tipeLokasi} from '../../../../inits/master/master-lokasi-init';
 import {MasterLokasiService} from '../../../../services/master/master-lokasi/master-lokasi.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class MasterLokasiDialogComponent extends DialogUtil
   implements OnInit {
 
   close = undefined;
+  tipeLokasi = tipeLokasi;
 
   constructor(public snackBar: MatSnackBar,
               public masterLokasiService: MasterLokasiService,

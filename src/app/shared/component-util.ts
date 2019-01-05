@@ -18,7 +18,7 @@ export class ComponentUtil<T extends DataSource<any> | any>
 
   public pageIndex = 0;
 
-  public pageSize = 20;
+  public pageSize = 10;
 
   /**
    * standard margin dari top bar
@@ -154,7 +154,7 @@ export class ComponentUtil<T extends DataSource<any> | any>
 
   printValue(column, columnValue, index, conditionVoid: Function = this.defaultNoActionVoid, showLength = 25) {
     let v = conditionVoid(column, columnValue);
-    v = (column === UUID_COLUMN) ? (index + 1) : v;
+    v = (column === UUID_COLUMN) ? ((index + 1) + (this.pageIndex * this.pageSize)) : v;
     return printWord(v, showLength);
   }
 
@@ -163,6 +163,11 @@ export class ComponentUtil<T extends DataSource<any> | any>
     return this.receivedData === undefined;
   }
 
+
+
+  totalElements() {
+    return (this.receivedData === undefined || this.receivedData.totalElements === undefined) ? 0 : this.receivedData.totalElements;
+  }
 
   /**
    * Mengambil nilai berdasarkan tingkatan kedalaman levelnya
@@ -199,7 +204,6 @@ export class ComponentUtil<T extends DataSource<any> | any>
 
   /** */
   ngOnDestroy(): void {
-
     // destroy listener media query
     this.mobileQuery.removeListener(this.__mobileQueryListener);
   }

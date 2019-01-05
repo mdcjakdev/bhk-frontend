@@ -47,11 +47,20 @@ export class MenuList {
     ]
   };
 
-  private po = <MenuModel> { ...createMenu, url: '/app/po', selector: ['po'], menu: 'Pemesanan', icon: 'account_balance_wallet'};
+  private po = <MenuModel> { ...createMenu, selector: ['po'], menu: 'Pemesanan', icon: 'account_balance_wallet'};
 
   private pr = <MenuModel> { ...createMenu, url: '/app/pr', selector: ['pr'], menu: 'Permintaan', icon: 'chrome_reader_mode'};
 
-  private administrator = <MenuModel> { ...createMenu, selector: ['administrator'], menu: 'Administrator', icon: 'supervised_user_circle'};
+  protected administratorDataRootSelector = 'administrator';
+  private administrator = <MenuModel> { ...createMenu, selector: [this.administratorDataRootSelector], menu: 'Administrator', icon: 'supervised_user_circle',
+    childs: [
+      this.back,
+      <MenuModel> { ...createMenu, url: '/app/administrator/pengguna', selector: [this.administratorDataRootSelector, 'pengguna'], menu: 'Pengguna', icon: 'person_pin'}
+    ]
+  };
+
+
+    // <MenuModel> { ...createMenu, selector: ['administrator'], menu: 'Administrator', icon: 'supervised_user_circle'};
 
 
   // state dari menu yang terpilih sebelumnya

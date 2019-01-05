@@ -134,13 +134,13 @@ export const masterItemErrorStateMatchers = {
   ukuran: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
   benang: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
   jenisKain: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-  gramasi: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-  setting: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
-  handfeel: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
+  // gramasi: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
+  // setting: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
+  // handfeel: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
   kategori: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kategori'},
   subKategori: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan sub kategori'},
   unit: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih unit'},
-  tambahan: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
+  // tambahan: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan kode'},
   warna: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan memilih warna'},
 };
 
@@ -216,9 +216,9 @@ export function masterItemForm(init: MasterItem = masterItemInit,
     ukuran: [{value: init.ukuran, disabled: disables.ukuran}, Validators.required],
     benang: [{value: init.benang, disabled: disables.benang}, Validators.required],
     jenisKain: [{value: init.jenisKain, disabled: disables.jenisKain}, Validators.required],
-    gramasi: [{value: init.gramasi, disabled: disables.gramasi}, Validators.required],
-    setting: [{value: init.setting, disabled: disables.setting}, Validators.required],
-    handfeel: [{value: init.handfeel, disabled: disables.handfeel}, Validators.required],
+    gramasi: {value: init.gramasi, disabled: disables.gramasi},
+    setting: {value: init.setting, disabled: disables.setting},
+    handfeel: {value: init.handfeel, disabled: disables.handfeel},
     kategori: new FormBuilder().group({
       uuid: [{value: init.kategori.uuid, disabled: disables.kategori}, Validators.required]
     }),
@@ -228,7 +228,7 @@ export function masterItemForm(init: MasterItem = masterItemInit,
     unit: new FormBuilder().group({
       uuid: [{value: init.unit.uuid, disabled: disables.unit }, Validators.required]
     }),
-    tambahan: [{value: init.tambahan, disabled: disables.tambahan}, Validators.required],
+    tambahan: {value: init.tambahan, disabled: disables.tambahan},
     warna: new FormBuilder().array(warna)
   });
 

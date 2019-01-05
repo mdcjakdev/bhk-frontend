@@ -23,6 +23,20 @@
           <td>
             <li></li>
           </td>
+          <td>
+            <strong>Kode</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.kode}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
           <td style="width: 160px">
             <strong>Nama Gudang</strong>
           </td>
@@ -31,6 +45,20 @@
           </td>
           <td>
             {{data.data.nama}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <li></li>
+          </td>
+          <td>
+            <strong>Tipe Gudang</strong>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{getTipeGudang(data.data.tipeGudang)}}
           </td>
         </tr>
         <tr>
@@ -89,20 +117,7 @@
             {{date(data.data.tanggalMulai)}}
           </td>
         </tr>
-        <tr>
-          <td>
-            <li></li>
-          </td>
-          <td>
-            <strong>Kode</strong>
-          </td>
-          <td>
-            <strong>:</strong>&nbsp;
-          </td>
-          <td>
-            {{data.data.kode}}
-          </td>
-        </tr>
+
         <tr>
           <td>
             <li></li>
@@ -132,6 +147,16 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
 
+          <!--Kode -->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode" formControlName="kode" required
+                   [errorStateMatcher]="stateMatchers.kode.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">
+              {{stateMatchers.kode.message}}</mat-error>
+          </mat-form-field>
+
           <!--nama-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Gudang</mat-label>
@@ -140,6 +165,23 @@
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'nama').hasError('required')">{{stateMatchers.nama.message}}</mat-error>
           </mat-form-field>
+
+          <!--tipe gudang-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-select placeholder="Tipe"
+                        formControlName="tipeGudang"
+                        [errorStateMatcher]="stateMatchers.tipeGudang.matcher" required>
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v.value" *ngFor="let v of tipeGudang">
+                {{v.display}}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'tipeGudang').hasError('required')">
+              {{stateMatchers.tipeGudang.message}}</mat-error>
+          </mat-form-field>
+
 
           <!--alamat-->
           <mat-form-field [appearance]="formFieldAppearance">
@@ -154,17 +196,17 @@
           <!--Lokasi-->
           <mat-form-field formGroupName="lokasi">
             <mat-select #selectLokasi
-                        [placeholder]="(isLokasiEnabled()) ? 'Lokasi' : (lokasiFailToFetch ? 'Gagal memuat data lokasi ....' : 'Memuat data lokasi ......')"
+                        [placeholder]="(lokasiLazy.isEnabled()) ? 'Lokasi' : (lokasiLazy.failToFetch ? 'Gagal memuat data lokasi ....' : 'Memuat data lokasi ......')"
                         formControlName="uuid"
-                        [errorStateMatcher]="stateMatchers.lokasi.matcher" [required]="isLokasiEnabled()">
+                        [errorStateMatcher]="stateMatchers.lokasi.matcher" [required]="lokasiLazy.isEnabled()">
               <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
               <mat-divider></mat-divider>
-              <mat-option [value]="v.uuid" *ngFor="let v of dataLokasi">
+              <mat-option [value]="v.uuid" *ngFor="let v of lokasiLazy.data">
                 {{v.namaLokasi}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option *ngIf="!isLastLokasi" (click)="refreshLokasi()" class="lebih-banyak">
-                <div *ngIf="!waitingLoadMoreLokasi || lokasiFailToFetch; else load" >Muat lebih banyak
+              <mat-option *ngIf="!lokasiLazy.isLast" (click)="lokasiLazy.refresh()" class="lebih-banyak">
+                <div *ngIf="!lokasiLazy.waitingLoadMore || lokasiLazy.failToFetch; else load" >Muat lebih banyak
                   ....
                 </div>
                 <ng-template #load>
@@ -173,8 +215,8 @@
                 </ng-template>
               </mat-option>
             </mat-select>
-            <button *ngIf="lokasiFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Lokasi"
-                    (click)="refreshLokasi()"
+            <button *ngIf="lokasiLazy.failToFetch" matSuffix mat-icon-button matTooltip="Segarkan Lokasi"
+                    (click)="lokasiLazy.refresh()"
                     [matTooltipPosition]="'left'">
               <mat-icon color="primary">refresh</mat-icon>
             </button>
@@ -186,30 +228,17 @@
           <!--Telepon-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Telepon</mat-label>
-            <input matInput autocomplete="off" placeholder="Telepon" formControlName="telepon" required
+            <input [textMask]="faxAndPhoneMasking" matInput autocomplete="off" placeholder="Telepon" formControlName="telepon" required
                    [errorStateMatcher]="stateMatchers.telepon.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'telepon').hasError('required')">{{stateMatchers.telepon.message}}</mat-error>
           </mat-form-field>
 
           <!--Auto Replenish-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Auto Replenish</mat-label>
-            <input matInput autocomplete="off" placeholder="Fax" formControlName="autoReplenish" required
-                   [errorStateMatcher]="stateMatchers.autoReplenish.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'autoReplenish').hasError('required')">{{stateMatchers.autoReplenish.message}}</mat-error>
-          </mat-form-field>
+          <section style="margin-top: 10px">
+            <mat-checkbox color="primary" formControlName="autoReplenish">Auto Replenish</mat-checkbox>
+          </section>
 
-          <!--Kode -->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode</mat-label>
-            <input matInput autocomplete="off" placeholder="Kode" formControlName="kode" required
-                   [errorStateMatcher]="stateMatchers.kode.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kode').hasError('required')">
-              {{stateMatchers.kode.message}}</mat-error>
-          </mat-form-field>
 
           <!--Start Operation-->
           <mat-form-field>

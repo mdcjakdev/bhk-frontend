@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {masterUnitErrorStateMatchers, masterUnitForm} from '../../../../inits/master/master-unit-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
@@ -20,6 +19,12 @@ export class MasterKaryawanDialogComponent
 
   tipeIdentitas = tipeIdentitas;
   close = undefined;
+  public mask = ['(', '+', '6', '2', ')', ' ', /[1-9]/, /\d/, /\d/, '-', /\d/, /\d/,  /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+  hpMasking = {
+    mask: this.mask,
+    guide: false,
+    placeholderChar: '\u2000'
+  };
 
   constructor(public snackBar: MatSnackBar,
               public masterKaryawanService: MasterKaryawanService,

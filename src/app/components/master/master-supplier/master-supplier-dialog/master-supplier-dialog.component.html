@@ -192,6 +192,16 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
 
+          <!--Kode Supplier-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode Supplier</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode Supplier" formControlName="kodeSupplier" required
+                   [errorStateMatcher]="stateMatchers.kodeSupplier.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeSupplier').hasError('required')">
+              {{stateMatchers.kodeSupplier.message}}</mat-error>
+          </mat-form-field>
+
           <!--nama-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Supplier</mat-label>
@@ -240,36 +250,31 @@
           <!--Telepon-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Telepon</mat-label>
-            <input matInput autocomplete="off" placeholder="Telepon" formControlName="telepon" required
-                   [errorStateMatcher]="stateMatchers.telepon.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'telepon').hasError('required')">{{stateMatchers.telepon.message}}</mat-error>
+            <input
+              [textMask]="faxAndPhoneMasking"
+              matInput autocomplete="off" placeholder="Telepon" formControlName="telepon">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'telepon').hasError('required')">{{stateMatchers.telepon.message}}</mat-error>-->
           </mat-form-field>
 
           <!--Fax-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Fax</mat-label>
-            <input matInput autocomplete="off" placeholder="Fax" formControlName="fax" required
+            <input [textMask]="faxAndPhoneMasking" matInput autocomplete="off" placeholder="Fax" formControlName="fax" required
                    [errorStateMatcher]="stateMatchers.fax.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'fax').hasError('required')">{{stateMatchers.fax.message}}</mat-error>
           </mat-form-field>
 
-          <!--Kode Supplier-->
+          <!--kode transaksi-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode Supplier</mat-label>
-            <input matInput autocomplete="off" placeholder="Kode Supplier" formControlName="kodeSupplier" required
-                   [errorStateMatcher]="stateMatchers.kodeSupplier.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kodeSupplier').hasError('required')">
-              {{stateMatchers.kodeSupplier.message}}</mat-error>
-          </mat-form-field>
-
-          <!--kode trans-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode Trans</mat-label>
-            <input matInput autocomplete="off" placeholder="Kode Trans" formControlName="kodeTrans" required
+            <mat-label>Kode Transaksi</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode Transaksi" formControlName="kodeTrans" required
                    [errorStateMatcher]="stateMatchers.kodeTrans.matcher">
+            <mat-icon
+              matTooltip="Dipakai untuk format nomor dokumen PO"
+              [matTooltipPosition]="'before'"
+              matSuffix style="cursor: pointer;">help</mat-icon>
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'kodeTrans').hasError('required')">
               {{stateMatchers.kodeTrans.message}}</mat-error>
@@ -278,21 +283,19 @@
           <!--PIC-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>PIC</mat-label>
-            <input matInput autocomplete="off" placeholder="PIC" formControlName="picName" required
-                   [errorStateMatcher]="stateMatchers.picName.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'picName').hasError('required')">
-              {{stateMatchers.picName.message}}</mat-error>
+            <input matInput autocomplete="off" placeholder="PIC" formControlName="picName">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'picName').hasError('required')">-->
+              <!--{{stateMatchers.picName.message}}</mat-error>-->
           </mat-form-field>
 
           <!--PIC Number-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>PIC Number</mat-label>
-            <input matInput autocomplete="off" placeholder="PIC Number" formControlName="picNumber" required
-                   [errorStateMatcher]="stateMatchers.picNumber.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'picNumber').hasError('required')">
-              {{stateMatchers.picNumber.message}}</mat-error>
+            <input matInput autocomplete="off" placeholder="PIC Number" formControlName="picNumber">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'picNumber').hasError('required')">-->
+              <!--{{stateMatchers.picNumber.message}}</mat-error>-->
           </mat-form-field>
 
 

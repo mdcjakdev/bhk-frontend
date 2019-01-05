@@ -10,7 +10,7 @@ import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {Action} from '../../../shared/action.enum';
 import {Ui} from '../../../shared/ui';
 import {MasterGudangService} from '../../../services/master/master-gudang/master-gudang.service';
-import {masterGudangDisables, masterGudangInit} from '../../../inits/master/master-gudang-init';
+import {masterGudangDisables, masterGudangInit, tipeGudang} from '../../../inits/master/master-gudang-init';
 import {MasterGudangDialogComponent} from './master-gudang-dialog/master-gudang-dialog.component';
 import {momentParsingDate} from '../../../shared/utils';
 import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
@@ -71,6 +71,16 @@ export class MasterGudangComponent
     return value;
   }
 
+  getTipeGudang(value) {
+    for (const tipe of tipeGudang) {
+      if (tipe.value === value) {
+        return tipe.display;
+      }
+    }
+
+    return 'Unknown'
+  }
+
   /** menghilangkan hover style pada row jika menu telah tertutup */
   tableMenuRightClickOnClose(event) {
     this.selectedValue = null;
@@ -106,8 +116,21 @@ export class MasterGudangComponent
   /**
    * Service untuk mengambil data ke server
    */
-  getData = () => this.serviceGetData(this.masterGudangService.getData(), this.callbackGetDataSuccess, this.callbackGetDataError);
+  getData = (page = this.pageIndex, size = this.pageSize) =>
+    this.serviceGetData(this.masterGudangService.getData(page, size), this.callbackGetDataSuccess, this.callbackGetDataError);
 
+
+  onDataSizeChanged(pagination) {
+    if (pagination.pageIndex !== this.pageIndex) {
+      this.pageIndex = pagination.pageIndex;
+      this.pageSize = pagination.pageSize;
+    } else {
+      this.pageIndex = 0;
+      this.pageSize = pagination.pageSize;
+    }
+
+    this.getData();
+  }
 
   onTableRightClicked = (event, row) => {
     this.isRightClick = true;

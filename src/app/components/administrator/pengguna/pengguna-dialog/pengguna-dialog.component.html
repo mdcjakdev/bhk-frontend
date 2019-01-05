@@ -106,17 +106,17 @@
           <!--Karyawan-->
           <mat-form-field formGroupName="karyawan">
             <mat-select #selectKaryawan
-                        [placeholder]="(isKaryawanEnabled()) ? 'Karyawan' : (karyawanFailToFetch ? 'Gagal memuat data karyawan ....' : 'Memuat data karyawan ......')"
+                        [placeholder]="(karyawanLazy.isEnabled()) ? 'Karyawan' : (karyawanLazy.failToFetch ? 'Gagal memuat data karyawan ....' : 'Memuat data karyawan ......')"
                         formControlName="uuid"
-                        [errorStateMatcher]="stateMatchers.karyawan.matcher" [required]="isKaryawanEnabled()">
+                        [errorStateMatcher]="stateMatchers.karyawan.matcher" [required]="karyawanLazy.isEnabled()">
               <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
               <mat-divider></mat-divider>
-              <mat-option [value]="v.uuid" *ngFor="let v of dataKaryawan">
+              <mat-option [value]="v.uuid" *ngFor="let v of karyawanLazy.data">
                 {{v.nama}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option *ngIf="!isLastKaryawan" (click)="refreshKaryawan()" class="lebih-banyak">
-                <div *ngIf="!waitingLoadMoreKaryawan || karyawanFailToFetch; else load" >Muat lebih banyak ....
+              <mat-option *ngIf="!karyawanLazy.isLast" (click)="karyawanLazy.refresh()" class="lebih-banyak">
+                <div *ngIf="!karyawanLazy.waitingLoadMore || karyawanLazy.failToFetch; else load" >Muat lebih banyak ....
                 </div>
                 <ng-template #load>
                   <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
@@ -124,8 +124,8 @@
                 </ng-template>
               </mat-option>
             </mat-select>
-            <button *ngIf="karyawanFailToFetch" matSuffix mat-icon-button matTooltip="Segarkan Karyawan"
-                    (click)="refreshKaryawan()"
+            <button *ngIf="karyawanLazy.failToFetch" matSuffix mat-icon-button matTooltip="Segarkan Karyawan"
+                    (click)="karyawanLazy.refresh()"
                     [matTooltipPosition]="'left'">
               <mat-icon color="primary">refresh</mat-icon>
             </button>
@@ -137,7 +137,7 @@
           <!--Username-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Username</mat-label>
-            <input matInput placeholder="Username" formControlName="username" required
+            <input  matInput autocomplete="off" placeholder="Username" formControlName="username" required
                    [errorStateMatcher]="stateMatchers.username.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'username').hasError('required')">
@@ -171,7 +171,7 @@
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
-    <button mat-flat-button color="primary" (click)="save(form.value)"
+    <button mat-flat-button color="primary" (click)="save(form.getRawValue())"
             [disabled]="simpanButtonCondition(form.valid)">Simpan
     </button>
   </mat-dialog-actions>

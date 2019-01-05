@@ -90,8 +90,21 @@ export class MasterKaryawanComponent
   /**
    * Service untuk mengambil data ke server
    */
-  getData = () => this.serviceGetData(this.masterKaryawanService.getData(), this.callbackGetDataSuccess, this.callbackGetDataError);
+  getData = (page = this.pageIndex, size = this.pageSize) =>
+    this.serviceGetData(this.masterKaryawanService.getData(page, size), this.callbackGetDataSuccess, this.callbackGetDataError);
 
+
+  onDataSizeChanged(pagination) {
+    if (pagination.pageIndex !== this.pageIndex) {
+      this.pageIndex = pagination.pageIndex;
+      this.pageSize = pagination.pageSize;
+    } else {
+      this.pageIndex = 0;
+      this.pageSize = pagination.pageSize;
+    }
+
+    this.getData();
+  }
 
   onTableRightClicked = (event, row) => {
     this.isRightClick = true;

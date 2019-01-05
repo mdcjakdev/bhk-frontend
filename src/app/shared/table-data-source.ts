@@ -20,7 +20,6 @@ export class AppTableDataSource extends DataSource<any> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
 
-
     const dataMutations = [
       observableOf(this.data),
       this.paginator.page,
@@ -28,10 +27,11 @@ export class AppTableDataSource extends DataSource<any> {
     ];
 
     // Set the paginator's length
-    this.paginator.length = this.data.length;
+    // this.paginator.length = this.data.length;
 
     return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
+      // return this.getPagedData(this.getSortedData([...this.data]));  gunakan ini jika datanya diload semua diawal
+      return this.getSortedData([...this.data]);
     }));
   }
 
@@ -39,7 +39,8 @@ export class AppTableDataSource extends DataSource<any> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {}
+  disconnect() {
+  }
 
 
   private getPagedData(data: any[]) {

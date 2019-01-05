@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {
   MAT_DIALOG_DATA,
@@ -26,6 +26,9 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
 import {MasterWarna, masterWarnaForm} from '../../../../inits/master/master-warna';
+import {SelectLazy} from '../../../../shared/select-lazy';
+import {MasterUnit} from '../../../../inits/master/master-unit-init';
+import {MasterCategory} from '../../../../inits/master/master-category-init';
 
 
 @Component({
@@ -46,29 +49,19 @@ import {MasterWarna, masterWarnaForm} from '../../../../inits/master/master-warn
   ],
 })
 export class MasterItemDialogComponent extends DialogUtil
-  implements OnInit {
+  implements OnInit, AfterViewInit {
 
   close = undefined;
 
-  dataSubKategori: any[] = [];
-  dataKategori: any[] = [];
-  @ViewChild('selectKategori') selectKategori;
-  kategoriPage = 0;
-  waitingLoadMoreKategori = false;
-  isLastKategori = false;
-  isKategoriUuidTrue = false;
-  kategoriFailToFetch = false;
-
-  dataUnit: any[] = [];
   @ViewChild('selectUnit') selectUnit;
-  unitPage = 0;
-  waitingLoadMoreUnit = false;
-  isLastUnit = false;
-  isUnitUuidTrue = false;
-  unitFailToFetch = false;
+  unitLazy: SelectLazy<MasterUnit>;
 
-  dataWarna: any[] = [];
+  @ViewChild('selectKategori') selectKategori;
+  kategoriLazy: SelectLazy<MasterCategory>;
+
+
   @ViewChild('selectWarna') selectWarna;
+  dataWarna: any[] = [];
   warnaPage = 0;
   waitingLoadMoreWarna = false;
   isLastWarna = false;
@@ -84,7 +77,6 @@ export class MasterItemDialogComponent extends DialogUtil
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
   @ViewChild('warnaTrigger', { read: MatAutocompleteTrigger }) warnaTrigger: MatAutocompleteTrigger;
 
-
   constructor(public snackBar: MatSnackBar,
               public masterWarnaService: MasterWarnaService,
               public masterItemService: MasterItemService,
@@ -97,7 +89,46 @@ export class MasterItemDialogComponent extends DialogUtil
       masterItemForm(data.data, data.disables),
       masterItemErrorStateMatchers);
 
-      console.log(this.selectWarna)
+    // init untuk data unit
+    this.unitLazy = new SelectLazy(
+      this.form,
+      'unit',
+      masterUnitService.http,
+      masterUnitService.getData,
+      data.data.unit.uuid,
+      this.isInsert(), {}, 1);
+
+    // init untuk data kategori
+    this.kategoriLazy = new SelectLazy(
+      this.form,
+      'kategori',
+      masterKategoriService.http,
+      masterKategoriService.getData,
+      data.data.kategori.uuid,
+      this.isInsert(),
+      {
+        subKategori: []
+      },
+      1);
+
+  }
+
+  ngAfterViewInit(): void {
+    this.unitLazy.select = this.selectUnit;
+    this.kategoriLazy.select = this.selectKategori;
+  }
+
+  ngOnInit() {
+    this.forNamaKain();
+    this.generateNamaKain();
+
+    if (this.isInsert() || this.isUpdate()) {
+      this.kategoriLazy._loadMore();
+      this.kategoriLazy.listenToChilds();
+
+      this.unitLazy._loadMore();
+      this._loadMoreWarna();
+    }
   }
 
   forNamaKain() {
@@ -138,196 +169,12 @@ export class MasterItemDialogComponent extends DialogUtil
     });
   }
 
-
-
-
-  ngOnInit() {
-    this.forNamaKain();
-    this.generateNamaKain();
-
-    if (this.isInsert() || this.isUpdate()) {
-      this._loadMoreKategori(); // load data master kategori
-      this._loadMoreUnit(); // load data unit
-
-      this._loadMoreWarna();
-    }
-
-    /* subscribe perubahan nilai dari kategori*/
-    const controlKategori = (<FormGroup> this.form.controls['kategori']).controls['uuid'];
-    controlKategori.valueChanges.subscribe(value => {
-      if (value === undefined) { // jika nilai yang di dapat adalah undefined
-        this.setSubKategoriToInvalid();
-      }
-
-      if (value !== undefined) {
-        if (value !== null) { // jika bukan tombola load lebih banyak yang dipilih
-          this.dataSubKategori = [];
-          for (const kategori of this.dataKategori) {
-            if (kategori.uuid === value) {
-              this.dataSubKategori = [...kategori.subKategori];
-              break;
-            }
-          }
-          this.setSubKategoriToInvalid();
-        }
-      }
-    });
-    /**/
-  }
-
-
-
   barcodeClick() {
     this.barcodeState = (this.barcodeState === 'collapsed') ? 'expanded' : 'collapsed';
   }
 
   aliasClick() {
     this.aliasState = (this.aliasState === 'collapsed') ? 'expanded' : 'collapsed';
-  }
-
-  isUnitEnabled() {
-    return !(<FormGroup> this.form.controls['unit']).controls['uuid'].disabled;
-  }
-
-  refreshUnit() {
-    this.unitFailToFetch = false;
-    this.waitingLoadMoreUnit = false;
-    this.loadMoreUnit();
-  }
-
-  loadMoreUnit() {
-    this.selectUnit.open();
-    if (!this.waitingLoadMoreUnit) {
-      // ubah jadi status menunggu proses load lokasi selesai jadi true
-      this.waitingLoadMoreUnit = true;
-      setTimeout(() => {
-        this._loadMoreUnit();
-      }, 0);
-    }
-  }
-
-  _loadMoreUnit() {
-    setTimeout(() => {
-      this.masterUnitService.getData(this.unitPage, 1).subscribe(
-        (value: any) => {
-          this.unitPage++;
-          if (value !== undefined && value.content !== undefined) {
-            const d = value.content;
-            if (d !== undefined) {
-              this.dataUnit = [...this.dataUnit];
-              d.forEach(v => {
-                this.dataUnit.push(v);
-
-                // mengubah status pengambilan unit apakah sudah ditemukan atau belum
-                if (!this.isUnitUuidTrue) {
-                  this.isUnitUuidTrue = this.data.data['unit'].uuid === v.uuid;
-                }
-
-                if (this.isInsert()) {
-                  (<FormGroup> this.form.controls['unit']).controls['uuid'].enable();
-                } else if (this.isUpdate()) {
-                  if (this.isUnitUuidTrue) {
-                    (<FormGroup> this.form.controls['unit']).controls['uuid'].enable();
-                  } else {
-                    (<FormGroup> this.form.controls['unit']).controls['uuid'].disable();
-                  }
-                }
-
-              });
-              this.isLastUnit = value.last;
-
-              // jika proses update, load trs datanya sampai dengan sama lokasi dari data yang akan diupdate
-              if (!this.isLastUnit && this.isUpdate() && !this.isUnitUuidTrue) {
-                this._loadMoreUnit();
-              }
-            }
-          }
-          this.waitingLoadMoreUnit = false;
-        },
-        error => {
-          this.unitFailToFetch = true;
-        }
-      );
-    }, 0)
-  }
-
-  isKategoriEnabled() {
-    return !(<FormGroup> this.form.controls['kategori']).controls['uuid'].disabled;
-  }
-
-  refreshKategori() {
-    this.kategoriFailToFetch = false;
-    this.waitingLoadMoreKategori = false;
-    this.loadMoreKategori();
-  }
-
-  loadMoreKategori() {
-
-    this.selectKategori.open();
-    if (!this.waitingLoadMoreKategori) {
-      // ubah jadi status menunggu proses load lokasi selesai jadi true
-      this.waitingLoadMoreKategori = true;
-      setTimeout(() => {
-        this._loadMoreKategori();
-      }, 0);
-    }
-  }
-
-  _loadMoreKategori() {
-    setTimeout(() => {
-      this.masterKategoriService.getData(this.kategoriPage, 1).subscribe(
-        (value: any) => {
-          this.kategoriPage++;
-          if (value !== undefined && value.content !== undefined) {
-            const d = value.content;
-            if (d !== undefined) {
-              this.dataKategori = [...this.dataKategori];
-              d.forEach(v => {
-                this.dataKategori.push(v);
-
-                // mengubah status pengambilan kategori apakah sudah ditemukan atau belum
-                if (!this.isKategoriUuidTrue) {
-                  this.isKategoriUuidTrue = this.data.data['kategori'].uuid === v.uuid;
-                }
-
-                if (this.isInsert()) {
-                  (<FormGroup> this.form.controls['kategori']).controls['uuid'].enable();
-                  (<FormGroup> this.form.controls['subKategori']).controls['uuid'].enable();
-                } else if (this.isUpdate()) {
-                  if (this.isKategoriUuidTrue) {
-                    (<FormGroup> this.form.controls['kategori']).controls['uuid'].enable();
-                    (<FormGroup> this.form.controls['subKategori']).controls['uuid'].enable();
-                  } else {
-                    (<FormGroup> this.form.controls['kategori']).controls['uuid'].disable();
-                    (<FormGroup> this.form.controls['subKategori']).controls['uuid'].disable();
-                  }
-                }
-
-              });
-              this.isLastKategori = value.last;
-
-              // jika proses update, load trs datanya sampai dengan sama lokasi dari data yang akan diupdate
-              if (!this.isLastKategori && this.isUpdate() && !this.isKategoriUuidTrue) {
-                this._loadMoreKategori();
-              }
-            }
-          }
-          this.waitingLoadMoreKategori = false;
-        },
-        error => {
-          this.kategoriFailToFetch = true;
-        }
-      );
-    }, 0)
-  }
-
-  setSubKategoriToInvalid() {
-    /** set incorrect ke sub kategori jika kategori di ganti **/
-    const control = (<FormGroup> this.form.controls['subKategori']).controls['uuid'];
-    if (control.touched) {;
-      control.setValue(undefined);
-    }
-    /*=====*/
   }
 
   addNewBarcode(fa) {
@@ -361,10 +208,15 @@ export class MasterItemDialogComponent extends DialogUtil
   }
 
   simpanButtonCondition(formCondition) {
+    if (this.unitLazy.waitingLoadMore || this.kategoriLazy.waitingLoadMore) {
+      return true;
+    }
+
+
     if (this.isInsert()) {
-      return !formCondition;
+      return !(formCondition && !this.kategoriLazy.failToFetch && !this.unitLazy.failToFetch);
     } else {
-      return !(this.isKategoriUuidTrue && this.isUnitUuidTrue && formCondition);
+      return !(this.kategoriLazy.isUuidTrue && this.unitLazy.isUuidTrue && formCondition);
     }
   }
 
@@ -433,7 +285,6 @@ export class MasterItemDialogComponent extends DialogUtil
     return opt ? opt : undefined;
   }
 
-
   selected(event: MatAutocompleteSelectedEvent, fa: FormArray): void {
     if (event.option.value !== null) {
       this.addNewWarna(fa, event.option.value);
@@ -445,7 +296,6 @@ export class MasterItemDialogComponent extends DialogUtil
 
     // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
   }
-
 
   addNewWarna(fa, init: MasterWarna) {
     this.reactiveFormUtil.addFormArray(masterWarnaForm(init), fa);
@@ -489,10 +339,12 @@ export class MasterItemDialogComponent extends DialogUtil
             const d = value.content;
             if (d !== undefined) {
               this.dataWarna = [...this.dataWarna];
+              this.isLastWarna = value.last;
+
               d.forEach(v => {
                 this.dataWarna.push(v);
               });
-              this.isLastWarna = value.last;
+
             }
           }
           this.waitingLoadMoreWarna = false;

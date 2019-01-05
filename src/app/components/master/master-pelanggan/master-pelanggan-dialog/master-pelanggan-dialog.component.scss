@@ -1,3 +1,4 @@
+@import "~src/assets/css/dan-theme";
 @import "~src/assets/css/dan-mix";
 
 .mat-dialog-actions {
@@ -86,3 +87,12 @@
   }
 
 }
+
+.mat-option {
+  font-size: $standard-font-size;
+}
+
+::ng-deep .pilih * {
+  color: mat-color($dan-app-warning);
+}
+

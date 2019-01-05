@@ -8,8 +8,9 @@ import {
   MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
-  MatCardModule,
-  MatChipsModule, MatDatepickerModule,
+  MatCardModule, MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
   MatExpansionModule,
@@ -28,27 +29,17 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
   MatSortModule,
-  MatTableModule, MatTabsModule,
+  MatTableModule,
+  MatTabsModule,
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
 import {NgScrollbarModule} from 'ngx-scrollbar';
-import {MasterUnitService} from '../../services/master/master-unit/master-unit.service';
-import {MasterCategoryService} from '../../services/master/master-category/master-category.service';
-import {MasterSupplierService} from '../../services/master/master-supplier/master-supplier.service';
-import {MasterPelangganService} from '../../services/master/master-pelanggan/master-pelanggan.service';
-import {MasterLokasiService} from '../../services/master/master-lokasi/master-lokasi.service';
-import {MasterGudangService} from '../../services/master/master-gudang/master-gudang.service';
-import {MasterWarnaService} from '../../services/master/master-warna/master-warna.service';
 import {ElementFocusDirective} from '../../shared/directives/element-focus.directive';
-import {MasterItemService} from '../../services/master/master-item/master-item.service';
-import {MasterKaryawanService} from '../../services/master/master-karyawan/master-karyawan.service';
-import {PenggunaService} from '../../services/administrator/pengguna/pengguna.service';
-import {PermintaanPembelianService} from '../../services/pr/permintaan-pembelian.service';
 import {ServerService} from '../../services/server.service';
 import {MiddlewareService} from '../../shared/middleware.service';
-import {DashboardSharedService} from '../../services/dashboard-shared.service';
 import {AppDateAdapter} from '../../shared/app-date-adapter';
+import {TextMaskModule} from 'angular2-text-mask';
 
 
 @NgModule({
@@ -103,7 +94,11 @@ import {AppDateAdapter} from '../../shared/app-date-adapter';
     MatOptionModule,
     MatSelectModule,
 
-    MatTabsModule
+    MatCheckboxModule,
+
+    MatTabsModule,
+
+    TextMaskModule
 
     // Md2DatepickerModule
 
@@ -148,6 +143,8 @@ import {AppDateAdapter} from '../../shared/app-date-adapter';
 
     MatGridListModule,
 
+    MatCheckboxModule,
+
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatIconModule,
@@ -175,7 +172,9 @@ import {AppDateAdapter} from '../../shared/app-date-adapter';
     MatSelectModule,
 
 
-    MatTabsModule
+    MatTabsModule,
+
+    TextMaskModule
 
 
     // Md2DatepickerModule

@@ -5,7 +5,7 @@ import {apiHost, apiPort} from '../../../shared/constants';
 @Injectable()
 export class MasterLokasiService {
 
-  constructor(private http: HttpClient) {
+  constructor(public http: HttpClient) {
   }
 
   getData(page = 0, size = 10, http = this.http) {

@@ -130,15 +130,6 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
 
-          <!--nama-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Nama Pelanggan</mat-label>
-            <input matInput autocomplete="off" placeholder="Nama Pelanggan " formControlName="nama" required
-                   [errorStateMatcher]="stateMatchers.nama.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'nama').hasError('required')">{{stateMatchers.nama.message}}</mat-error>
-          </mat-form-field>
-
           <!--Tipe Pelanggan-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-select placeholder="Tipe Pelanggan"
@@ -150,13 +141,21 @@
                 {{v}}
               </mat-option>
             </mat-select>
-            <!--<mat-label>Tipe Pelanggan</mat-label>-->
-            <!--<input matInput autocomplete="off" placeholder="Tipe Pelanggan" formControlName="tipePelanggan" required-->
-                   <!--[errorStateMatcher]="stateMatchers.tipePelanggan.matcher">-->
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'tipePelanggan').hasError('required')">
               {{stateMatchers.tipePelanggan.message}}</mat-error>
           </mat-form-field>
+
+          <!--nama-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Nama Pelanggan</mat-label>
+            <input matInput autocomplete="off" placeholder="Nama Pelanggan " formControlName="nama" required
+                   [errorStateMatcher]="stateMatchers.nama.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'nama').hasError('required')">{{stateMatchers.nama.message}}</mat-error>
+          </mat-form-field>
+
+
 
           <!--alamat-->
           <mat-form-field [appearance]="formFieldAppearance">
@@ -170,7 +169,9 @@
           <!--HP-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>HP</mat-label>
-            <input matInput autocomplete="off" placeholder="Nomor HP" formControlName="hp" required
+            <input
+              [textMask]="hpMasking"
+              matInput autocomplete="off" placeholder="Nomor HP" formControlName="hp" required
                    [errorStateMatcher]="stateMatchers.hp.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'hp').hasError('required')">{{stateMatchers.hp.message}}</mat-error>
@@ -179,25 +180,24 @@
           <!--Telepon-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Telepon</mat-label>
-            <input matInput autocomplete="off" placeholder="Telepon" formControlName="telepon">
+            <input [textMask]="faxAndPhoneMasking" matInput autocomplete="off" placeholder="Telepon" formControlName="telepon">
 
           </mat-form-field>
 
           <!--Fax-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Fax</mat-label>
-            <input matInput autocomplete="off" placeholder="Fax" formControlName="fax">
+            <input [textMask]="faxAndPhoneMasking" matInput autocomplete="off" placeholder="Fax" formControlName="fax">
 
           </mat-form-field>
 
           <!--NPWP-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nomor NPWP</mat-label>
-            <input matInput autocomplete="off" placeholder="Nomor NPWP" formControlName="npwp" required
-                   [errorStateMatcher]="stateMatchers.npwp.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'npwp').hasError('required')">
-              {{stateMatchers.npwp.message}}</mat-error>
+            <input matInput autocomplete="off" placeholder="Nomor NPWP" formControlName="npwp">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'npwp').hasError('required')">-->
+              <!--{{stateMatchers.npwp.message}}</mat-error>-->
           </mat-form-field>
 
         </div>

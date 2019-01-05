@@ -101,6 +101,15 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <input type="hidden" formControlName="uuid"/>
 
+          <!--kode-->
+          <mat-form-field [appearance]="formFieldAppearance">
+            <mat-label>Kode</mat-label>
+            <input matInput autocomplete="off" placeholder="Kode " formControlName="kodeKategori" required
+                   [errorStateMatcher]="stateMatchers.kodeKategori.matcher">
+            <mat-error
+              *ngIf="reactiveFormUtil.formControl(form, 'kodeKategori').hasError('required')">{{stateMatchers.kodeKategori.message}}</mat-error>
+          </mat-form-field>
+
           <!--nama-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kategori</mat-label>
@@ -112,25 +121,22 @@
           </mat-form-field>
 
 
-          <!--kode-->
-          <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Kode</mat-label>
-            <input matInput autocomplete="off" placeholder="Kode " formControlName="kodeKategori" required
-                   [errorStateMatcher]="stateMatchers.kodeKategori.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kodeKategori').hasError('required')">{{stateMatchers.kodeKategori.message}}</mat-error>
-          </mat-form-field>
-
-
           <!--tipe-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Tipe</mat-label>
-            <input matInput autocomplete="off" placeholder="Tipe " formControlName="tipeKategori" required
-                   [errorStateMatcher]="stateMatchers.tipeKategori.matcher">
-
+            <mat-select placeholder="Tipe"
+                        formControlName="tipeKategori"
+                        [errorStateMatcher]="stateMatchers.tipeKategori.matcher" required>
+              <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+              <mat-divider></mat-divider>
+              <mat-option [value]="v" *ngFor="let v of tipeKategori">
+                {{v}}
+              </mat-option>
+            </mat-select>
             <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'tipeKategori').hasError('required')">{{stateMatchers.tipeKategori.message}}</mat-error>
+              *ngIf="reactiveFormUtil.formControl(form, 'tipeKategori').hasError('required')">
+              {{stateMatchers.tipeKategori.message}}</mat-error>
           </mat-form-field>
+
         </div>
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -167,27 +173,28 @@
                   <div [formGroupName]="subIndex" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <input type="hidden" formControlName="uuid">
 
+                    <!--kode-->
+                    <mat-form-field [appearance]="formFieldAppearance">
+                      <mat-label>Kode</mat-label>
+                      <input appElementFocus
+                             [isInsert]="isInsert()"
+                             matInput autocomplete="off" placeholder="Kode " formControlName="kode" required
+                             [errorStateMatcher]="stateMatchers.subKategori.kode.matcher">
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(sub, 'kode').hasError('required')">{{stateMatchers.subKategori.kode.message}}</mat-error>
+                    </mat-form-field>
+
                     <!--nama-->
                     <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>Sub Kategori</mat-label>
-                      <input appElementFocus
-                             [isInsert]="isInsert()"
-                             matInput placeholder="Sub Kategori" formControlName="nama" required
+                      <input matInput autocomplete="off" placeholder="Sub Kategori" formControlName="nama" required
                              [errorStateMatcher]="stateMatchers.subKategori.nama.matcher">
 
                       <mat-error
                         *ngIf="reactiveFormUtil.formControl(sub, 'nama').hasError('required')">{{stateMatchers.subKategori.nama.message}}</mat-error>
                     </mat-form-field>
 
-                    <!--kode-->
-                    <mat-form-field [appearance]="formFieldAppearance">
-                      <mat-label>Kode</mat-label>
-                      <input matInput autocomplete="off" placeholder="Kode " formControlName="kode" required
-                             [errorStateMatcher]="stateMatchers.subKategori.kode.matcher">
 
-                      <mat-error
-                        *ngIf="reactiveFormUtil.formControl(sub, 'kode').hasError('required')">{{stateMatchers.subKategori.kode.message}}</mat-error>
-                    </mat-form-field>
 
 
 

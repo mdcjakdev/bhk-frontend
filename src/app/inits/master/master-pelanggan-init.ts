@@ -54,10 +54,10 @@ export const masterPelangganErrorStateMatchers = {
     matcher: new AppErrorStateMatcher(),
     message: 'Pastikan anda menginputkan nama'
   },
-  npwp: {
-    matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan npwp'
-  },
+  // npwp: {
+  //   matcher: new AppErrorStateMatcher(),
+  //   message: 'Pastikan anda menginputkan npwp'
+  // },
   tipePelanggan: {
     matcher: new AppErrorStateMatcher(),
     message: 'Tipe pelanggan tidak boleh kosong'
@@ -76,7 +76,7 @@ export function masterPelangganForm(init: MasterPelanggan = masterPelangganInit,
     fax: {value: init.fax, disabled: disables.fax},
     hp: [{value: init.hp, disabled: disables.hp}, Validators.required],
     nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
-    npwp: [{value: init.npwp, disabled: disables.npwp}, Validators.required],
+    npwp: {value: init.npwp, disabled: disables.npwp},
     telepon: {value: init.telepon, disabled: disables.telepon},
     tipePelanggan: [{value: init.tipePelanggan, disabled: disables.tipePelanggan}, Validators.required]
   });

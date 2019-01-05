@@ -77,18 +77,18 @@ export const masterSupplierErrorStateMatchers = {
     matcher: new AppErrorStateMatcher(),
     message: 'Inputkan tanggal dengan benar'
   },
-  picName: {
-    matcher: new AppErrorStateMatcher(),
-    message: 'Tidak boleh kosong'
-  },
-  picNumber: {
-    matcher: new AppErrorStateMatcher(),
-    message: 'Tidak boleh kosong'
-  },
-  telepon: {
-    matcher: new AppErrorStateMatcher(),
-    message: 'Pastikan anda menginputkan nomor telepon'
-  }
+  // picName: {
+  //   matcher: new AppErrorStateMatcher(),
+  //   message: 'Tidak boleh kosong'
+  // },
+  // picNumber: {
+  //   matcher: new AppErrorStateMatcher(),
+  //   message: 'Tidak boleh kosong'
+  // },
+  // telepon: {
+  //   matcher: new AppErrorStateMatcher(),
+  //   message: 'Pastikan anda menginputkan nomor telepon'
+  // }
 };
 
 
@@ -106,9 +106,9 @@ export function masterSupplierForm(init: MasterSupplier = masterSupplierInit,
     kodeTrans: [{value: init.kodeTrans, disabled: disables.kodeTrans}, Validators.required],
     nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
     paymentDueDate: [{value: init.paymentDueDate, disabled: disables.paymentDueDate}, Validators.required],
-    picName: [{value: init.picName, disabled: disables.picName}, Validators.required],
-    picNumber: [{value: init.picNumber, disabled: disables.picNumber}, Validators.required],
-    telepon: [{value: init.telepon, disabled: disables.telepon}, Validators.required]
+    picName: {value: init.picName, disabled: disables.picName},
+    picNumber: {value: init.picNumber, disabled: disables.picNumber},
+    telepon: {value: init.telepon, disabled: disables.telepon}
   });
 
 }
