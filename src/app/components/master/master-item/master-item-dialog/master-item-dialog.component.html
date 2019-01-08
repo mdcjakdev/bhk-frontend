@@ -294,7 +294,8 @@
                 {{v.namaKategori}}
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option [value]="null" *ngIf="!kategoriLazy.isLast" (click)="kategoriLazy.refresh()" class="lebih-banyak">
+              <mat-option [value]="null" *ngIf="!kategoriLazy.isLast" (click)="kategoriLazy.refresh()"
+                          class="lebih-banyak">
                 <div *ngIf="!kategoriLazy.waitingLoadMore || kategoriLazy.failToFetch; else load">Muat lebih banyak
                   ....
                 </div>
@@ -375,7 +376,8 @@
           <!--nama item-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Nama Item</mat-label>
-            <input (keyup)="generateNamaKain()" autocomplete="off"  matInput placeholder="Nama Item" formControlName="namaItem" required
+            <input (keyup)="generateNamaKain()" autocomplete="off" matInput placeholder="Nama Item"
+                   formControlName="namaItem" required
                    [errorStateMatcher]="stateMatchers.namaItem.matcher">
             <mat-error
               *ngIf="reactiveFormUtil.formControl(form, 'namaItem').hasError('required')">{{stateMatchers.namaItem.message}}</mat-error>
@@ -427,17 +429,18 @@
                 *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
                 (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex, temp)">
                 {{temp.namaWarna}}
-                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                <mat-icon matTooltip="Hapus"
+                          [matTooltipPosition]="'below'"
+                          matChipRemove>cancel</mat-icon>
               </mat-chip>
               <div>
                 <input
+                  matInput
                   placeholder="Warna"
                   #warnaTrigger
                   (click)="openAutoComplete()"
                   [matAutocomplete]="auto"
-                  [matChipInputFor]="chipList"
-                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                  [matChipInputAddOnBlur]="addOnBlur">
+                  [matChipInputFor]="chipList">
 
               </div>
             </mat-chip-list>
@@ -500,8 +503,8 @@
             <mat-label>Setting</mat-label>
             <input matInput autocomplete="off" placeholder="Setting" formControlName="setting">
             <!--<mat-error-->
-              <!--*ngIf="reactiveFormUtil.formControl(form, 'setting').hasError('required')">-->
-              <!--{{stateMatchers.setting.message}}</mat-error>-->
+            <!--*ngIf="reactiveFormUtil.formControl(form, 'setting').hasError('required')">-->
+            <!--{{stateMatchers.setting.message}}</mat-error>-->
           </mat-form-field>
         </div>
 
@@ -511,8 +514,8 @@
             <mat-label>Tekstur</mat-label>
             <input matInput autocomplete="off" placeholder="Tekstur" formControlName="handfeel">
             <!--<mat-error-->
-              <!--*ngIf="reactiveFormUtil.formControl(form, 'handfeel').hasError('required')">-->
-              <!--{{stateMatchers.handfeel.message}}</mat-error>-->
+            <!--*ngIf="reactiveFormUtil.formControl(form, 'handfeel').hasError('required')">-->
+            <!--{{stateMatchers.handfeel.message}}</mat-error>-->
           </mat-form-field>
         </div>
 
@@ -522,8 +525,8 @@
             <mat-label>Proses</mat-label>
             <input matInput autocomplete="off" placeholder="Proses" formControlName="gramasi">
             <!--<mat-error-->
-              <!--*ngIf="reactiveFormUtil.formControl(form, 'gramasi').hasError('required')">-->
-              <!--{{stateMatchers.gramasi.message}}</mat-error>-->
+            <!--*ngIf="reactiveFormUtil.formControl(form, 'gramasi').hasError('required')">-->
+            <!--{{stateMatchers.gramasi.message}}</mat-error>-->
           </mat-form-field>
         </div>
 
@@ -533,8 +536,8 @@
             <mat-label>Additional</mat-label>
             <input matInput autocomplete="off" placeholder="Additional" formControlName="tambahan">
             <!--<mat-error-->
-              <!--*ngIf="reactiveFormUtil.formControl(form, 'tambahan').hasError('required')">-->
-              <!--{{stateMatchers.tambahan.message}}</mat-error>-->
+            <!--*ngIf="reactiveFormUtil.formControl(form, 'tambahan').hasError('required')">-->
+            <!--{{stateMatchers.tambahan.message}}</mat-error>-->
           </mat-form-field>
         </div>
 
@@ -630,7 +633,8 @@
                         <mat-label>Nama Alias</mat-label>
                         <input appElementFocus
                                [isInsert]="isInsert()"
-                               matInput autocomplete="off" placeholder="Nama Alias " formControlName="namaAlias" required
+                               matInput autocomplete="off" placeholder="Nama Alias " formControlName="namaAlias"
+                               required
                                [errorStateMatcher]="stateMatchers.namaAlias.namaAlias.matcher">
 
                         <mat-error

@@ -9,7 +9,7 @@
   <div class="mat-elevation-z8">
     <mat-card style="padding: 0 ">
 
-      <mat-progress-bar *ngIf="(bhkSharedService.loadingBarIndicator | async) && !mobileQuery.matches" color="warn" mode="indeterminate"
+      <mat-progress-bar *ngIf="(bhkSharedService.loadingBarIndicator | async) && !mobileQuery.matches" color="accent" mode="indeterminate"
                         style="height: 3px; position: absolute">
       </mat-progress-bar>
 
@@ -46,7 +46,7 @@
           <mat-icon>tune</mat-icon>
         </button>
 
-        <mat-progress-bar *ngIf="(bhkSharedService.loadingBarIndicator | async) && mobileQuery.matches" color="warn" mode="indeterminate"
+        <mat-progress-bar *ngIf="(bhkSharedService.loadingBarIndicator | async) && mobileQuery.matches" color="accent" mode="indeterminate"
                           class="loading-dashboard-mobile">
         </mat-progress-bar>
       </mat-toolbar>

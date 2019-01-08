@@ -3,7 +3,7 @@
   <!--<div class="dialog-block-content">-->
   <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
   </mat-progress-bar>
-  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent default-background' : 'primary'">
     <div>
       <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
       <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
@@ -37,9 +37,10 @@
           </ng-template>
           <div>
             <div class="container-row">
-              <div class="row row-permintaan">
-                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+              <div class="row row-permintaan static-body-height">
+                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 50px">
                   <mat-form-field [appearance]="formFieldAppearance">
+
                     <mat-select placeholder="Jenis Permintaan Pembelian"
                                 [formControl]="jenisPermintaan"
                                 [errorStateMatcher]="jenisPermintaanStateMatcher"
@@ -47,7 +48,7 @@
                       <mat-option class="pilih">--&nbsp; Tentukan Jenis Permintaan Pembelian &nbsp;--</mat-option>
                       <mat-divider></mat-divider>
                       <mat-option value="LANGSUNG">Langsung</mat-option>
-                      <mat-option value="TIDAK LANGSUNG">Tidak Langsung</mat-option>
+                      <mat-option disabled value="TIDAK LANGSUNG">Tidak Langsung</mat-option>
                     </mat-select>
 
                     <mat-error
@@ -70,87 +71,214 @@
             <span class="mat-tab-label-text">Data Permintaan Pembelian</span>
           </ng-template>
           <div class="container-row">
-            <div class="row row-permintaan">
-              <form [formGroup]="form">
-                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+            <form [formGroup]="form">
+              <div class="row-permintaan static-body-height">
+                <div class="row">
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--tanggal PR-->
+                    <mat-form-field [appearance]="formFieldAppearance">
+                      <mat-label>{{
+                        (documentProperties.waiting) ? 'Mengambil tanggal PR dari server' : ((documentProperties.failed) ? 'Gagal mengambil tanggal PR dari server' : 'Tanggal Permintaan Pembelian')
+                        }}</mat-label>
+                      <input matInput autocomplete="off"
+                             formControlName="tanggalPermintaan" required
+                             [errorStateMatcher]="stateMatchers.nomorDokumenPr.matcher">
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(form, 'tanggalPermintaan').hasError('required')">
+                        {{stateMatchers.tanggalPermintaan.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--Nomor Dokumen-->
+                    <mat-form-field [appearance]="formFieldAppearance">
+                      <mat-label>{{
+                        documentProperties.waiting ? 'Mengambil nomor dokumen dari server' : (documentProperties.failed ? 'Gagal mengambil nomor dokumen dari server' : 'Nomor Dokumen')
+                        }}</mat-label>
+                      <input matInput autocomplete="off"
+                             formControlName="nomorDokumenPr" required
+                             [errorStateMatcher]="stateMatchers.nomorDokumenPr.matcher">
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(form, 'nomorDokumenPr').hasError('required')">
+                        {{stateMatchers.nomorDokumenPr.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--salesman-->
+                    <mat-form-field formGroupName="salesman" [appearance]="formFieldAppearance">
+                      <mat-select #selectSalesman
+                                  [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......' )"
+                                  formControlName="uuid"
+                                  [errorStateMatcher]="stateMatchers.salesman.matcher"
+                                  [required]="salesmanLazy.isEnabled()">
+                        <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option [value]="v.uuid" *ngFor="let v of salesmanLazy.data">
+                          {{v.karyawan.nama}}
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option *ngIf="!salesmanLazy.isLast" (click)="salesmanLazy.refresh()" class="lebih-banyak">
+                          <div *ngIf="!salesmanLazy.waitingLoadMore || salesmanLazy.failToFetch; else load">Muat lebih
+                            banyak
+                            ....
+                          </div>
+                          <ng-template #load>
+                            <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                              mode="indeterminate"></mat-progress-bar>
+                          </ng-template>
+                        </mat-option>
+                      </mat-select>
+                      <button *ngIf="salesmanLazy.failToFetch" matSuffix mat-icon-button
+                              matTooltip="Segarkan Salesman"
+                              [matTooltipPosition]="'left'"
+                              (click)="salesmanLazy.refresh()"
+                      >
+                        <mat-icon color="primary">refresh</mat-icon>
+                      </button>
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'salesman'), 'uuid').hasError('required')">
+                        {{stateMatchers.salesman.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
 
-                  <!--tanggal PR-->
-                  <mat-form-field [appearance]="formFieldAppearance">
-                    <mat-label>{{
-                      (documentProperties.waiting) ? 'Mengambil tanggal PR dari server' : ((documentProperties.failed) ? 'Gagal mengambil tanggal PR dari server' : 'Tanggal Permintaan Pembelian')
-                      }}</mat-label>
-                    <input matInput autocomplete="off"
-                           formControlName="tanggalPermintaan" required
-                           [errorStateMatcher]="stateMatchers.nomorDokumenPr.matcher">
-                    <mat-error
-                      *ngIf="reactiveFormUtil.formControl(form, 'tanggalPermintaan').hasError('required')">
-                      {{stateMatchers.tanggalPermintaan.message}}</mat-error>
-                  </mat-form-field>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div style="float:left!important;font-size: 13px ">
+                      <strong class="primary">Data Permintaan Barang</strong>
+                      &nbsp;
+                      <button mat-icon-button matTooltip="Tambah Data Permintaan Barang"
+                              [matTooltipPosition]="'left'"
+                              (click)="addNewDetailPermintaanItem(reactiveFormUtil.getFormArray('detail', form))">
+                        <mat-icon color="primary">add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="row" style="width: 100%; margin-left: 2px">
+                    <div formArrayName="detail" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div
+                        *ngFor="let detailData of reactiveFormUtil.getFormArrays('detail', form); index as detailIndex">
+                        <!--<mat-form-field [appearance]="formFieldAppearance">-->
+                        <mat-card id="detail-card">
+
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <span>Silahkan Pilih Barang</span>
+                            <button style="float: right" mat-icon-button matTooltip="Hapus"
+                                    [matTooltipPosition]="'below'"
+                                    (click)="removeDetailPermintaanItem(reactiveFormUtil.getFormArray('detail', form), detailIndex)">
+                              <mat-icon class="icon-delete-subcategory">delete</mat-icon>
+                            </button>
+                          </div>
+
+                          <mat-card-content>
+                            <div [formGroupName]="detailIndex" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <input type="hidden" formControlName="uuid">
+
+                              <!--item-->
+                              <mat-form-field formGroupName="item" [appearance]="formFieldAppearance">
+                                <mat-select appMatSelectViewChild
+                                            (viewChild)="afterItemMasterViewInit($event, detailIndex)"
+                                            (selectionChange)="onItemSelectionChange($event, detailIndex, detailData)"
+                                            [placeholder]="(itemLazy[detailIndex].isEnabled()) ? 'Item' : (itemLazy[detailIndex].failToFetch ? 'Gagal memuat data barang....' : 'Memuat data barang ......' )"
+                                            formControlName="uuid"
+                                            [errorStateMatcher]="stateMatchers.detail.item.matcher"
+                                            [required]="itemLazy[detailIndex].isEnabled()">
+                                  <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+                                  <mat-divider></mat-divider>
+                                  <mat-option [value]="v.uuid" *ngFor="let v of itemLazy[detailIndex].data">
+                                    {{v.namaKain}}
+                                  </mat-option>
+                                  <mat-divider></mat-divider>
+                                  <mat-option *ngIf="!itemLazy[detailIndex].isLast"
+                                              (click)="itemLazy[detailIndex].refresh()" class="lebih-banyak">
+                                    <div
+                                      *ngIf="!itemLazy[detailIndex].waitingLoadMore || itemLazy[detailIndex].failToFetch; else load">
+                                      Muat lebih
+                                      banyak
+                                      ....
+                                    </div>
+                                    <ng-template #load>
+                                      <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                                        mode="indeterminate"></mat-progress-bar>
+                                    </ng-template>
+                                  </mat-option>
+                                </mat-select>
+                                <button *ngIf="itemLazy[detailIndex].failToFetch" matSuffix mat-icon-button
+                                        matTooltip="Segarkan Data Barang"
+                                        (click)="itemLazy[detailIndex].refresh()"
+                                        [matTooltipPosition]="'left'">
+                                  <mat-icon color="primary">refresh</mat-icon>
+                                </button>
+                                <mat-error
+                                  *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(detailData, 'item'), 'uuid').hasError('required')">
+                                  {{stateMatchers.detail.item.message}}</mat-error>
+                              </mat-form-field>
+
+                              <!--pilih warna-->
+                              <mat-form-field formArrayName="detailWarna">
+                                <mat-chip-list #chipList>
+                                  <mat-chip
+                                    [ngStyle]="{ 'background-color': temp.warna.kodeWarnaHexadecimal }"
+                                    *ngFor="let temp of getDetailWarnaValues(detailData, 'detailWarna'); index as tempIndex">
+                                    {{temp.warna.namaWarna}}
+                                    <mat-icon matTooltip="Ubah" class="first-chip-icon mat-standard-chip-icon"
+                                              [matTooltipPosition]="'below'"
+                                              (click)="editPropertiWarnaChips(detailData, detailIndex, tempIndex)">sort</mat-icon>
+                                    <mat-icon matTooltip="Hapus" class="mat-standard-chip-icon"
+                                              [matTooltipPosition]="'below'"
+                                              (click)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)">
+                                      cancel
+                                    </mat-icon>
+                                  </mat-chip>
+                                  <div>
+                                    <input
+                                      appMatAutocompleteTriggerViewChild
+                                      (viewChild)="onWarnaTriggerInitialized($event)"
+                                      (click)="dataWarnaTrigger[detailIndex].openPanel()"
+                                      placeholder="Pilihan Warna"
+                                      matInput
+                                      [matAutocomplete]="auto"
+                                      [matChipInputFor]="chipList">
+
+                                  </div>
+                                </mat-chip-list>
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                                                  (optionSelected)="selected($event, reactiveFormUtil.getFormArray('detailWarna', detailData), detailIndex)">
+                                  <mat-option *ngFor="let temp of dataWarna[detailIndex]" [value]="temp">
+                                    {{temp.namaWarna }}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+
+                              <!--catatan-->
+                              <mat-form-field [appearance]="formFieldAppearance">
+                                <mat-label>Note</mat-label>
+                                <textarea matInput placeholder="Note"
+                                          formControlName="catatan"></textarea>
+                              </mat-form-field>
+
+                            </div>
 
 
+                          </mat-card-content>
+                        </mat-card>
+                      </div>
+                    </div>
+                  </div>
 
-                  <!--Nomor Dokumen-->
-                  <mat-form-field [appearance]="formFieldAppearance">
-                    <mat-label>{{
-                      documentProperties.waiting ? 'Mengambil nomor dokumen dari server' : (documentProperties.failed ? 'Gagal mengambil nomor dokumen dari server' : 'Nomor Dokumen')
-                      }}</mat-label>
-                    <input matInput autocomplete="off"
-                           formControlName="nomorDokumenPr" required
-                           [errorStateMatcher]="stateMatchers.nomorDokumenPr.matcher">
-                    <mat-error
-                      *ngIf="reactiveFormUtil.formControl(form, 'nomorDokumenPr').hasError('required')">
-                      {{stateMatchers.nomorDokumenPr.message}}</mat-error>
-                  </mat-form-field>
-
-                  <!--salesman-->
-                  <mat-form-field formGroupName="salesman" [appearance]="formFieldAppearance">
-                    <mat-select #selectSalesman
-                                [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......' )"
-                                formControlName="uuid"
-                                [errorStateMatcher]="stateMatchers.salesman.matcher" [required]="salesmanLazy.isEnabled()">
-                      <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
-                      <mat-divider></mat-divider>
-                      <mat-option [value]="v.uuid" *ngFor="let v of salesmanLazy.data">
-                        {{v.karyawan.nama}}
-                      </mat-option>
-                      <mat-divider></mat-divider>
-                      <mat-option *ngIf="!salesmanLazy.isLast" (click)="salesmanLazy.refresh()" class="lebih-banyak">
-                        <div *ngIf="!salesmanLazy.waitingLoadMore || salesmanLazy.failToFetch; else load" >Muat lebih banyak
-                          ....
-                        </div>
-                        <ng-template #load>
-                          <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
-                                            mode="indeterminate"></mat-progress-bar>
-                        </ng-template>
-                      </mat-option>
-                    </mat-select>
-                    <button *ngIf="salesmanLazy.failToFetch" matSuffix mat-icon-button matTooltip="Segarkan Salesman"
-                            (click)="salesmanLazy.refresh()"
-                            [matTooltipPosition]="'left'">
-                      <mat-icon color="primary">refresh</mat-icon>
-                    </button>
-                    <mat-error
-                      *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'salesman'), 'uuid').hasError('required')">
-                      {{stateMatchers.salesman.message}}</mat-error>
-                  </mat-form-field>
-
-                  <!--catatan-->
-                  <mat-form-field [appearance]="formFieldAppearance">
-                    <mat-label>Catatan</mat-label>
-                    <textarea  matInput placeholder="Catatan" formControlName="catatan"></textarea>
-                  </mat-form-field>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!--catatan-->
+                    <mat-form-field [appearance]="formFieldAppearance" style="margin-bottom: 25px">
+                      <mat-label>Catatan Permintaan Barang</mat-label>
+                      <textarea matInput placeholder="Catatan Permintaan Barang"
+                                formControlName="catatan"></textarea>
+                    </mat-form-field>
+                  </div>
                 </div>
 
 
-
-
-                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-
-                </div>
-
-              </form>
-
-            </div>
+              </div>
+            </form>
           </div>
         </mat-tab>
 

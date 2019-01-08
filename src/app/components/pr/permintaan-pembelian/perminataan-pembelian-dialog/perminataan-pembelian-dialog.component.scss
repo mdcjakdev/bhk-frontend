@@ -36,20 +36,34 @@
   color: #6f6f6f;
 }
 
-#sub-category-card {
+
+.mat-card {
+  padding: 25px 10px 11px 10px;
+}
+
+#detail-card {
+
+
+  width: 100% !important;
+  margin-top: 5px;
+  margin-bottom: 15px !important;
+
+
+
   .mat-card-title, .mat-card-subtitle {
-    text-align: right;
+    font-size: $standard-font-size-md;
+    //text-align: right;
   }
 
   .mat-card-content {
     text-align: right;
   }
 
-  margin-left: 15px;
+  //margin-left: 15px;
   background: rgba(89, 89, 89, 0.01);
-  border: 1px solid #dedede;
+  border: 1px solid #e8e8e8;
   border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 1px 0px, rgba(0, 0, 0, 0.19) 0px 1px 2px 0px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 1px 0px, rgba(0, 0, 0, 0.19) 0px 1px 1px 0px;
 }
 
 //
@@ -58,6 +72,11 @@
   padding-left: 0px;
   padding-right: 0px;
   padding-bottom: 24px;
+}
+
+.default-background {
+  background-color: #ffffff !important;
+  color: mat-color($dan-app-accent) !important;
 }
 
 #dialog-block {
@@ -184,13 +203,20 @@
   height: 450px !important;
 }
 
+
+::ng-deep .static-body-height {
+  height: 360px;
+}
+
+
+
 ::ng-deep .row-permintaan {
-  height: 450px !important;
+  //height: 450px;
   padding: 15px 20px 0px 10px;
 }
 
 .container-row {
-  padding: 0px 15px;
+  padding: 10px 15px 0 20px;
 }
 
 form {
@@ -204,4 +230,20 @@ textarea {
 
 .mat-tab-label-text {
   color: #000;
+}
+
+.mat-standard-chip-icon {
+  display: inline-flex;;
+  align-items: center;
+  cursor: pointer;
+  min-height: 32px;
+  height: 1px;
+}
+
+.first-chip-icon {
+  margin-left: 7px;
+}
+
+.mat-standard-chip {
+  padding: 7px 7px 7px 14px;
 }

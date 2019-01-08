@@ -134,7 +134,7 @@ export class PermintaanPembelianComponent
         disables: permintaanPembelianDisables
       },
       autoFocus: false,
-      position: {bottom: '50px', top: (action === Action.DELETE) ? '150px' : '75px'}
+      position: {bottom: '50px', top: (action === Action.DELETE) ? '150px' : '45px'}
     });
 
 

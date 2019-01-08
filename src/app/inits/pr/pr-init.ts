@@ -1,6 +1,6 @@
 import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {MasterUnit, masterUnitInit} from '../master/master-unit-init';
-import {MasterWarna, masterWarnaInit} from '../master/master-warna';
+import {MasterWarna, masterWarnaForm, masterWarnaInit} from '../master/master-warna';
 import {MasterItem, masterItemInit} from '../master/master-item';
 import {Pengguna, penggunaInit} from '../administrator/pengguna-init';
 import {AppErrorStateMatcher} from '../../shared/utils';
@@ -70,7 +70,7 @@ export const permintaanPembelianInit = <PermintaanPembelian>{
   detail: [],
   salesman: penggunaInit,
   nomorDokumenPr: '',
-  prApprovedBy: penggunaInit,
+  // prApprovedBy: penggunaInit,
   prApprovedDate: '',
   prCanceledDate: '',
   prCanceledReason: '',
@@ -119,13 +119,14 @@ export const permintaanPembelianDetailWarnaErrorStateMatchers = {
 
 /** Init StateMatcher formcontrol permintaanPembelianDetail */
 export const permintaanPembelianDetailErrorStateMatchers = {
-  item: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih item'}
+  item: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih item'},
+  detailWarna: {...permintaanPembelianDetailWarnaErrorStateMatchers}
 };
 
 /** Init StateMatcher formcontrol Permintaan Pembelian */
 export const permintaanPembelianErrorStateMatchers = {
   counterPr: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda counter ada'},
-  detail: [],
+  detail: {...permintaanPembelianDetailErrorStateMatchers },
   salesman: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih salesman'},
   nomorDokumenPr: {matcher: new AppErrorStateMatcher(), message: 'Nomor dokumen tidak boleh kosong'},
   nomorPrefixPr: {matcher: new AppErrorStateMatcher(), message: 'Nomor prefix tidak boleh kosong'},
@@ -139,9 +140,7 @@ export function permintaanPembelianDetailWarnaForm(init: PermintaanPembelianDeta
                                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm().controls,
-    warna: new FormBuilder().group({
-      uuid: [{value: init.warna.uuid, disabled: disables.warna}, Validators.required]
-    }),
+    warna: masterWarnaForm(init.warna),
     jumlah: [{value: init.jumlah, disabled: disables.jumlah}, Validators.required],
     unit: new FormBuilder().group({
       uuid: [{value: init.unit.uuid, disabled: disables.unit}, Validators.required]
@@ -198,13 +197,13 @@ export function permintaanPembelianForm(init: PermintaanPembelian = permintaanPe
     }),
     nomorDokumenPr: [{value: init.nomorDokumenPr, disabled: disables.nomorDokumenPr}, Validators.required],
     prApprovedBy: new FormBuilder().group({
-      uuid: {value: init.prApprovedBy.uuid, disabled: disables.prApprovedBy}
+      uuid: {value: ((init.prApprovedBy === undefined || init.prApprovedBy === null) ? '' : init.prApprovedBy.uuid), disabled: disables.prApprovedBy}
     }),
     prApprovedDate: {value: init.prApprovedDate, disabled: disables.prApprovedDate},
     prCanceledDate: {value: init.prCanceledDate, disabled: disables.prCanceledDate},
     prCanceledReason: {value: init.prCanceledReason, disabled: disables.prCanceledReason},
     prCancelledBy: new FormBuilder().group({
-      uuid: {value: init.prCancelledBy.uuid, disabled: disables.prCancelledBy},
+      uuid: {value: ((init.prCancelledBy === undefined || init.prCancelledBy === null) ? '' : init.prCancelledBy.uuid), disabled: disables.prCancelledBy},
     }),
     nomorPrefixPr: [{value: init.nomorPrefixPr, disabled: disables.nomorPrefixPr}, Validators.required],
     statusDokumenPr: {value: init.statusDokumenPr, disabled: disables.statusDokumenPr},
@@ -212,5 +211,7 @@ export function permintaanPembelianForm(init: PermintaanPembelian = permintaanPe
   });
 
 }
+
+
 
 

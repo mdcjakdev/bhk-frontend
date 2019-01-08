@@ -6,14 +6,13 @@ import {delayAnotherProcess, UUID_COLUMN} from './constants';
 
 
 export class SelectLazy<E> {
-  
-  
+
 
   /* Data yang akan dikembalikan, yang merupakan child dari data utama yang berhubungan lagnsung */
   // public dataChild: {
   //   [key: string]: any[];
   // }; 
-  
+
   /* Data yang akan dikembalikan, yang merupaka data hasil dari pengambilan di database */
   public data: E[] = [];
 
@@ -40,7 +39,6 @@ export class SelectLazy<E> {
     public fetchFunction: Function,
     public initUuid: any,
     public isInsert: boolean,
-
     /* Data yang akan dikembalikan, yang merupakan child dari data utama yang berhubungan lagnsung */
     public dataChild: {
       [key: string]: any[];
@@ -51,11 +49,11 @@ export class SelectLazy<E> {
     public select?: MatSelect) {
   }
 
-  
+
   listenToChilds() {
-    const controlKategori = (<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN];
+    const controlKategori = (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN];
     controlKategori.valueChanges.subscribe(value => {
-      
+
       for (const controlChild in this.dataChild) {
         if (this.dataChild.hasOwnProperty(controlChild)) {
 
@@ -65,12 +63,12 @@ export class SelectLazy<E> {
 
           if (value !== undefined) {
             if (value !== null) { // jika bukan tombola load lebih banyak yang dipilih
-              this.dataChild = {...this.dataChild, [controlChild]: [] };
-              
+              this.dataChild = {...this.dataChild, [controlChild]: []};
+
               // this.dataSubKategori = [];
               for (const temp of this.data) {
                 if (temp[UUID_COLUMN] === value) {
-                  this.dataChild = {...this.dataChild, [controlChild]: [...temp[controlChild]] };
+                  this.dataChild = {...this.dataChild, [controlChild]: [...temp[controlChild]]};
                   // this.dataSubKategori = [...kategori.subKategori];
                   break;
                 }
@@ -78,26 +76,26 @@ export class SelectLazy<E> {
               this.setSubKategoriToInvalid(controlChild);
             }
           }
-          
-        } 
-      }       
-      
+
+        }
+      }
+
     });
   }
 
 
   setSubKategoriToInvalid(childControl = '') {
     /** set incorrect ke sub kategori jika kategori di ganti **/
-    const control = (<FormGroup> this.form.controls[childControl]).controls[UUID_COLUMN];
+    const control = (<FormGroup>this.form.controls[childControl]).controls[UUID_COLUMN];
     if (control.touched) {
       control.setValue(undefined);
     }
     /*=====*/
   }
-  
-  
+
+
   isEnabled() {
-    return !(<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN].disabled;
+    return !(<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disabled;
   }
 
   refresh() {
@@ -117,14 +115,21 @@ export class SelectLazy<E> {
     }
   }
 
-  _loadMore() {
+  _loadMore(callback?: (data?: E[]) => void) {
+    if (!this.waitingLoadMore) {
+      this.waitingLoadMore = true;
+    }
+
     setTimeout(() => {
+
+
       this.fetchFunction(this.page, this.size, this.http).subscribe(
         (value: any) => {
           this.page++;
           if (value !== undefined && value.content !== undefined) {
             const d = value.content;
             if (d !== undefined) {
+
               this.data = [...this.data];
               this.isLast = value.last;
 
@@ -138,25 +143,26 @@ export class SelectLazy<E> {
                   }
 
                   if (this.isInsert) {
-                    (<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN].enable();
+                    // (<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN].setValue(this.initUuid);
+                    (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].enable();
                     for (const child in this.dataChild) {
                       if (this.dataChild.hasOwnProperty(child)) {
-                        (<FormGroup> this.form.controls[child]).controls[UUID_COLUMN].enable();
+                        (<FormGroup>this.form.controls[child]).controls[UUID_COLUMN].enable();
                       }
                     }
                   } else if (!this.isInsert) {
                     if (this.isUuidTrue) {
-                      (<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN].enable();
+                      (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].enable();
                       for (const child in this.dataChild) {
                         if (this.dataChild.hasOwnProperty(child)) {
-                          (<FormGroup> this.form.controls[child]).controls[UUID_COLUMN].enable();
+                          (<FormGroup>this.form.controls[child]).controls[UUID_COLUMN].enable();
                         }
                       }
                     } else {
-                      (<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN].disable();
+                      (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disable();
                       for (const child in this.dataChild) {
                         if (this.dataChild.hasOwnProperty(child)) {
-                          (<FormGroup> this.form.controls[child]).controls[UUID_COLUMN].disable();
+                          (<FormGroup>this.form.controls[child]).controls[UUID_COLUMN].disable();
                         }
                       }
                     }
@@ -170,28 +176,33 @@ export class SelectLazy<E> {
                 }
 
               } else {
-                (<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN].enable();
+                (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].enable();
               }
 
             }
           }
           this.waitingLoadMore = false;
 
-
+          if (callback) {
+            callback(this.data);
+          }
         },
         error => {
 
           this.failToFetch = true;
-          const control = (<FormGroup> this.form.controls[this.controlName]).controls[UUID_COLUMN];
-          console.log(control.touched)
+          const control = (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN];
           if (control.touched) {
             control.setValue(undefined);
           } else {
             control.markAsTouched({onlySelf: true});
           }
+
+          if (callback) {
+            callback();
+          }
         }
       );
-    }, delayAnotherProcess)
+    }, delayAnotherProcess);
   }
 }
 

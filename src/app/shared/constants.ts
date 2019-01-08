@@ -12,8 +12,8 @@ export const apiHost = 'http://localhost';
 export const apiPort = '8000';
 // export const apiPort = '5000';
 
-export const delayHttpRequest = 200;
-export const delayAnotherProcess = 1000;
+export const delayHttpRequest = 500;
+export const delayAnotherProcess = 0;
 
 export const defaultNavSideBarSize = 250;
 export const defaultMainContentPadding = 35;

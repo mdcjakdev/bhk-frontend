@@ -60,7 +60,7 @@ export class MasterItemDialogComponent extends DialogUtil
   kategoriLazy: SelectLazy<MasterCategory>;
 
 
-  @ViewChild('selectWarna') selectWarna;
+  // @ViewChild('selectWarna') selectWarna;
   dataWarna: any[] = [];
   warnaPage = 0;
   waitingLoadMoreWarna = false;
@@ -70,11 +70,10 @@ export class MasterItemDialogComponent extends DialogUtil
   barcodeState = 'collapsed';
   aliasState = 'collapsed';
 
-  removable = true;
-  addOnBlur = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  // addOnBlur = true;
+  // separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  // @ViewChild('auto') matAutocomplete: MatAutocomplete;
   @ViewChild('warnaTrigger', { read: MatAutocompleteTrigger }) warnaTrigger: MatAutocompleteTrigger;
 
   constructor(public snackBar: MatSnackBar,
@@ -287,14 +286,19 @@ export class MasterItemDialogComponent extends DialogUtil
 
   selected(event: MatAutocompleteSelectedEvent, fa: FormArray): void {
     if (event.option.value !== null) {
+      // (<FormArray> this.form.controls['warna'])
+      console.log((<FormArray> this.form.controls['warna']).getRawValue())
+      const alreadySelectedWarna = [...(<FormArray> this.form.controls['warna']).getRawValue()];
+      if (alreadySelectedWarna
+        .filter(value => value.uuid === event.option.value.uuid)
+        .length > 0) {
+        openAppSnackbar(this.snackBar,
+          'Warna "' + event.option.value.namaWarna + '" ada pada daftar yang terpilih!!!', SNACKBAR_WARNING_STYLE, 1500);
+        return;
+      }
+
       this.addNewWarna(fa, event.option.value);
     }
-  }
-
-  private _filter(value: string) {
-    const filterValue = value.toLowerCase();
-
-    // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
   }
 
   addNewWarna(fa, init: MasterWarna) {
@@ -304,6 +308,14 @@ export class MasterItemDialogComponent extends DialogUtil
   removeWarna(fa, i, temp) {
     this.reactiveFormUtil.removeFormArray(fa, i);
   }
+
+  private _filter(value: string) {
+    const filterValue = value.toLowerCase();
+
+    // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+
 
   getWarnaValues(fg: FormGroup, arrayControlName: string) {
     return (<FormArray> fg.controls[arrayControlName]).value;

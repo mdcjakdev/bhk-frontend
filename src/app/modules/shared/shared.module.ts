@@ -21,7 +21,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatOptionModule,
+  MatOptionModule, MatPaginatorIntl,
   MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
@@ -40,11 +40,16 @@ import {ServerService} from '../../services/server.service';
 import {MiddlewareService} from '../../shared/middleware.service';
 import {AppDateAdapter} from '../../shared/app-date-adapter';
 import {TextMaskModule} from 'angular2-text-mask';
+import {AppMatPaginatorIntl} from '../../shared/app-mat-paginator-intl';
+import {MatAutocompleteTriggerViewChildDirective} from '../../shared/directives/mat-autocomplete-trigger-view-child.directive';
+import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-view-child.directive';
 
 
 @NgModule({
   declarations: [
     ElementFocusDirective,
+    MatSelectViewChildDirective,
+    MatAutocompleteTriggerViewChildDirective
   ],
   imports: [
     CommonModule,
@@ -104,6 +109,7 @@ import {TextMaskModule} from 'angular2-text-mask';
 
   ],
   providers: [
+    { provide: MatPaginatorIntl, useClass: AppMatPaginatorIntl},
     { provide: HTTP_INTERCEPTORS, useClass: MiddlewareService, multi: true },
 
     {
@@ -122,6 +128,9 @@ import {TextMaskModule} from 'angular2-text-mask';
   ],
   exports: [
     ElementFocusDirective,
+    MatSelectViewChildDirective,
+    MatAutocompleteTriggerViewChildDirective,
+
 
     MatDatepickerModule,
     MatNativeDateModule,

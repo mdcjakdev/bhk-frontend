@@ -91,7 +91,7 @@ export function masterWarnaForm(init: MasterWarna = masterWarnaInit,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   /** megeneralisasi nilai2 array dari warna barcode */
-  const warnaBarcode = (init.barcode.length === 0) ? [] : generateWarnaBarcode(init.barcode);
+  const warnaBarcode = (init.barcode === undefined || init.barcode.length === 0) ? [] : generateWarnaBarcode(init.barcode);
 
   return new FormBuilder().group({
     ...initAuditForm(init).controls,

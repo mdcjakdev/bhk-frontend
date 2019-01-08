@@ -240,6 +240,7 @@
       </table>
 
       <mat-paginator #paginator
+                     [showFirstLastButtons]="true"
                      (page)="onDataSizeChanged($event)"
                      [length]="totalElements()"
                      [pageSize]="pageSize"
