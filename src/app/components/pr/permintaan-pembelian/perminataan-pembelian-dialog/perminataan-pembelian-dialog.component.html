@@ -68,7 +68,7 @@
 
         <mat-tab disabled>
           <ng-template mat-tab-label>
-            <span class="mat-tab-label-text">Data Permintaan Pembelian</span>
+            <span class="mat-tab-label-text">Daftar Permintaan Pembelian</span>
           </ng-template>
           <div class="container-row">
             <form [formGroup]="form">
@@ -78,7 +78,9 @@
                     <!--tanggal PR-->
                     <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>{{
-                        (documentProperties.waiting) ? 'Mengambil tanggal PR dari server' : ((documentProperties.failed) ? 'Gagal mengambil tanggal PR dari server' : 'Tanggal Permintaan Pembelian')
+                        ((isInsert())
+                        ? (documentProperties.waiting) ? 'Mengambil tanggal PR dari server' : ((documentProperties.failed) ? 'Gagal mengambil tanggal PR dari server' : 'Tanggal Permintaan Pembelian')
+                        : 'Tanggal Permintaan Pembelian')
                         }}</mat-label>
                       <input matInput autocomplete="off"
                              formControlName="tanggalPermintaan" required
@@ -92,7 +94,10 @@
                     <!--Nomor Dokumen-->
                     <mat-form-field [appearance]="formFieldAppearance">
                       <mat-label>{{
-                        documentProperties.waiting ? 'Mengambil nomor dokumen dari server' : (documentProperties.failed ? 'Gagal mengambil nomor dokumen dari server' : 'Nomor Dokumen')
+                        ((isInsert())
+                          ? (documentProperties.waiting ? 'Mengambil nomor dokumen dari server' : (documentProperties.failed ? 'Gagal mengambil nomor dokumen dari server' : 'Nomor Dokumen'))
+                            : 'Nomor Dokumen'
+                        )
                         }}</mat-label>
                       <input matInput autocomplete="off"
                              formControlName="nomorDokumenPr" required
@@ -130,8 +135,7 @@
                       <button *ngIf="salesmanLazy.failToFetch" matSuffix mat-icon-button
                               matTooltip="Segarkan Salesman"
                               [matTooltipPosition]="'left'"
-                              (click)="salesmanLazy.refresh()"
-                      >
+                              (click)="salesmanLazy.refresh()">
                         <mat-icon color="primary">refresh</mat-icon>
                       </button>
                       <mat-error
@@ -142,11 +146,11 @@
 
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div style="float:left!important;font-size: 13px ">
-                      <strong class="primary">Data Permintaan Barang</strong>
+                      <strong class="primary">Daftar Permintaan Barang</strong>
                       &nbsp;
                       <button mat-icon-button matTooltip="Tambah Data Permintaan Barang"
                               [matTooltipPosition]="'left'"
-                              (click)="addNewDetailPermintaanItem(reactiveFormUtil.getFormArray('detail', form))">
+                              (click)="initializePermmintaanDetail(reactiveFormUtil.getFormArray('detail', form))">
                         <mat-icon color="primary">add</mat-icon>
                       </button>
                     </div>
@@ -162,7 +166,7 @@
                         <mat-card id="detail-card">
 
                           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <span>Silahkan Pilih Barang</span>
+                            <i><span class="accent">{{detailTitle(detailData, detailIndex)}}</span></i>
                             <button style="float: right" mat-icon-button matTooltip="Hapus"
                                     [matTooltipPosition]="'below'"
                                     (click)="removeDetailPermintaanItem(reactiveFormUtil.getFormArray('detail', form), detailIndex)">
@@ -223,7 +227,7 @@
                                     {{temp.warna.namaWarna}}
                                     <mat-icon matTooltip="Ubah" class="first-chip-icon mat-standard-chip-icon"
                                               [matTooltipPosition]="'below'"
-                                              (click)="editPropertiWarnaChips(detailData, detailIndex, tempIndex)">sort</mat-icon>
+                                              (click)="editPropertiWarnaChips(detailData, detailIndex, tempIndex)">arrow_drop_down_circle</mat-icon>
                                     <mat-icon matTooltip="Hapus" class="mat-standard-chip-icon"
                                               [matTooltipPosition]="'below'"
                                               (click)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)">
@@ -310,7 +314,7 @@
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
 
-    <button *ngIf="selectedIndex > 0"
+    <button *ngIf="sebelumnyaCondition()"
             matPrefix
             mat-flat-button
             (click)="previous()"

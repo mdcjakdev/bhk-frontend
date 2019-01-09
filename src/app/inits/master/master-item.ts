@@ -1,4 +1,4 @@
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {
@@ -90,6 +90,7 @@ export const masterItemNamaAliasDisables = {
 
 /** Init nilai awal status disable formcontrol Kategori */
 export const masterItemDisables = {
+  ...appAuditEntityDisables,
   kode: false,
   namaKain: true,
   kodeItemAlias: false,
@@ -206,7 +207,7 @@ export function masterItemForm(init: MasterItem = masterItemInit,
   const warna = (init.warna.length === 0) ? [] : generateMasterItemWarnaRelation(init.warna);
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     kode: [{value: init.kode, disabled: disables.kode}, Validators.required],
     barcode: new FormBuilder().array(barcode),
     namaKain: [{value: init.namaKain, disabled: disables.namaKain}, Validators.required],

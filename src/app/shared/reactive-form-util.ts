@@ -10,7 +10,7 @@ export class ReactiveFormUtil {
   }
 
   /** Pengambilan form array untuk proses tambah atau hapus data */
-  getFormArray(formArrayName: string, parentFormGroup: FormGroup) {
+  getFormArray(formArrayName: string, parentFormGroup: FormGroup): FormArray {
     return (<FormArray> parentFormGroup.controls[formArrayName]);
   }
 

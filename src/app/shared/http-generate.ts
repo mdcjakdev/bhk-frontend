@@ -10,31 +10,29 @@ export class AppHttpGenerate {
 
   constructor(
     public http: HttpClient,
-    public functionRequest: Function,
-    public callbackSuccess?: Function,
-    public callbacError?: Function
+    public functionRequest: Function
   ) {
 
   }
 
-  generate() {
+  generate(success?: (value: any) => void, failed?: (error: any) => void) {
     this.failed = false;
     this.waiting = true;
 
     setTimeout(() => {
 
       this.functionRequest(this.http).subscribe(
-        value => {
+        value1 => {
           this.waiting = false;
-          if (this.callbackSuccess) {
-            this.callbackSuccess(value);
+          if (success) {
+            success(value1);
           }
         },
-        error => {
+        error1 => {
           this.waiting = false;
           this.failed = true;
-          if (this.callbacError) {
-            this.callbacError(error);
+          if (failed) {
+            failed(error1);
           }
         }
       );

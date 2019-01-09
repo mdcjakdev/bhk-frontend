@@ -10,7 +10,7 @@ import {
 } from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {delayHttpRequest, openAppSnackbar, SNACKBAR_SUCCESS_STYLE, SNACKBAR_WARNING_STYLE} from '../../../../shared/constants';
+import {delayHttpRequest, openAppSnackbar, SNACKBAR_SUCCESS_STYLE, SNACKBAR_WARNING_STYLE, UUID_COLUMN} from '../../../../shared/constants';
 import {AppErrorStateMatcher, SUCCESS} from '../../../../shared/utils';
 import {PermintaanPembelianService} from '../../../../services/pr/permintaan-pembelian.service';
 import {
@@ -30,7 +30,7 @@ import {Pengguna} from '../../../../inits/administrator/pengguna-init';
 import {PenggunaService} from '../../../../services/administrator/pengguna/pengguna.service';
 import {AppHttpGenerate} from '../../../../shared/http-generate';
 import {MasterItemService} from '../../../../services/master/master-item/master-item.service';
-import {MasterItem} from '../../../../inits/master/master-item';
+import {MasterItem, masterItemDisables, masterItemInit} from '../../../../inits/master/master-item';
 import {MasterWarna, masterWarnaForm} from '../../../../inits/master/master-warna';
 import {Action} from '../../../../shared/action.enum';
 import {PropertiWarnaComponent} from './properti-warna/properti-warna.component';
@@ -61,8 +61,14 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   salesmanLazy: SelectLazy<Pengguna>;
 
   itemLazy: SelectLazy<MasterItem>[] = [];
-  warna: any[] = [];
+
+  /* Menampung data warna yang dimiliki tiap item di tiap detail data yang berada pada list dropdown */
+  warnaPerItem: any[] = [];
+
+  /* Menampung data warna untul tiap detail */
   dataWarna: any[] = [];
+
+  /*menampung trigger tiap mat complete warna di setiap detail */
   dataWarnaTrigger: MatAutocompleteTrigger[] = [];
 
   documentProperties: AppHttpGenerate;
@@ -90,68 +96,78 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
       data.data.salesman.uuid,
       this.isInsert());
 
-
-    if (data.data.detail) {
-      let i = 0;
-      for (const detail of data.data.detail) {
-        this.initItemMasterSelect(i, detail.item.uuid);
-        i++;
+    /** Data awal pr akan diinisialisasi secara otomatis bila aksi adalah proses update data */
+    if (this.isUpdate()) {
+      this.selectedIndex = 1;
+      this.initializing();
+      if (data.data.detail) {
+        let i = 0;
+        for (const detail of data.data.detail) {
+          this.initializePermmintaanDetail(
+            (<FormGroup>this.reactiveFormUtil.getFormArray('detail', this.form).controls[i]),
+            true,
+            detail,
+            i
+          );
+          i++;
+        }
       }
     }
 
 
+    /** inisialisasi Generate properti dokumen seperti, nomor dokumen, prefix, counter dan tanggal PR dari server */
     this.documentProperties = new AppHttpGenerate(
       permintaanPembelianService.http,
-      permintaanPembelianService.getDocumentProperties,
-      this.documentPropertiesSuccess
+      permintaanPembelianService.getDocumentProperties
     );
   }
 
 
-  ngAfterViewInit(): void {
-    // set element select of salesman
-    this.salesmanLazy.select = this.selectSalesman;
-
-    // set element select of item master
-    if (this.data.data.detail) {
-      // let i = 0;
-      // for (const detail of this.data.data.detail) {
-      //   this.itemLazy[i].select = this.selectItem.toArray()[i];
-      //   i++;
-      // }
-    }
-
-
-    // this.selectItem.
-
-  }
-
-
-  onTabChanged(index) {
-    if (index === 1) { // tab data permintaan pembelian
-
-      if (!this.isPermintaanPembelianLoaded) { // hanya jika belum terbuka sama sekali
-
-        if (this.isInsert() || this.isUpdate()) {
-          if (this.data.data.detail) {
-            let i = 0;
-            for (const detail of this.data.data.detail) {
-              this.itemLazy[i]._loadMore();
-              i++;
-            }
-          }
-
-          this.salesmanLazy._loadMore();
-        }
-
-        this.isPermintaanPembelianLoaded = true;
+  /* Title dari setiap detail PR*/
+  detailTitle(i: FormGroup, index) {
+    if ((<FormGroup>i.controls['item']).controls['namaItem'] !== undefined) {
+      if ((<FormGroup>i.controls['item']).controls[UUID_COLUMN].value === undefined ||
+        (<FormGroup>i.controls['item']).controls[UUID_COLUMN].value === null) {
+        return 'Silahkan Pilih Kain';
       }
 
+      const hasUuid = (<string>(<FormGroup>i.controls['item']).controls[UUID_COLUMN].value).trim().length > 0;
+      if (hasUuid) {
+        return (index + 1) + '. ' + <string>(<FormGroup>i.controls['item']).controls['namaItem'].value;
+      } else {
+        return 'Silahkan Pilih Kain';
+      }
+    }
+  }
+
+  /* Menginisialisasi data yang dibutuhkan agar proses ini berjalan */
+  initializing() {
+    // hanya jika belum terbuka sama sekali
+    if (!this.isPermintaanPembelianLoaded) {
+
+      if (this.isInsert() || this.isUpdate()) {
+        this.salesmanLazy._loadMore();
+      }
+
+      this.isPermintaanPembelianLoaded = true;
+    }
+
+    if (this.isInsert()) {
       /* generate properti dokumen dari server */
       this.generateDocumentProperties();
     }
+  }
 
+  ngAfterViewInit(): void {
+    this.salesmanLazy.select = this.selectSalesman;
+  }
 
+  onTabChanged(index) {
+    if (index === 1) { // tab data permintaan pembelian
+      setTimeout(() => {
+        this.initializing();
+      }, 0);
+    }
   }
 
   ngOnInit() {
@@ -159,40 +175,51 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
     this.jenisPermintaan.markAsTouched({onlySelf: true});
   }
 
-
+  /* Menginisialisasi init item detail untuk PR pada dropdown dengan metode lazy load */
   initItemMasterSelect(i, uuid = '', fg = permintaanPembelianDetailForm()) {
     this.itemLazy.push(new SelectLazy(fg,
       'item',
       this.masterItemService.http,
       this.masterItemService.getData,
       uuid,
-      this.isInsert())
+      (this.isInsert()) ? this.isInsert() : true)
     );
   }
 
-
-  documentPropertiesSuccess = (value: any) => {
-    this.form.controls['tanggalPermintaan'].setValue(value['date']);
-    this.form.controls['nomorDokumenPr'].setValue(value['nomorDokumen']);
-    this.form.controls['counterPr'].setValue(value['counter']);
-    this.form.controls['nomorPrefixPr'].setValue(value['prefix']);
-  };
-
-
+  /* mengambil properti dokumen PR dari server*/
   generateDocumentProperties() {
-    this.form.controls['tanggalPermintaan'].setValue('');
-    this.form.controls['nomorDokumenPr'].setValue('');
-    this.form.controls['counterPr'].setValue('');
-    this.form.controls['nomorPrefixPr'].setValue('');
+    if (this.isInsert()) {
+      this.form.controls['tanggalPermintaan'].setValue('');
+      this.form.controls['nomorDokumenPr'].setValue('');
+      this.form.controls['counterPr'].setValue('');
+      this.form.controls['nomorPrefixPr'].setValue('');
 
-    this.documentProperties.generate();
+      this.documentProperties.generate(value => {
+        this.form.controls['tanggalPermintaan'].setValue(value['date']);
+        this.form.controls['nomorDokumenPr'].setValue(value['nomorDokumen']);
+        this.form.controls['counterPr'].setValue(value['counter']);
+        this.form.controls['nomorPrefixPr'].setValue(value['prefix']);
+      }, error => {
+
+      });
+    }
   }
 
 
+  /* Kondisi yang digunakan untuk menampilkan tombol kembali*/
   sebelumnyaCondition() {
-
+    if (this.isInsert()) {
+      return this.selectedIndex > 0;
+    } else if (this.isUpdate()) {
+      if (this.selectedIndex === 1) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 
+  /* Kondisi yang digunkakan sebagai aturan untuk proses disable dan enable tombol selanjutnya*/
   selanjutnyaCondition() {
     if (this.selectedIndex === 0) {
       return this.jenisPermintaan.invalid;
@@ -205,7 +232,6 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
         );
       } else {
         return (
-          (this.documentProperties.waiting || this.documentProperties.failed) ||
           (!this.salesmanLazy.isUuidTrue) ||
           this.form.invalid
         );
@@ -215,44 +241,124 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
     }
   }
 
+  /* aksi dari tombol lanjut */
   next() {
     if (this.selectedIndex === 2) {
       this.save(this.form.getRawValue());
     } else {
+      if (this.selectedIndex === 1) {
+        if (this.prDetailCount() === 0) {
+          openAppSnackbar(this.snackBar, 'Daftar Permintaan Barang tidak boleh kosong ...', SNACKBAR_WARNING_STYLE, 2000);
+          return;
+        }
+
+        // cek apakah ada detail warna yang kosong pada detail permintaan
+        const check = this.prDetailWarnaCheck();
+        if (check.isEmpty) {
+          openAppSnackbar(this.snackBar, check.message, SNACKBAR_WARNING_STYLE, 2000);
+          return;
+        }
+
+      }
       this.selectedIndex++;
     }
   }
 
+  /* aksi dari tombol kembali*/
   previous() {
     this.selectedIndex--;
   }
 
+  /* callback event untuk pengambilan viewchild dari mat select item per detail, menggunakan bantuan directive*/
   afterItemMasterViewInit(event, i?) {
     if (event instanceof MatSelect) {
       this.itemLazy[i].select = event;
     }
   }
 
-  addNewDetailPermintaanItem(fa) {
-    const detailFormGroup = permintaanPembelianDetailForm(permintaanPembelianDetailInit, {
-      ...permintaanPembelianDetailDisables,
-      item: true
-    });
-    const detailLength = (<FormArray>this.form.controls['detail']).length;
-    this.initItemMasterSelect(detailLength, undefined, detailFormGroup); // init lazy buat item master
-    this.reactiveFormUtil.addFormArray(detailFormGroup, fa);
+
+  /* Inisialisasi penambahan data-data detail untuk PR*/
+  initializePermmintaanDetail(fa: FormArray | FormGroup, firstInit = false, initValue?, i?) {
+
+    const detailFormGroup = (firstInit) ? fa
+      : permintaanPembelianDetailForm(
+        permintaanPembelianDetailInit,
+        {
+          ...permintaanPembelianDetailDisables, item: {...masterItemDisables, uuid: true}
+        });
+
+    const detailLength = (firstInit) ? i : (<FormArray>this.form.controls['detail']).length;
+
+    // init lazy buat item master
+    const uuid = (firstInit) ? initValue.item.uuid : undefined;
+    this.initItemMasterSelect(detailLength, uuid, (<FormGroup>detailFormGroup));
     this.itemLazy[detailLength]._loadMore((data: MasterItem[]) => {
       if (data) {
         this.dataWarna.push([]); // init nilai data warna  tiap detail item yang akan dipilih
-        this.warna.push([]); // init
+        this.warnaPerItem.push([]); // init
         data.forEach(value => this.createListWarna(value, detailLength));
+
+        if (firstInit) { // jika data baru init awal/ terinit otomatis dari data yang sudah ada
+          this.onItemSelectionChange(uuid, i, <FormGroup>fa, firstInit);
+        }
+
       }
     });
+
+    if (!firstInit) {
+      this.reactiveFormUtil.addFormArray(<FormGroup>detailFormGroup, fa);
+    }
   }
 
+
+  /**
+   *
+   * @param v uuid yang terpilih dari select di html
+   * @param i index detail data
+   * @param fgDetail form group detail per index
+   */
+  onItemSelectionChange(v, i, fgDetail: FormGroup, firstInit = false) {
+    if (!firstInit) {
+      const uuid = v.value;
+      const alreadySelectedItem = [...(<FormArray>this.form.controls['detail']).getRawValue()];
+      alreadySelectedItem.pop(); // hapus array data terakhir yang merupakan data itu sendiri
+
+      /* Jika item yang terpilih di detail selanjutnya sudah ada di daftar liast item terpilih sebelumnya untuk PR yang sama */
+      let kain = '';
+      if (alreadySelectedItem
+        .filter(value => value.item.uuid === uuid).map(value => kain = value.item.namaKain)
+        .length > 0) {
+        (<FormGroup>fgDetail.controls['item']).patchValue(masterItemInit); // reset reactive form
+        this.dataWarna[i] = []; // reset suggestion warna
+        openAppSnackbar(this.snackBar,
+          'Kain "' + kain + '" sudah ada pada daftar yang terpilih!!!', SNACKBAR_WARNING_STYLE, 1500);
+        return;
+      }
+    }
+
+    /* filter data item berdasarkan item yang terpilih untuk memberikan data warna available pada suggestion box pilih warna */
+    this.itemLazy[i].data.filter(value => value.uuid === (firstInit ? v : v.value)).map(value => {
+      if (!firstInit) {
+        (<FormGroup>fgDetail.controls['item']).patchValue(value);
+      }
+      this.dataWarna[i] = [...value.warna];
+    });
+
+    /*  Hapus list warna detail jika selection item per detail berubah */
+    if (!firstInit) {
+      const detailWarna = (<FormArray>fgDetail.controls['detailWarna']).getRawValue();
+      if (detailWarna !== undefined && detailWarna.length > 0) {
+        while (this.reactiveFormUtil.getFormArray('detailWarna', fgDetail).length !== 0) {
+          this.reactiveFormUtil.removeFormArray(this.reactiveFormUtil.getFormArray('detailWarna', fgDetail), 0);
+        }
+      }
+    }
+  }
+
+  /* penghapusan salah satu detail dari PR */
   removeDetailPermintaanItem(fa, i) {
     this.dataWarna.splice(i, 1);
-    this.warna.splice(i, 1);
+    this.warnaPerItem.splice(i, 1);
     this.itemLazy.splice(i, 1); // hapus init lazy item
     this.reactiveFormUtil.removeFormArray(fa, i);
   }
@@ -265,16 +371,14 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
     return opt ? opt : undefined;
   }
 
-
   editPropertiWarnaChips(fg: FormGroup, i, j) {
-    const  initValuePropertiWarna = (<FormArray> fg.controls['detailWarna']).getRawValue()[j];
+    const initValuePropertiWarna = (<FormArray>fg.controls['detailWarna']).getRawValue()[j];
     this.openWarnaPropertiPanel(initValuePropertiWarna, this.reactiveFormUtil.getFormArray('detailWarna', fg), i, false, j);
   }
 
-  openWarnaPropertiPanel(initValue: PermintaanPembelianDetailWarna, fa: FormArray, i, action = true, j?) {
 
-    // const v = (initValue instanceof PermintaanPembelianDetailWarna) ? {} : {};
-    // open dialog untuk isi jumlah , unit dan catatan
+  /* membuka mini dialog untuk pengisian jumlah dan unit untuk tiap warna yang dipilih dari item tertentu */
+  openWarnaPropertiPanel(initValue: PermintaanPembelianDetailWarna, fa: FormArray, i, action = true, j?) {
     const dialogRef = this.dialog.open(PropertiWarnaComponent, {
       width: '300px',
       data: {
@@ -286,7 +390,7 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
       position: {bottom: '50px', top: '100px'}
     });
 
-    // callback closing dari dialog
+    // callback
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         if (action) { // jika tambah data properti warna yang baru
@@ -297,7 +401,7 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
           existingValue[j] = result.values;
           fa.patchValue(existingValue);
           openAppSnackbar(this.snackBar,
-            'Data Warna "' + result.values.warna.namaWarna + '" berhasil diubah', SNACKBAR_SUCCESS_STYLE);
+            'Data Warna "' + result.values.warna.namaWarna + '" OK', SNACKBAR_SUCCESS_STYLE);
         }
       }
     });
@@ -305,68 +409,92 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   }
 
 
+  /* digunakan untuk memproses warna yang terpilih dari sebuah sebuah item */
   selected(event: MatAutocompleteSelectedEvent, fa: FormArray, i?): void {
-
     if (event.option.value !== null) { // jika ada nilainya
       const alreadySelectedWarna = [...(<FormArray>this.form.controls['detail']).getRawValue()[i]['detailWarna']];
       if (alreadySelectedWarna
         .filter(value => value.warna.uuid === event.option.value.uuid)
         .length > 0) {
         openAppSnackbar(this.snackBar,
-          'Warna "' + event.option.value.namaWarna + '" ada pada daftar yang terpilih!!!', SNACKBAR_WARNING_STYLE, 1500);
+          'Warna "' + event.option.value.namaWarna + '" ada pada daftar yang terpilih!!', SNACKBAR_WARNING_STYLE, 1500);
         return;
       }
       this.openWarnaPropertiPanel({...permintaanPembelianDetailWarnaInit, warna: {...event.option.value}}, fa, i);
     }
   }
 
+  /* menambahkan warna yang terpilih dari sebuah ite, ke model penampung nilai PR */
   addNewWarna(fa: FormArray, init: PermintaanPembelianDetailWarna) {
     this.reactiveFormUtil.addFormArray(permintaanPembelianDetailWarnaForm(init), fa);
   }
 
+  /* menghapus warna yang terpilih pada tiap detail item, dari model penampung nilai-nilai PR */
   removeWarna(fa, i) {
     this.reactiveFormUtil.removeFormArray(fa, i);
   }
 
+  /* menginisialisasi child trigger dari pemilihan warna di setiap item*/
   onWarnaTriggerInitialized(trigger) {
     this.dataWarnaTrigger.push(trigger);
   }
 
-  onItemSelectionChange(v, i, fgDetail) {
-    this.itemLazy[i].data.filter(value => value.uuid === v.value).map(value => this.dataWarna[i] = [...value.warna]);
-    const detailWarna = (<FormArray> fgDetail.controls['detailWarna']).getRawValue();
-    if (detailWarna !== undefined && detailWarna.length > 0) {
-      while (this.reactiveFormUtil.getFormArray('detailWarna', fgDetail).length !== 0) {
-        this.reactiveFormUtil.removeFormArray(this.reactiveFormUtil.getFormArray('detailWarna', fgDetail), 0);
-      }
+
+  createListWarna(item, i) {
+    if (this.warnaPerItem[i] !== undefined) {
+      const warnaItem = new WarnaItem(item, item.warna);
+      this.warnaPerItem[i].push(warnaItem);
     }
   }
 
-
-  // '6c0ce28c-b09c-4b29-80cb-ed28e718a53e'
-  createListWarna(item, i) {
-    const warnaItem = new WarnaItem(item, item.warna);
-    this.warna[i].push(warnaItem);
+  prDetailCount() {
+    return (<FormArray>this.form.controls['detail']).length;
   }
 
+  prDetailWarnaCheck() {
+    const detailFormArray = (<FormArray>this.form.controls['detail']);
+
+    if (detailFormArray.length > 0) {
+      for (let i = 0; i < detailFormArray.length; i++) {
+        const formGroupDetail = <FormGroup>detailFormArray.controls[i];
+        const formArrayDetailWarna = <FormArray>formGroupDetail.controls['detailWarna'];
+        if (formArrayDetailWarna.length === 0) {
+          return {
+            isEmpty: true,
+            message: 'Pilihlahan warna pada detail nomor ' + (i + 1) + ' tidak boleh kosong!!'
+          };
+        }
+      }
+    }
+
+    return {
+      isEmpty: false
+    };
+  }
 
   /**
    * Funsi yang digunakan untuk menyimpan data
    * @param value: data
    */
   save(value?): void {
+
+    // tidak boleh data detail kosong
+    if (this.prDetailCount() === 0) {
+      openAppSnackbar(this.snackBar, 'Daftar Permintaan Barang tidak boleh kosong ...', SNACKBAR_WARNING_STYLE, 2000);
+      return;
+    }
+
+    /* Mengosongkan data approved by and canceled by jika data awal kosong */
     if (value.prApprovedBy.uuid.length === 0) {
       delete value.prApprovedBy;
     }
-
     if (value.prCancelledBy.uuid.length === 0) {
       delete value.prCancelledBy;
     }
 
 
     this.dialogRef.disableClose = true;
-    Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
-
+    Ui.blockUI('#dialog-block', 0.9, 4, 0, 4);
     setTimeout(() => {
       this.permintaanPembelianService.postData(value).pipe(first()).subscribe(
         value1 => {
@@ -408,7 +536,6 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   }
 
 }
-
 
 class WarnaItem {
   constructor(

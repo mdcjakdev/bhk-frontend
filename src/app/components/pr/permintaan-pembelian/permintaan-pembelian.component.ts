@@ -34,14 +34,16 @@ export class PermintaanPembelianComponent
    * @var receivedData, yang akan ditampilkan pada data tabel
    */
   tableProperties = {
-    displayedColumns: ['uuid', 'nomorPrefixPr', 'nomorDokumenPr', 'salesman'],
-    displayedHeaders: ['No', 'Prefix', 'Nomor Dokumen', 'Salesman'],
+    displayedColumns: ['uuid', 'nomorPrefixPr', 'nomorDokumenPr', 'salesman', 'tanggalPermintaan'],
+    displayedHeaders: ['No', 'Prefix', 'Nomor Dokumen', 'Salesman', 'Tangggal Permintaan'],
     levelsOnData: [
       ['uuid'],
       ['nomorPrefixPr'],
       ['nomorDokumenPr'],
-      ['salesman', 'karyawan', 'nama']],
-    isStringDataTypes: [true, true, true, true]
+      ['salesman', 'karyawan', 'nama'],
+      ['tanggalPermintaan']
+    ],
+    isStringDataTypes: [true, true, true, true, true]
   };
   selectedValue: any = null;
   private isRightClick;
@@ -130,7 +132,8 @@ export class PermintaanPembelianComponent
         ? '250px'
         : ((action === Action.INSERT || action === Action.UPDATE) ? '70%' : '500px'),
       data: {
-        action: action, data: data,
+        action: action,
+        data: data,
         disables: permintaanPembelianDisables
       },
       autoFocus: false,

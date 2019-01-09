@@ -39,20 +39,34 @@ export const appBasicEntityInit = <AppBasicEntity>{
   lastModifiedDate: ''
 };
 
+
+export const appBasicEntityDisables = {
+  uuid: false,
+  createdDate: false,
+  lastModifiedDate: false
+};
+
+
 /** Init model awal dari audit entity */
-export const appAuditEntityInit = {
+export const appAuditEntityInit = <AppAuditEntity>{
   ...appBasicEntityInit,
   createdBy: '',
   lastModifiedBy: ''
 };
 
+export const appAuditEntityDisables = {
+  ...appBasicEntityDisables,
+  createdBy: false,
+  lastModifiedBy: false
+};
+
 
 /** Inisialisasi form rective model dari basic entity */
-export function appBasicEntityForm(init: any = appBasicEntityInit): FormGroup {
+export function appBasicEntityForm(init: any = appBasicEntityInit, disables = appBasicEntityDisables): FormGroup {
   return new FormBuilder().group({
-    uuid: {value: init.uuid, disabled: false},
-    createdDate: {value: init.createdDate, disabled: false},
-    lastModifiedDate: {value: init.lastModifiedDate, disabled: false},
+    uuid: {value: init.uuid, disabled: disables.uuid },
+    createdDate: {value: init.createdDate, disabled: disables.createdDate },
+    lastModifiedDate: {value: init.lastModifiedDate, disabled: disables.lastModifiedDate },
   });
 }
 
@@ -62,10 +76,11 @@ export function appBasicEntityForm(init: any = appBasicEntityInit): FormGroup {
  * @param init inisaisasi awal dari basic model entity
  */
 export function appAuditEntityForm(init: any = appAuditEntityInit,
+                                   disables = appAuditEntityDisables,
                                    initForm: Function = appBasicEntityForm): FormGroup {
   return new FormBuilder().group({
-    ...initForm(init).controls,
-    createdBy: {value: init.createdDate, disabled: false},
-    lastModifiedBy: {value: init.lastModifiedDate, disabled: false},
+    ...initForm(init, disables).controls,
+    createdBy: {value: init.createdDate, disabled: disables.createdBy},
+    lastModifiedBy: {value: init.lastModifiedDate, disabled: disables.lastModifiedBy},
   });
 }

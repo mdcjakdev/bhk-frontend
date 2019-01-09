@@ -1,6 +1,5 @@
 import {MatSelect} from '@angular/material';
 import {FormGroup} from '@angular/forms';
-import {init} from 'protractor/built/launcher';
 import {HttpClient} from '@angular/common/http';
 import {delayAnotherProcess, UUID_COLUMN} from './constants';
 
@@ -121,8 +120,8 @@ export class SelectLazy<E> {
     }
 
     setTimeout(() => {
-
-
+      // (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disable();
+      console.log(this.initUuid)
       this.fetchFunction(this.page, this.size, this.http).subscribe(
         (value: any) => {
           this.page++;
@@ -152,12 +151,16 @@ export class SelectLazy<E> {
                     }
                   } else if (!this.isInsert) {
                     if (this.isUuidTrue) {
+
                       (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].enable();
                       for (const child in this.dataChild) {
                         if (this.dataChild.hasOwnProperty(child)) {
                           (<FormGroup>this.form.controls[child]).controls[UUID_COLUMN].enable();
                         }
                       }
+
+                      (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].setValue(this.initUuid);
+
                     } else {
                       (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disable();
                       for (const child in this.dataChild) {

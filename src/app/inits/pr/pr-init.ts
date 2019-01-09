@@ -1,7 +1,7 @@
 import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {MasterUnit, masterUnitInit} from '../master/master-unit-init';
 import {MasterWarna, masterWarnaForm, masterWarnaInit} from '../master/master-warna';
-import {MasterItem, masterItemInit} from '../master/master-item';
+import {MasterItem, masterItemDisables, masterItemForm, masterItemInit} from '../master/master-item';
 import {Pengguna, penggunaInit} from '../administrator/pengguna-init';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -54,7 +54,7 @@ export const permintaanPembelianDetailWarnaInit = <PermintaanPembelianDetailWarn
   catatan: ''
 };
 
-/** Init nilai awal Master Item Nama Alias */
+/** Init nilai awal  */
 export const permintaanPembelianDetailInit = <PermintaanPembelianDetail>{
   ...appAuditEntityInit,
   item: masterItemInit,
@@ -76,7 +76,7 @@ export const permintaanPembelianInit = <PermintaanPembelian>{
   prCanceledReason: '',
   prCancelledBy: penggunaInit,
   nomorPrefixPr: '',
-  statusDokumenPr: '',
+  statusDokumenPr: statusDokumen.DRAFT,
   tanggalPermintaan: ''
 };
 
@@ -90,7 +90,7 @@ export const permintaanPembelianDetailWarnaDisables = {
 
 /** Init nilai awal status disable formcontrol Permintaan Pembelian Detail */
 export const permintaanPembelianDetailDisables = {
-  item: false,
+  item: masterItemDisables,
   catatan: false
 };
 
@@ -165,9 +165,10 @@ export function permintaanPembelianDetailForm(init: PermintaanPembelianDetail = 
 
   return new FormBuilder().group({
     ...initAuditForm().controls,
-    item: new FormBuilder().group({
-      uuid: [{value: init.item.uuid, disabled: disables.item}, Validators.required]
-    }),
+    // item: new FormBuilder().group({
+    //   uuid: [{value: init.item.uuid, disabled: disables.item}, Validators.required]
+    // }),
+    item: masterItemForm(init.item, {...masterItemDisables, uuid: true}),
     catatan: {value: init.catatan, disabled: disables.catatan},
     detailWarna: new FormBuilder().array(detailWarna)
   });
