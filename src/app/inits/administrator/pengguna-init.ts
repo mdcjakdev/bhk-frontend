@@ -1,8 +1,8 @@
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {MasterLokasi} from '../master/master-lokasi-init';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MasterKaryawan} from '../master/master-karyawan-init';
+import {MasterKaryawan, masterKaryawanDisables, masterKaryawanForm} from '../master/master-karyawan-init';
 
 export interface Pengguna extends AppAuditEntity {
   username?: string;
@@ -20,6 +20,7 @@ export const penggunaInit = {
 };
 
 export const penggunaDisables = {
+  ...appAuditEntityDisables,
   username: false,
   password: false,
   karyawan: true
@@ -49,15 +50,14 @@ export const penggunaErrorStateMatchers = {
 /** Fungsi Init Reactive Form Group untuk data Pengguna */
 export function penggunaForm(init: Pengguna = penggunaInit,
                                  disables = penggunaDisables,
+                                 forGeneralization = false,
                                  initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
-    username: [{value: init.username, disabled: disables.username}, Validators.required],
-    password: [{value: init.password, disabled: disables.password}, [Validators.required, Validators.minLength(8)]],
-    karyawan: new FormBuilder().group({
-      uuid: [{value: init.karyawan.uuid, disabled: disables.karyawan}, Validators.required]
-    })
+    ...initAuditForm(init, disables).controls,
+    username: [{value: init.username, disabled: disables.username}, (forGeneralization) ? Validators.nullValidator : Validators.required],
+    password: [{value: init.password, disabled: disables.password}, (forGeneralization) ? Validators.nullValidator : [Validators.required, Validators.minLength(8)]],
+    karyawan: masterKaryawanForm(init.karyawan, {...masterKaryawanDisables, uuid: true})
   });
 
 }

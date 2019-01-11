@@ -10,7 +10,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MasterItemService} from '../../../services/master/master-item/master-item.service';
 import {masterItemDisables, masterItemInit} from '../../../inits/master/master-item';
 import {MasterItemDialogComponent} from './master-item-dialog/master-item-dialog.component';
-import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {invertColor, openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 
 @Component({
@@ -29,6 +29,7 @@ export class MasterItemComponent
   extends ComponentUtil<AppTableDataSource>
   implements OnInit {
 
+  invertColor = invertColor;
   /**
    * Kumpulan array dari nama-nama property data yang di peroleh dari
    * @var receivedData, yang akan ditampilkan pada data tabel
@@ -44,7 +45,7 @@ export class MasterItemComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterItemService: MasterItemService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

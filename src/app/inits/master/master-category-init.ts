@@ -1,4 +1,4 @@
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppErrorStateMatcher} from '../../shared/utils';
 
@@ -40,12 +40,14 @@ export const masterCategoryInit = <MasterCategory>{
 
 /** Init nilai awal status disable formcontrol Sub Kategori */
 export const masterSubCategoryDisables = {
+  ...appAuditEntityDisables,
   kode: false,
   nama: false
 };
 
 /** Init nilai awal status disable formcontrol Kategori */
 export const masterCategoryDisables = {
+  ...appAuditEntityDisables,
   kodeKategori: false,
   tipeKategori: false,
   namaKategori: false
@@ -86,7 +88,7 @@ export function masterSubCategoryForm(init: MasterSubCategory = masterSubCategor
                                       disables = masterSubCategoryDisables,
                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     kode: [{value: init.kode, disabled: disables.kode}, Validators.required],
     nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
   });

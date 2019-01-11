@@ -1,5 +1,5 @@
 import {AppErrorStateMatcher} from '../../shared/utils';
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
@@ -31,6 +31,7 @@ export const masterPelangganInit = {
 };
 
 export const masterPelangganDisables = {
+  ...appAuditEntityDisables,
   alamat: false,
   fax: false,
   hp: false,
@@ -71,7 +72,7 @@ export function masterPelangganForm(init: MasterPelanggan = masterPelangganInit,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     alamat: [{value: init.alamat, disabled: disables.alamat}, Validators.required],
     fax: {value: init.fax, disabled: disables.fax},
     hp: [{value: init.hp, disabled: disables.hp}, Validators.required],

@@ -1,4 +1,4 @@
-<div>
+<div [ngClass]="(this.bhkSharedService.loadingBarIndicator | async) ? nextPageAnimation : pageComeUpAnimation" >
 
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="openDialogData()" [disabled]="awaitSearch"
@@ -147,263 +147,216 @@
                   <strong>&nbsp;&nbsp;&nbsp;Rincian Permintaan Pembelian</strong>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 detail-expand">
-                  {{element | json}}
-                  <!--<div id="table-detail">-->
-                    <!--<table class="full-width-table">-->
-                      <!--&lt;!&ndash;nama kain&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Nama Kain</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.namaKain}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;nama item&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td style="width: 150px">-->
-                          <!--<li><strong>Nama Item</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.namaItem}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;ukuran&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Ukuran</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.ukuran}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;benang&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Benang</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.benang}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Jenis Kain</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.jenisKain}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
+                  <div id="table-detail">
+                    <table class="full-width-table">
 
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Kode</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.kode}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Kode Alias Item</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.kodeItemAlias}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;BARCODE&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td colspan="3" style="height: 10px"></td>-->
-                      <!--</tr>-->
-                      <!--<tr *ngIf="element.barcode.length > 0">-->
-                        <!--<td colspan="3">-->
-                          <!--<li class="primary">-->
-                            <!--<strong class="primary">Barcode &nbsp;({{element.barcode.length}})</strong>-->
-                          <!--</li>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--<tr>-->
-                        <!--<td colspan="3">-->
-                          <!--<table>-->
-                            <!--<div *ngFor="let b of element.barcode">-->
-                              <!--<tr>-->
-                                <!--<td colspan="2" style="padding-left: 34px">-->
-                                  <!--<span class="accent" style="text-decoration: underline;">-->
-                                    <!--{{b.barcode}}-->
-                                  <!--</span>-->
-                                <!--</td>-->
-                              <!--</tr>-->
+                      <!--Status-->
+                      <tr>
+                        <td style="padding-left: 25px" colspan="3">
+                          <mat-chip-list>
+                            <mat-chip [ngStyle]="{
+                              'background-color': statusColor(element.statusDokumenPr).background,
+                              'color': statusColor(element.statusDokumenPr).color
+                            }">
+                              {{element.statusDokumenPr}}
+                            </mat-chip>
+                          </mat-chip-list>
+                        </td>
+                      </tr>
+                      <tr style="height: 10px;">
+                        <td colspan="3"></td>
+                      </tr>
+                      <!--Tanggal-->
+                      <tr>
+                        <td style="width: 250px;">
+                          <li><strong>Tanggal Permintaan</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.tanggalPermintaan}}
+                        </td>
+                      </tr>
+                      <!--Prefix-->
+                      <tr>
+                        <td>
+                          <li><strong>Prefix</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.nomorPrefixPr}}
+                        </td>
+                      </tr>
+                      <!--Nomor Dokumen-->
+                      <tr>
+                        <td>
+                          <li><strong>Nomor Dokumen</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.nomorDokumenPr}}
+                        </td>
+                      </tr>
+                      <!--Salesman-->
+                      <tr>
+                        <td>
+                          <li><strong>Salesman</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.salesman.karyawan.nama}}
+                        </td>
+                      </tr>
+                      <!--Approved By-->
+                      <tr *ngIf="ifApproved(element.statusDokumenPr)">
+                        <td>
+                          <li><strong>Approved By</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.prApprovedBy}}
+                        </td>
+                      </tr>
+                      <!--Approved Date-->
+                      <tr *ngIf="ifApproved(element.statusDokumenPr)">
+                        <td>
+                          <li><strong>Approved Date</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.prApprovedDate}}
+                        </td>
+                      </tr>
+                      <!--Canceled By-->
+                      <tr *ngIf="ifCancel(element.statusDokumenPr)">
+                        <td>
+                          <li><strong>Canceled By</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.prCancelledBy}}
+                        </td>
+                      </tr>
+                      <!--Canceled Date-->
+                      <tr *ngIf="ifCancel(element.statusDokumenPr)">
+                        <td>
+                          <li><strong>Canceled Date</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.prCanceledDate}}
+                        </td>
+                      </tr>
+                      <!--canceled reason-->
+                      <tr *ngIf="ifCancel(element.statusDokumenPr)">
+                        <td>
+                          <li><strong>Canceled Reason</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.prCanceledReason}}
+                        </td>
+                      </tr>
+                      <!--catatan-->
+                      <tr>
+                        <td>
+                          <li><strong>Catatan</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.catatan}}
+                        </td>
+                      </tr>
 
-                            <!--</div>-->
-                          <!--</table>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-
-
-                      <!--&lt;!&ndash;nama alias&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td colspan="3" style="height: 10px"></td>-->
-                      <!--</tr>-->
-                      <!--<tr *ngIf="element.barcode.length > 0">-->
-                        <!--<td colspan="3">-->
-                          <!--<li class="primary">-->
-                            <!--<strong class="primary">Nama Alias &nbsp;({{element.namaAlias.length}})</strong>-->
-                          <!--</li>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--<tr>-->
-                        <!--<td colspan="3">-->
-                          <!--<table>-->
-                            <!--<div *ngFor="let b of element.namaAlias">-->
-                              <!--<tr>-->
-                                <!--<td colspan="2" style="padding-left: 34px">-->
-                                  <!--<span class="accent" style="text-decoration: underline;">-->
-                                    <!--{{b.namaAlias}}-->
-                                  <!--</span>-->
-                                <!--</td>-->
-                              <!--</tr>-->
-
-                            <!--</div>-->
-                          <!--</table>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;kategori&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Kategori</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.kategori.namaKategori}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;sub kategori&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Sub Kategori</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.subKategori.nama}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;unit&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Unit</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.unit.name}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;warna&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td colspan="3" style="height: 10px"></td>-->
-                      <!--</tr>-->
-                      <!--<tr *ngIf="element.barcode.length > 0">-->
-                        <!--<td colspan="3">-->
-                          <!--<li class="primary">-->
-                            <!--<strong class="primary">Warna &nbsp;({{element.warna.length}})</strong>-->
-                          <!--</li>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--<tr>-->
-                        <!--<td colspan="3">-->
-                          <!--<table>-->
-                            <!--<tr>-->
-                              <!--<td colspan="2" style="padding-left: 34px">-->
-                                <!--<mat-chip-list>-->
-                                  <!--<mat-chip-->
-                                    <!--[ngStyle]="{ 'background-color': b.kodeWarnaHexadecimal }"-->
-                                    <!--*ngFor="let b of element.warna">-->
-                                    <!--{{b.namaWarna}}-->
-                                  <!--</mat-chip>-->
-                                <!--</mat-chip-list>-->
-                              <!--</td>-->
-                            <!--</tr>-->
-                          <!--</table>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-
-
-                      <!--&lt;!&ndash;gramasi&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Gramasi</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.gramasi}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;setting&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Setting</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.setting}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;handfeel&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Handfeel</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.handfeel}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;additional&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Additional</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.tambahan}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                    <!--</table>-->
-                  <!--</div>-->
+                      <!--detail-->
+                      <tr>
+                        <td colspan="3" style="height: 10px"></td>
+                      </tr>
+                      <tr *ngIf="element.detail.length > 0">
+                        <td colspan="3">
+                          <li class="primary">
+                            <strong class="primary">Detail &nbsp;({{element.detail.length}})</strong>
+                          </li>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">
+                          <table>
+                            <tr *ngFor="let b of element.detail">
+                              <td colspan="2" style="padding-left: 34px">
+                                <table>
+                                  <tr>
+                                    <td colspan="2">
+                                        <span class="accent" style="text-decoration: underline;">
+                                          {{b.item.namaKain}}
+                                        </span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <li><strong>Catatan&nbsp;:&nbsp;</strong></li>
+                                    </td>
+                                    <td>
+                                      {{b.catatan}}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2">
+                                      <li class="primary">
+                                        <strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>
+                                      </li>
+                                    </td>
+                                  </tr>
+                                  <div *ngFor="let w of b.detailWarna">
+                                    <tr>
+                                      <td colspan="2" style="padding-left: 35px">
+                                        <mat-chip-list>
+                                          <mat-chip [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(w.warna.kodeWarnaHexadecimal)
+                                           }">
+                                            {{w.warna.namaWarna}}&nbsp;
+                                            ({{w.jumlah}} {{w.unit.name}})
+                                          </mat-chip>
+                                        </mat-chip-list>
+                                        <table style="font-size: 10px">
+                                          <tr>
+                                            <td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>
+                                            <td>{{w.catatan}}</td>
+                                          </tr>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                    <tr style="height: 5px">
+                                      <td colspan="2"></td>
+                                    </tr>
+                                  </div>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

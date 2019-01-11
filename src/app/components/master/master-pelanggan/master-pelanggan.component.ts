@@ -44,7 +44,7 @@ export class MasterPelangganComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterPelangganService: MasterPelangganService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

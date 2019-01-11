@@ -10,7 +10,14 @@ import {
 } from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
-import {delayHttpRequest, openAppSnackbar, SNACKBAR_SUCCESS_STYLE, SNACKBAR_WARNING_STYLE, UUID_COLUMN} from '../../../../shared/constants';
+import {
+  delayHttpRequest, invertColor,
+  openAppSnackbar,
+  SNACKBAR_ERROR_STYLE,
+  SNACKBAR_SUCCESS_STYLE,
+  SNACKBAR_WARNING_STYLE,
+  UUID_COLUMN
+} from '../../../../shared/constants';
 import {AppErrorStateMatcher, SUCCESS} from '../../../../shared/utils';
 import {PermintaanPembelianService} from '../../../../services/pr/permintaan-pembelian.service';
 import {
@@ -22,7 +29,7 @@ import {
   permintaanPembelianDetailWarnaInit,
   permintaanPembelianDisables,
   permintaanPembelianErrorStateMatchers,
-  permintaanPembelianForm
+  permintaanPembelianForm, permintaanPembelianInit
 } from '../../../../inits/pr/pr-init';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SelectLazy} from '../../../../shared/select-lazy';
@@ -43,7 +50,12 @@ import {PropertiWarnaComponent} from './properti-warna/properti-warna.component'
 })
 export class PermintaanPembelianDialogComponent extends DialogUtil
   implements OnInit, AfterViewInit {
+
+  invertColor = invertColor;
+
   close = undefined;
+
+  previewValue = permintaanPembelianInit;
 
   /** Index dari tab yang terpilih */
   selectedIndex = 0;
@@ -171,9 +183,19 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   }
 
   ngOnInit() {
+    /* Subscribe perubahan nilai salesman*/
+    (<FormGroup> this.form.controls['salesman']).controls[UUID_COLUMN].valueChanges.subscribe(value => {
+      this.salesmanLazy.data.filter(value1 => value1.uuid === value)
+        .map(value2 => {
+          (<FormGroup> (<FormGroup> this.form.controls['salesman']).controls['karyawan']).patchValue(value2.karyawan)
+        });
+    });
+
     // set control jenis permintaan telah di klik
     this.jenisPermintaan.markAsTouched({onlySelf: true});
   }
+
+
 
   /* Menginisialisasi init item detail untuk PR pada dropdown dengan metode lazy load */
   initItemMasterSelect(i, uuid = '', fg = permintaanPembelianDetailForm()) {
@@ -259,6 +281,9 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
           return;
         }
 
+        /* init nilai untuk preview data */
+        this.previewValue = {...this.form.getRawValue()};
+        // console.log(this.previewValue)
       }
       this.selectedIndex++;
     }
@@ -321,7 +346,7 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
     if (!firstInit) {
       const uuid = v.value;
       const alreadySelectedItem = [...(<FormArray>this.form.controls['detail']).getRawValue()];
-      alreadySelectedItem.pop(); // hapus array data terakhir yang merupakan data itu sendiri
+      alreadySelectedItem.splice(i, 1) // hapus array data  yang merupakan data itu sendiri
 
       /* Jika item yang terpilih di detail selanjutnya sudah ada di daftar liast item terpilih sebelumnya untuk PR yang sama */
       let kain = '';
@@ -330,9 +355,13 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
         .length > 0) {
         (<FormGroup>fgDetail.controls['item']).patchValue(masterItemInit); // reset reactive form
         this.dataWarna[i] = []; // reset suggestion warna
-        openAppSnackbar(this.snackBar,
-          'Kain "' + kain + '" sudah ada pada daftar yang terpilih!!!', SNACKBAR_WARNING_STYLE, 1500);
-        return;
+
+        if (kain === undefined || kain === null || kain.length === 0) {} else {
+          openAppSnackbar(this.snackBar,
+            'Kain "' + kain + '" sudah ada pada daftar yang terpilih!!!', SNACKBAR_WARNING_STYLE, 1500);
+          return;
+        }
+
       }
     }
 
@@ -432,6 +461,7 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   /* menghapus warna yang terpilih pada tiap detail item, dari model penampung nilai-nilai PR */
   removeWarna(fa, i) {
     this.reactiveFormUtil.removeFormArray(fa, i);
+    openAppSnackbar(this.snackBar, 'Terhapus', SNACKBAR_ERROR_STYLE, 1000);
   }
 
   /* menginisialisasi child trigger dari pemilihan warna di setiap item*/
@@ -494,7 +524,7 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
 
 
     this.dialogRef.disableClose = true;
-    Ui.blockUI('#dialog-block', 0.9, 4, 0, 4);
+    Ui.blockUI('#dialog-block', 0.6, 4, 0, 4);
     setTimeout(() => {
       this.permintaanPembelianService.postData(value).pipe(first()).subscribe(
         value1 => {

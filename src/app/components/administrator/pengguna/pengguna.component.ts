@@ -45,7 +45,7 @@ export class PenggunaComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private penggunaService: PenggunaService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

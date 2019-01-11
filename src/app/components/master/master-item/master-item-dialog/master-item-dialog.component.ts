@@ -11,7 +11,7 @@ import {
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
-import {delayHttpRequest, openAppSnackbar, SNACKBAR_WARNING_STYLE} from '../../../../shared/constants';
+import {delayHttpRequest, invertColor, openAppSnackbar, SNACKBAR_WARNING_STYLE} from '../../../../shared/constants';
 import {MasterItemService} from '../../../../services/master/master-item/master-item.service';
 import {MasterCategoryService} from '../../../../services/master/master-category/master-category.service';
 import {MasterUnitService} from '../../../../services/master/master-unit/master-unit.service';
@@ -52,6 +52,7 @@ export class MasterItemDialogComponent extends DialogUtil
   implements OnInit, AfterViewInit {
 
   close = undefined;
+  invertColor = invertColor;
 
   @ViewChild('selectUnit') selectUnit;
   unitLazy: SelectLazy<MasterUnit>;
@@ -69,9 +70,6 @@ export class MasterItemDialogComponent extends DialogUtil
 
   barcodeState = 'collapsed';
   aliasState = 'collapsed';
-
-  // addOnBlur = true;
-  // separatorKeysCodes: number[] = [ENTER, COMMA];
 
   // @ViewChild('auto') matAutocomplete: MatAutocomplete;
   @ViewChild('warnaTrigger', { read: MatAutocompleteTrigger }) warnaTrigger: MatAutocompleteTrigger;
@@ -95,7 +93,7 @@ export class MasterItemDialogComponent extends DialogUtil
       masterUnitService.http,
       masterUnitService.getData,
       data.data.unit.uuid,
-      this.isInsert(), {}, 1);
+      this.isInsert());
 
     // init untuk data kategori
     this.kategoriLazy = new SelectLazy(
@@ -107,8 +105,7 @@ export class MasterItemDialogComponent extends DialogUtil
       this.isInsert(),
       {
         subKategori: []
-      },
-      1);
+      }, 5);
 
   }
 

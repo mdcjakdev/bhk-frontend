@@ -80,11 +80,13 @@ export const masterItemInit = <MasterItem>{
 
 /** Init nilai awal status disable formcontrol Master Item Barcode */
 export const masterItemBarcodeDisables = {
+  ...appAuditEntityDisables,
   barcode: false
 };
 
 /** Init nilai awal status disable formcontrol Master Item Nama Alias */
 export const masterItemNamaAliasDisables = {
+  ...appAuditEntityDisables,
   namaAlias: false
 };
 
@@ -167,7 +169,7 @@ export function masterItemNamaAliasForm(init: MasterItemNamaAlias = masterItemNa
                                       disables = masterItemNamaAliasDisables,
                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     namaAlias: [{value: init.namaAlias, disabled: disables.namaAlias}, Validators.required]
   });
 }

@@ -45,7 +45,7 @@ export class MasterLokasiComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterLokasiService: MasterLokasiService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

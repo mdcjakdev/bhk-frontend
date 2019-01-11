@@ -1,4 +1,4 @@
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppErrorStateMatcher} from '../../shared/utils';
 
@@ -34,6 +34,7 @@ export const masterSupplierInit = <MasterSupplier> {
 
 /** Init nilai awal status disable formcontrol MasterSupplier */
 export const masterSupplierDisables = {
+  ...appAuditEntityDisables,
   alamat: false,
   email: false,
   fax: false,
@@ -98,7 +99,7 @@ export function masterSupplierForm(init: MasterSupplier = masterSupplierInit,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     alamat: [{value: init.alamat, disabled: disables.alamat}, Validators.required],
     email: [{value: init.email, disabled: disables.email}, Validators.email],
     fax: [{value: init.fax, disabled: disables.fax}, Validators.required],

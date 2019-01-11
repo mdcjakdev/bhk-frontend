@@ -16,12 +16,221 @@
     </div>
   </h4>
 
-  <mat-dialog-content *ngIf="!isDataNull() && isDetail()" class="form-app">
+  <!-- Detail-->
+  <mat-dialog-content *ngIf="!isDataNull() && isDetail()">
+    <div id="table-detail" style="padding: 25px 15px 0 0;" >
+      <table class="full-width-table">
 
+        <!--Status-->
+        <tr>
+          <td style="padding-left: 25px" colspan="3">
+            <mat-chip-list>
+              <mat-chip class="mat-chips-default-padding" [ngStyle]="{
+                              'background-color': statusColor(data.data.statusDokumenPr).background,
+                              'color': statusColor(data.data.statusDokumenPr).color
+                            }">
+                {{data.data.statusDokumenPr}}
+              </mat-chip>
+            </mat-chip-list>
+          </td>
+        </tr>
+        <tr style="height: 10px;">
+          <td colspan="3"></td>
+        </tr>
+        <!--Tanggal-->
+        <tr>
+          <td style="width: 250px;">
+            <li><strong>Tanggal Permintaan</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.tanggalPermintaan}}
+          </td>
+        </tr>
+        <!--Prefix-->
+        <tr>
+          <td>
+            <li><strong>Prefix</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.nomorPrefixPr}}
+          </td>
+        </tr>
+        <!--Nomor Dokumen-->
+        <tr>
+          <td>
+            <li><strong>Nomor Dokumen</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.nomorDokumenPr}}
+          </td>
+        </tr>
+        <!--Salesman-->
+        <tr>
+          <td>
+            <li><strong>Salesman</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.salesman.karyawan.nama}}
+          </td>
+        </tr>
+        <!--Approved By-->
+        <tr *ngIf="ifApproved(data.data.statusDokumenPr)">
+          <td>
+            <li><strong>Approved By</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.prApprovedBy}}
+          </td>
+        </tr>
+        <!--Approved Date-->
+        <tr *ngIf="ifApproved(data.data.statusDokumenPr)">
+          <td>
+            <li><strong>Approved Date</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.prApprovedDate}}
+          </td>
+        </tr>
+        <!--Canceled By-->
+        <tr *ngIf="ifCancel(data.data.statusDokumenPr)">
+          <td>
+            <li><strong>Canceled By</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.prCancelledBy}}
+          </td>
+        </tr>
+        <!--Canceled Date-->
+        <tr *ngIf="ifCancel(data.data.statusDokumenPr)">
+          <td>
+            <li><strong>Canceled Date</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.prCanceledDate}}
+          </td>
+        </tr>
+        <!--canceled reason-->
+        <tr *ngIf="ifCancel(data.data.statusDokumenPr)">
+          <td>
+            <li><strong>Canceled Reason</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.prCanceledReason}}
+          </td>
+        </tr>
+        <!--catatan-->
+        <tr>
+          <td>
+            <li><strong>Catatan</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.catatan}}
+          </td>
+        </tr>
 
+        <!--detail-->
+        <tr>
+          <td colspan="3" style="height: 10px"></td>
+        </tr>
+        <tr *ngIf="data.data.detail.length > 0">
+          <td colspan="3">
+            <li class="primary">
+              <strong class="primary">Detail &nbsp;({{data.data.detail.length}})</strong>
+            </li>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <table>
+              <tr *ngFor="let b of data.data.detail">
+                <td colspan="2" style="padding-left: 34px">
+                  <table>
+                    <tr>
+                      <td colspan="2">
+                                        <span class="accent" style="text-decoration: underline;">
+                                          {{b.item.namaKain}}
+                                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <li><strong>Catatan&nbsp;:&nbsp;</strong></li>
+                      </td>
+                      <td>
+                        {{b.catatan}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <li class="primary">
+                          <strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>
+                        </li>
+                      </td>
+                    </tr>
+                    <div *ngFor="let w of b.detailWarna">
+                      <tr>
+                        <td colspan="2" style="padding-left: 35px">
+                          <mat-chip-list>
+                            <mat-chip class="mat-chips-default-padding"
+                                      [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(w.warna.kodeWarnaHexadecimal) }">
+                              {{w.warna.namaWarna}}&nbsp;
+                              ({{w.jumlah}} {{w.unit.name}})
+                            </mat-chip>
+                          </mat-chip-list>
+                          <table style="font-size: 10px">
+                            <tr>
+                              <td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>
+                              <td>{{w.catatan}}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr style="height: 5px">
+                        <td colspan="2"></td>
+                      </tr>
+                    </div>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
   </mat-dialog-content>
 
-
+  <!-- Utama-->
   <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
     <form [formGroup]="form">
 
@@ -31,6 +240,7 @@
                      [selectedIndex]="selectedIndex"
                      [animationDuration]="'500ms'"
                      color="primary">
+        <!-- Pemilihan -->
         <mat-tab disabled>
           <ng-template mat-tab-label>
             <span class="mat-tab-label-text">Jenis Permintaan Pembelian</span>
@@ -66,6 +276,7 @@
           </div>
         </mat-tab>
 
+        <!-- Data-->
         <mat-tab disabled>
           <ng-template mat-tab-label>
             <span class="mat-tab-label-text">Daftar Permintaan Pembelian</span>
@@ -183,7 +394,7 @@
                                 <mat-select appMatSelectViewChild
                                             (viewChild)="afterItemMasterViewInit($event, detailIndex)"
                                             (selectionChange)="onItemSelectionChange($event, detailIndex, detailData)"
-                                            [placeholder]="(itemLazy[detailIndex].isEnabled()) ? 'Item' : (itemLazy[detailIndex].failToFetch ? 'Gagal memuat data barang....' : 'Memuat data barang ......' )"
+                                            [placeholder]="(itemLazy[detailIndex].isEnabled()) ? 'Nama Kain' : (itemLazy[detailIndex].failToFetch ? 'Gagal memuat data barang....' : 'Memuat data barang ......' )"
                                             formControlName="uuid"
                                             [errorStateMatcher]="stateMatchers.detail.item.matcher"
                                             [required]="itemLazy[detailIndex].isEnabled()">
@@ -222,7 +433,9 @@
                               <mat-form-field formArrayName="detailWarna">
                                 <mat-chip-list #chipList>
                                   <mat-chip
-                                    [ngStyle]="{ 'background-color': temp.warna.kodeWarnaHexadecimal }"
+                                    [ngStyle]="{ 'background-color': temp.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(temp.warna.kodeWarnaHexadecimal) }"
+                                    (removed)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)"
                                     *ngFor="let temp of getDetailWarnaValues(detailData, 'detailWarna'); index as tempIndex">
                                     {{temp.warna.namaWarna}}
                                     <mat-icon matTooltip="Ubah" class="first-chip-icon mat-standard-chip-icon"
@@ -236,11 +449,12 @@
                                   </mat-chip>
                                   <div>
                                     <input
+                                      matInput
                                       appMatAutocompleteTriggerViewChild
                                       (viewChild)="onWarnaTriggerInitialized($event)"
                                       (click)="dataWarnaTrigger[detailIndex].openPanel()"
                                       placeholder="Pilihan Warna"
-                                      matInput
+
                                       [matAutocomplete]="auto"
                                       [matChipInputFor]="chipList">
 
@@ -256,8 +470,8 @@
 
                               <!--catatan-->
                               <mat-form-field [appearance]="formFieldAppearance">
-                                <mat-label>Note</mat-label>
-                                <textarea matInput placeholder="Note"
+                                <mat-label>Catatan Detail Permintaan</mat-label>
+                                <textarea matInput placeholder="Catatan Detail Permintaan"
                                           formControlName="catatan"></textarea>
                               </mat-form-field>
 
@@ -286,18 +500,207 @@
           </div>
         </mat-tab>
 
+        <!--Pratinjau-->
         <mat-tab disabled>
           <ng-template mat-tab-label>
             <span class="mat-tab-label-text">Pratinjau</span>
           </ng-template>
           <div class="container-row">
-            <div class="row row-permintaan">
-              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <mat-form-field [appearance]="formFieldAppearance">
-                  <mat-label>Kategori</mat-label>
-                  <input matInput autocomplete="off" placeholder="Kategori ">
+            <div class="row row-permintaan static-body-height">
+              <!--{{previewValue | json}}-->
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px">
+                <table class="full-width-table">
 
-                </mat-form-field>
+                  <!--Tanggal-->
+                  <tr>
+                    <td style="width: 250px;">
+                      <li><strong>Tanggal Permintaan</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.tanggalPermintaan}}
+                    </td>
+                  </tr>
+                  <!--Prefix-->
+                  <tr>
+                    <td>
+                      <li><strong>Prefix</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.nomorPrefixPr}}
+                    </td>
+                  </tr>
+                  <!--Nomor Dokumen-->
+                  <tr>
+                    <td>
+                      <li><strong>Nomor Dokumen</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.nomorDokumenPr}}
+                    </td>
+                  </tr>
+                  <!--Salesman-->
+                  <tr>
+                    <td>
+                      <li><strong>Salesman</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.salesman.karyawan.nama}}
+                    </td>
+                  </tr>
+                  <!--Approved By-->
+                  <tr *ngIf="ifApproved(previewValue.statusDokumenPr)">
+                    <td>
+                      <li><strong>Approved By</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.prApprovedBy}}
+                    </td>
+                  </tr>
+                  <!--Approved Date-->
+                  <tr *ngIf="ifApproved(previewValue.statusDokumenPr)">
+                    <td>
+                      <li><strong>Approved Date</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.prApprovedDate}}
+                    </td>
+                  </tr>
+                  <!--Canceled By-->
+                  <tr *ngIf="ifCancel(previewValue.statusDokumenPr)">
+                    <td>
+                      <li><strong>Canceled By</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.prCancelledBy}}
+                    </td>
+                  </tr>
+                  <!--Canceled Date-->
+                  <tr *ngIf="ifCancel(previewValue.statusDokumenPr)">
+                    <td>
+                      <li><strong>Canceled Date</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.prCanceledDate}}
+                    </td>
+                  </tr>
+                  <!--canceled reason-->
+                  <tr *ngIf="ifCancel(previewValue.statusDokumenPr)">
+                    <td>
+                      <li><strong>Canceled Reason</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.prCanceledReason}}
+                    </td>
+                  </tr>
+                  <!--catatan-->
+                  <tr>
+                    <td>
+                      <li><strong>Catatan</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.catatan}}
+                    </td>
+                  </tr>
+
+                  <!--detail-->
+                  <tr>
+                    <td colspan="3" style="height: 10px"></td>
+                  </tr>
+                  <tr *ngIf="previewValue.detail.length > 0">
+                    <td colspan="3">
+                      <li class="primary">
+                        <strong class="primary">Detail &nbsp;({{previewValue.detail.length}})</strong>
+                      </li>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">
+                      <table>
+                        <tr *ngFor="let b of previewValue.detail">
+                          <td colspan="2" style="padding-left: 34px">
+                            <table>
+                              <tr>
+                                <td colspan="2">
+                                        <span class="accent" style="text-decoration: underline;">
+                                          {{b.item.namaKain}}
+                                        </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <li><strong>Catatan&nbsp;:&nbsp;</strong></li>
+                                </td>
+                                <td>
+                                  {{b.catatan}}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2">
+                                  <li class="primary">
+                                    <strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>
+                                  </li>
+                                </td>
+                              </tr>
+                              <div *ngFor="let w of b.detailWarna">
+                                <tr>
+                                  <td colspan="2" style="padding-left: 35px">
+                                    <mat-chip-list>
+                                      <mat-chip class="mat-chips-default-padding"
+                                                [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(w.warna.kodeWarnaHexadecimal) }">
+                                        {{w.warna.namaWarna}}&nbsp;
+                                        ({{w.jumlah}} {{w.unit.name}})
+                                      </mat-chip>
+                                    </mat-chip-list>
+                                    <table style="font-size: 10px">
+                                      <tr>
+                                        <td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>
+                                        <td>{{w.catatan}}</td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                                <tr style="height: 5px">
+                                  <td colspan="2"></td>
+                                </tr>
+                              </div>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
@@ -307,10 +710,9 @@
 
     </form>
   </mat-dialog-content>
-  <!--</div>-->
-
 
   <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
+
 
   <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
 

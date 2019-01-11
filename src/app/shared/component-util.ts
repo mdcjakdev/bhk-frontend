@@ -1,6 +1,13 @@
-import {ChangeDetectorRef, Input, OnDestroy, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, OnDestroy, ViewChild} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
-import {defaultMainContentPadding, defaultNavSideBarSize, delayHttpRequest, delegateLevelValue, UUID_COLUMN} from './constants';
+import {
+  defaultMainContentPadding,
+  defaultNavSideBarSize,
+  delayHttpRequest,
+  delegateLevelValue,
+  statusDokumen,
+  UUID_COLUMN
+} from './constants';
 import {MatExpansionPanel, MatMenuTrigger, MatPaginator, MatSort} from '@angular/material';
 import {DataSource} from '@angular/cdk/table';
 import {Ui} from './ui';
@@ -15,6 +22,10 @@ export class ComponentUtil<T extends DataSource<any> | any>
   // extends CrudAction
   implements OnDestroy {
 
+
+  public nextPageAnimation = 'animated  fadeOutDown';
+  public pageComeUpAnimation = '';
+  public delayBeforeGoToNextPage = 700;
 
   public pageIndex = 0;
 
@@ -124,8 +135,8 @@ export class ComponentUtil<T extends DataSource<any> | any>
    * @param maxWidth, ukuran batas minimum dari media (default = 900)
    */
   constructor(
-    dashboardSharedService: DashboardSharedService,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+    dashboardSharedService?: DashboardSharedService,
+    changeDetectorRef?: ChangeDetectorRef, media?: MediaMatcher,
     maxWidth = 900) {
 
     this.mediaMaxWidth = '(max-width: ' + maxWidth + 'px)';
@@ -141,6 +152,44 @@ export class ComponentUtil<T extends DataSource<any> | any>
       dashboardSharedService.sideNav.subscribe(value => this.sideNav = value);
     }
     /**/
+  }
+
+  statusColor(status) {
+    if (this.ifDraft(status)) {
+      return {
+        color: '#FFFFFF',
+        background: '#1976D2'
+      };
+    } else if (this.ifApproved(status)) {
+      return {
+        color: '#FFFFFF',
+        background: '#388E3C'
+      };
+    } else if (this.ifCancel(status)) {
+      return {
+        color: '#FFFFFF',
+        background: '#E91E63'
+      };
+    } else {
+      return {
+        color: '#000000',
+        background: '#AFB42B'
+      };
+    }
+  }
+
+  ifDraft(status) {
+    return status === statusDokumen.DRAFT;
+  }
+
+
+  ifApproved(status) {
+    return status === statusDokumen.APPROVED;
+  }
+
+
+  ifCancel(status) {
+    return status === statusDokumen.CANCELED;
   }
 
   defaultNoActionVoid(column, value) {

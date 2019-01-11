@@ -1,4 +1,4 @@
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -30,6 +30,7 @@ export const masterKaryawanInit = {
 };
 
 export const masterKaryawanDisables = {
+  ...appAuditEntityDisables,
   nama: false,
   tipeIdentitas: false,
   nomorIdentitas: false,
@@ -54,7 +55,7 @@ export function masterKaryawanForm(init: MasterKaryawan = masterKaryawanInit,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
     tipeIdentitas: [{value: init.tipeIdentitas, disabled: disables.tipeIdentitas}, Validators.required],
     nomorIdentitas: [{value: init.nomorIdentitas, disabled: disables.nomorIdentitas}, Validators.required],

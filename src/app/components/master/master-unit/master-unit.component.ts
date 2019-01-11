@@ -46,7 +46,7 @@ export class MasterUnitComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterUnitHttpService: MasterUnitService,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,

@@ -211,7 +211,8 @@
                 <td colspan="2" style="padding-left: 34px">
                   <mat-chip-list>
                     <mat-chip
-                      [ngStyle]="{ 'background-color': b.kodeWarnaHexadecimal }"
+                      [ngStyle]="{ 'background-color': b.kodeWarnaHexadecimal,
+                                           'color': invertColor(b.kodeWarnaHexadecimal) }"
                       *ngFor="let b of data.data.warna">
                       {{b.namaWarna}}
                     </mat-chip>
@@ -422,10 +423,11 @@
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <!--warna-->
-          <mat-form-field formArrayName="warna">
+          <mat-form-field formArrayName="warna" [appearance]="formFieldAppearance">
             <mat-chip-list #chipList>
               <mat-chip
-                [ngStyle]="{ 'background-color': temp.kodeWarnaHexadecimal }"
+                [ngStyle]="{ 'background-color': temp.kodeWarnaHexadecimal,
+                                           'color': invertColor(temp.kodeWarnaHexadecimal) }"
                 *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
                 (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex, temp)">
                 {{temp.namaWarna}}
@@ -433,16 +435,13 @@
                           [matTooltipPosition]="'below'"
                           matChipRemove>cancel</mat-icon>
               </mat-chip>
-              <div>
-                <input
-                  matInput
-                  placeholder="Warna"
-                  #warnaTrigger
-                  (click)="openAutoComplete()"
-                  [matAutocomplete]="auto"
-                  [matChipInputFor]="chipList">
-
-              </div>
+              <input
+                matInput
+                placeholder="Warna"
+                #warnaTrigger
+                (click)="openAutoComplete()"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList">
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
                               (optionSelected)="selected($event, reactiveFormUtil.getFormArray('warna', form))">

@@ -47,7 +47,7 @@ export class MasterGudangComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterGudangService: MasterGudangService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

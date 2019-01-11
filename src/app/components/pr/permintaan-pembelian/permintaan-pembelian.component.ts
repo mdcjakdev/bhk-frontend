@@ -3,7 +3,7 @@ import {ComponentUtil} from '../../../shared/component-util';
 import {AppTableDataSource} from '../../../shared/table-data-source';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
+import {invertColor, openAppSnackbar, SNACKBAR_ERROR_STYLE} from '../../../shared/constants';
 import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {Action} from '../../../shared/action.enum';
 import {Ui} from '../../../shared/ui';
@@ -29,6 +29,8 @@ export class PermintaanPembelianComponent
   extends ComponentUtil<AppTableDataSource>
   implements OnInit {
 
+  invertColor = invertColor;
+
   /**
    * Kumpulan array dari nama-nama property data yang di peroleh dari
    * @var receivedData, yang akan ditampilkan pada data tabel
@@ -50,7 +52,7 @@ export class PermintaanPembelianComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private permintaanPembelianService: PermintaanPembelianService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

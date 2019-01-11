@@ -22,6 +22,10 @@ export class BhkDashboardComponent
 
   @ViewChild("sidenav") snav;
 
+
+  next = 'animated  fadeOutDown';
+
+
   start = false;
   constructor(
     private router: Router,
@@ -69,8 +73,10 @@ export class BhkDashboardComponent
           this.bhkSharedService.addLoadingBarIndicator(false);
         }
 
-        /* navigate ke url yang dituju */
-        this.router.navigate([routeUrl]);
+        setTimeout(() => {
+          /* navigate ke url yang dituju */
+          this.router.navigate([routeUrl]);
+        }, this.delayBeforeGoToNextPage)
     }
   }
 

@@ -1,6 +1,6 @@
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppErrorStateMatcher} from '../../shared/utils';
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 
 
 export interface MasterUnit extends AppAuditEntity {
@@ -15,6 +15,7 @@ export const masterUnitInit = {
 };
 
 export const masterUnitDisables = {
+  ...appAuditEntityDisables,
   name: false,
   deskripsi: false
 };
@@ -35,7 +36,7 @@ export function masterUnitForm(init: MasterUnit = masterUnitInit,
                                  initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     name: [{value: init.name, disabled: false}, Validators.required],
     deskripsi: {value: init.deskripsi, disabled: false},
   });

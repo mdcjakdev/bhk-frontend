@@ -1,4 +1,6 @@
-<div>
+<!--<h1 class="animated  bounce">Annas</h1>-->
+
+<div [ngClass]="(this.bhkSharedService.loadingBarIndicator | async) ? nextPageAnimation : ''"  [attr.class]="pageComeUpAnimation">
 
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="openDialogData()" [disabled]="awaitSearch"
@@ -341,7 +343,8 @@
                               <td colspan="2" style="padding-left: 34px">
                                 <mat-chip-list>
                                   <mat-chip
-                                    [ngStyle]="{ 'background-color': b.kodeWarnaHexadecimal }"
+                                    [ngStyle]="{ 'background-color': b.kodeWarnaHexadecimal,
+                                           'color': invertColor(b.kodeWarnaHexadecimal) }"
                                     *ngFor="let b of element.warna">
                                     {{b.namaWarna}}
                                   </mat-chip>

@@ -1,21 +1,59 @@
 import {Action} from './action.enum';
 import {MatDialogRef} from '@angular/material';
 import {FormGroup} from '@angular/forms';
-import {Constants} from './constants';
+import {Constants, statusDokumen} from './constants';
 
 
 export class DialogUtil extends Constants {
 
-  constructor(public dialogRef: MatDialogRef<any>,
-              public data,
-              public form: FormGroup,
-              public stateMatchers: any) {
+  constructor(public dialogRef?: MatDialogRef<any>,
+              public data?,
+              public form?: FormGroup,
+              public stateMatchers?: any) {
     super();
     if (data !== undefined && data.data !== undefined) {
       form.patchValue(data.data);
     }
 
 
+  }
+
+  statusColor(status) {
+    if (this.ifDraft(status)) {
+      return {
+        color: '#FFFFFF',
+        background: '#1976D2'
+      };
+    } else if (this.ifApproved(status)) {
+      return {
+        color: '#FFFFFF',
+        background: '#388E3C'
+      };
+    } else if (this.ifCancel(status)) {
+      return {
+        color: '#FFFFFF',
+        background: '#E91E63'
+      };
+    } else {
+      return {
+        color: '#000000',
+        background: '#AFB42B'
+      };
+    }
+  }
+
+  ifDraft(status) {
+    return status === statusDokumen.DRAFT;
+  }
+
+
+  ifApproved(status) {
+    return status === statusDokumen.APPROVED;
+  }
+
+
+  ifCancel(status) {
+    return status === statusDokumen.CANCELED;
   }
 
   /**

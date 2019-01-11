@@ -44,7 +44,7 @@ export class MasterCategoryComponent
   private isRightClick;
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterCategoryHttpService: MasterCategoryService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

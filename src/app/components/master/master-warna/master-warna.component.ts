@@ -44,7 +44,7 @@ export class MasterWarnaComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterWarnaService: MasterWarnaService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

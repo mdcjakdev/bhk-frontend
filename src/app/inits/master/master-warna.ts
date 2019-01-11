@@ -1,5 +1,5 @@
 
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -36,11 +36,13 @@ export const masterWarnaInit = <MasterWarna>{
 
 /** Init nilai awal status disable formcontrol Master Warna Barcode  */
 export const masterWarnaBarcodeDisables = {
+  ...appAuditEntityDisables,
   barcode: false
 };
 
 /** Init nilai awal status disable formcontrol Master Warna */
 export const masterWarnaDisables = {
+  ...appAuditEntityDisables,
   kodeWarna: false,
   namaWarna: false,
   kodeWarnaHexadecimal: false,
@@ -74,7 +76,7 @@ export function masterWarnaBarcodeForm(init: MasterWarnaBarcode = masterWarnaBar
                                       disables = masterWarnaBarcodeDisables,
                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     barcode: [{value: init.barcode, disabled: disables.barcode}, Validators.required]
   });
 }

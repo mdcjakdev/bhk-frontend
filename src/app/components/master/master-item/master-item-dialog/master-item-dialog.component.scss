@@ -6,6 +6,10 @@
   font-size: 0.75em;
 }
 
+::ng-deep .mat-chip-list-wrapper {
+  margin: -2px !important;
+}
+
 .mat-dialog-actions {
   padding-bottom: 20px;
 }

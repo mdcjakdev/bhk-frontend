@@ -120,8 +120,7 @@ export class SelectLazy<E> {
     }
 
     setTimeout(() => {
-      // (<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disable();
-      console.log(this.initUuid)
+
       this.fetchFunction(this.page, this.size, this.http).subscribe(
         (value: any) => {
           this.page++;

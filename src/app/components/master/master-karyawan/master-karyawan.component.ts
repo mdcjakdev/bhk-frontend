@@ -45,7 +45,7 @@ export class MasterKaryawanComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterKaryawanService: MasterKaryawanService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

@@ -1,4 +1,4 @@
-<div>
+<div [ngClass]="(this.bhkSharedService.loadingBarIndicator | async) ? nextPageAnimation : ''" [attr.class]="pageComeUpAnimation">
 
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="openDialogData()" [disabled]="awaitSearch"

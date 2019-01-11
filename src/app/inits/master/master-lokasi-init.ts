@@ -1,5 +1,5 @@
 import {AppErrorStateMatcher} from '../../shared/utils';
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 export const tipeLokasi = [
@@ -20,6 +20,7 @@ export const masterLokasiInit = {
 };
 
 export const masterLokasiDisables = {
+  ...appAuditEntityDisables,
   namaLokasi: false,
   tipeLokasi: false
 };
@@ -43,7 +44,7 @@ export function masterLokasiForm(init: MasterLokasi = masterLokasiInit,
                                     initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     namaLokasi: [{value: init.namaLokasi, disabled: disables.namaLokasi}, Validators.required],
     tipeLokasi: [{value: init.tipeLokasi, disabled: disables.tipeLokasi}, Validators.required]
   });

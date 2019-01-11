@@ -1,5 +1,5 @@
 import {AppErrorStateMatcher} from '../../shared/utils';
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MasterLokasi} from './master-lokasi-init';
 
@@ -44,6 +44,7 @@ export const masterGudangInit = {
 };
 
 export const masterGudangDisables = {
+  ...appAuditEntityDisables,
   alamat: false,
   autoReplenish: false,
   kode: false,
@@ -97,7 +98,7 @@ export function masterGudangForm(init: MasterGudang = masterGudangInit,
                                  initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     alamat: [{value: init.alamat, disabled: disables.alamat}, Validators.required],
     autoReplenish: [{value: init.autoReplenish, disabled: disables.autoReplenish}, Validators.required],
     kode: [{value: init.kode, disabled: disables.kode}, Validators.required],

@@ -1,17 +1,14 @@
-import {AppAuditEntity, appAuditEntityForm, appAuditEntityInit} from '../init';
+import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {MasterUnit, masterUnitInit} from '../master/master-unit-init';
 import {MasterWarna, masterWarnaForm, masterWarnaInit} from '../master/master-warna';
 import {MasterItem, masterItemDisables, masterItemForm, masterItemInit} from '../master/master-item';
-import {Pengguna, penggunaInit} from '../administrator/pengguna-init';
+import {Pengguna, penggunaDisables, penggunaForm, penggunaInit} from '../administrator/pengguna-init';
 import {AppErrorStateMatcher} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {statusDokumen} from '../../shared/constants';
+import {masterKaryawanForm} from '../master/master-karyawan-init';
 
-export const statusDokumen = {
-  DRAFT: 'DRAFT',
-  APPROVED: 'APPROVED',
-  CHECKED: 'CHECKED',
-  CANCELED: 'CANCELED'
-};
+
 
 /** Model Class PR Detail Warna */
 export interface PermintaanPembelianDetailWarna extends AppAuditEntity {
@@ -51,11 +48,11 @@ export const permintaanPembelianDetailWarnaInit = <PermintaanPembelianDetailWarn
   warna: masterWarnaInit,
   jumlah: '',
   unit: masterUnitInit,
-  catatan: ''
+  catatan: '-'
 };
 
 /** Init nilai awal  */
-export const permintaanPembelianDetailInit = <PermintaanPembelianDetail>{
+export const permintaanPembelianDetailInit = <PermintaanPembelianDetail> {
   ...appAuditEntityInit,
   item: masterItemInit,
   catatan: '',
@@ -63,7 +60,7 @@ export const permintaanPembelianDetailInit = <PermintaanPembelianDetail>{
 };
 
 /** Init nilai awal Permintaan Pembelian */
-export const permintaanPembelianInit = <PermintaanPembelian>{
+export const permintaanPembelianInit = <PermintaanPembelian> {
   ...appAuditEntityInit,
   catatan: '',
   counterPr: '',
@@ -82,6 +79,7 @@ export const permintaanPembelianInit = <PermintaanPembelian>{
 
 /** Init nilai awal status disable formcontrol Permintaan Pembelian Detail Warna */
 export const permintaanPembelianDetailWarnaDisables = {
+  ...appAuditEntityDisables,
   warna: false,
   jumlah: false,
   unit: false,
@@ -90,12 +88,14 @@ export const permintaanPembelianDetailWarnaDisables = {
 
 /** Init nilai awal status disable formcontrol Permintaan Pembelian Detail */
 export const permintaanPembelianDetailDisables = {
+  ...appAuditEntityDisables,
   item: masterItemDisables,
   catatan: false
 };
 
 /** Init nilai awal status disable formcontrol Permintaan Pembelian */
 export const permintaanPembelianDisables = {
+  ...appAuditEntityDisables,
   catatan: false,
   counterPr: false,
   salesman: true,
@@ -139,7 +139,7 @@ export function permintaanPembelianDetailWarnaForm(init: PermintaanPembelianDeta
                                                    disables = permintaanPembelianDetailWarnaDisables,
                                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     warna: masterWarnaForm(init.warna),
     jumlah: [{value: init.jumlah, disabled: disables.jumlah}, Validators.required],
     unit: new FormBuilder().group({
@@ -164,7 +164,7 @@ export function permintaanPembelianDetailForm(init: PermintaanPembelianDetail = 
   const detailWarna = (init.detailWarna.length === 0) ? [] : generatePermintaanPembelianDetailWarna(init.detailWarna);
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     // item: new FormBuilder().group({
     //   uuid: [{value: init.item.uuid, disabled: disables.item}, Validators.required]
     // }),
@@ -189,13 +189,11 @@ export function permintaanPembelianForm(init: PermintaanPembelian = permintaanPe
   const detail = (init.detail.length === 0) ? [] : generatePermintaanPembelianDetail(init.detail);
 
   return new FormBuilder().group({
-    ...initAuditForm().controls,
+    ...initAuditForm(init, disables).controls,
     catatan: {value: init.catatan, disabled: disables.catatan},
     counterPr: [{value: init.counterPr, disabled: disables.counterPr}, Validators.required],
     detail: new FormBuilder().array(detail),
-    salesman: new FormBuilder().group({
-      uuid: [{value: init.salesman.uuid, disabled: disables.salesman}, Validators.required]
-    }),
+    salesman: penggunaForm(init.salesman, {...penggunaDisables, uuid: true}, true),
     nomorDokumenPr: [{value: init.nomorDokumenPr, disabled: disables.nomorDokumenPr}, Validators.required],
     prApprovedBy: new FormBuilder().group({
       uuid: {value: ((init.prApprovedBy === undefined || init.prApprovedBy === null) ? '' : init.prApprovedBy.uuid), disabled: disables.prApprovedBy}

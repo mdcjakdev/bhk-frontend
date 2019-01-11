@@ -46,7 +46,7 @@ export class MasterSupplierComponent
 
 
   constructor(
-    private bhkSharedService: DashboardSharedService,
+    public bhkSharedService: DashboardSharedService,
     private masterSupplierService: MasterSupplierService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

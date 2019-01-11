@@ -5,6 +5,10 @@
   padding-bottom: 20px;
 }
 
+::ng-deep .mat-chip-list-wrapper {
+  margin: -2px !important;
+}
+
 .mat-progress-bar {
   position: absolute;
   height: 4px;
@@ -79,6 +83,10 @@
   color: mat-color($dan-app-accent) !important;
 }
 
+.mat-chips-default-padding {
+  padding: 7px 14px 9px 14px !important;
+}
+
 #dialog-block {
 
   .mat-dialog-title {
@@ -110,51 +118,6 @@
   }
 
 }
-
-
-// customize angular material date picker
-
-::ng-deep .mat-datepicker-content {
-  //border-radius: 10px;
-  margin-top: 2px;
-  height: 388px;
-  .mat-calendar {
-    //border-radius: 10px;
-    .mat-calendar-header {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-      //border-radius: 10px;
-      background: mat-color($dan-app-primary);
-      color: #ffffff;
-      padding: 8px 8px 1px 8px;
-      .mat-calendar-controls {
-        .mat-button {
-          .mat-button-wrapper {
-            .mat-calendar-arrow {
-              display: none;
-            }
-          }
-        }
-        .mat-icon-button {
-          color: #ffffff;
-        }
-      }
-    }
-  }
-}
-
-::ng-deep .mat-calendar-table {
-  .mat-calendar-table-header {
-    margin-top: 10px;
-  }
-  .mat-calendar-table-header th {
-    text-align: center;
-    padding: 16px 0 8px 0;
-    background: #ffffff;
-  }
-}
-
-// end of customize angular material date picker
 
 
 ::ng-deep .pilih * {
