@@ -1,5 +1,5 @@
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
-import {AppErrorStateMatcher} from '../../shared/utils';
+import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
@@ -50,17 +50,18 @@ export const masterKaryawanErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Master Karyawan */
-export function masterKaryawanForm(init: MasterKaryawan = masterKaryawanInit,
+export function masterKaryawanForm(init: any = masterKaryawanInit,
                                    disables = masterKaryawanDisables,
+                                   forGeneralization = false,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
-    nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
-    tipeIdentitas: [{value: init.tipeIdentitas, disabled: disables.tipeIdentitas}, Validators.required],
-    nomorIdentitas: [{value: init.nomorIdentitas, disabled: disables.nomorIdentitas}, Validators.required],
-    alamat: [{value: init.alamat, disabled: disables.alamat}, Validators.required],
-    telepon: [{value: init.telepon, disabled: disables.telepon}, Validators.required],
+    nama: [{value: init.nama, disabled: disables.nama}, statusGeneralization(Validators.required, forGeneralization)],
+    tipeIdentitas: [{value: init.tipeIdentitas, disabled: disables.tipeIdentitas}, statusGeneralization(Validators.required, forGeneralization)],
+    nomorIdentitas: [{value: init.nomorIdentitas, disabled: disables.nomorIdentitas}, statusGeneralization(Validators.required, forGeneralization)],
+    alamat: [{value: init.alamat, disabled: disables.alamat}, statusGeneralization(Validators.required, forGeneralization)],
+    telepon: [{value: init.telepon, disabled: disables.telepon}, statusGeneralization(Validators.required, forGeneralization)],
     status: {value: init.status, disabled: disables.status}
   });
 

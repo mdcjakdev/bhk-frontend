@@ -146,8 +146,8 @@
 
           <!--Password-->
           <mat-form-field [appearance]="formFieldAppearance">
-            <mat-label>Password</mat-label>
-            <input [type]="hidePassword ? 'password' : 'text'" matInput placeholder="Password" formControlName="password" required
+            <mat-label>Password </mat-label>
+            <input [type]="hidePassword ? 'password' : 'text'" matInput placeholder="Password (Minimal 8 karakter)" formControlName="password" required
                    [errorStateMatcher]="stateMatchers.password.matcher">
             <mat-icon style="cursor: pointer;" matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             <mat-error

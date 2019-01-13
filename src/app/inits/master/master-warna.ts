@@ -1,6 +1,5 @@
-
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
-import {AppErrorStateMatcher} from '../../shared/utils';
+import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
@@ -20,13 +19,13 @@ export interface MasterWarna extends AppAuditEntity {
 }
 
 /** Init nilai awal Warna Barcode */
-export const masterWarnaBarcodeInit = <MasterWarnaBarcode>{
+export const masterWarnaBarcodeInit = {
   ...appAuditEntityInit,
   barcode: ''
 };
 
 /** Init nilai awal Kategori */
-export const masterWarnaInit = <MasterWarna>{
+export const masterWarnaInit = {
   ...appAuditEntityInit,
   kodeWarna: '',
   kodeWarnaHexadecimal: defaultColor,
@@ -72,34 +71,36 @@ export const masterWarnaErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Master Warna Barcode */
-export function masterWarnaBarcodeForm(init: MasterWarnaBarcode = masterWarnaBarcodeInit,
-                                      disables = masterWarnaBarcodeDisables,
-                                      initAuditForm: Function = appAuditEntityForm): FormGroup {
+export function masterWarnaBarcodeForm(init = masterWarnaBarcodeInit,
+                                       disables = masterWarnaBarcodeDisables,
+                                       forGeneralization = false,
+                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
-    barcode: [{value: init.barcode, disabled: disables.barcode}, Validators.required]
+    barcode: [{value: init.barcode, disabled: disables.barcode}, statusGeneralization(Validators.required, forGeneralization)]
   });
 }
 
-function generateWarnaBarcode(barcodes: MasterWarnaBarcode[]) {
+function generateWarnaBarcode(barcodes: any[], forGeneralization = false) {
   const data = [];
-  barcodes.forEach(value => data.push(masterWarnaBarcodeForm(value)));
+  barcodes.forEach((value: any) => data.push(masterWarnaBarcodeForm(value, {...masterWarnaBarcodeDisables, uuid: forGeneralization}, forGeneralization)));
   return data;
 }
 
 /** Fungsi Init Reactive Form Group untuk data Master Warna */
-export function masterWarnaForm(init: MasterWarna = masterWarnaInit,
-                                   disables = masterWarnaDisables,
-                                   initAuditForm: Function = appAuditEntityForm): FormGroup {
+export function masterWarnaForm(init: any = masterWarnaInit,
+                                disables = masterWarnaDisables,
+                                forGeneralization = false,
+                                initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   /** megeneralisasi nilai2 array dari warna barcode */
-  const warnaBarcode = (init.barcode === undefined || init.barcode.length === 0) ? [] : generateWarnaBarcode(init.barcode);
+  const warnaBarcode = (init.barcode === undefined || init.barcode.length === 0) ? [] : generateWarnaBarcode(init.barcode, forGeneralization);
 
   return new FormBuilder().group({
     ...initAuditForm(init).controls,
-    kodeWarna: [{value: init.kodeWarna, disabled: disables.kodeWarna}, Validators.required],
+    kodeWarna: [{value: init.kodeWarna, disabled: disables.kodeWarna}, statusGeneralization(Validators.required, forGeneralization)],
     kodeWarnaHexadecimal: {value: init.kodeWarnaHexadecimal, disabled: disables.kodeWarnaHexadecimal},
-    namaWarna: [{value: init.namaWarna, disabled: disables.namaWarna}, Validators.required],
+    namaWarna: [{value: init.namaWarna, disabled: disables.namaWarna}, statusGeneralization(Validators.required, forGeneralization)],
     barcode: new FormBuilder().array(warnaBarcode) // init kosong untuk data relasi ke banyak
   });
 

@@ -1,6 +1,6 @@
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AppErrorStateMatcher} from '../../shared/utils';
+import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 
 /** Model Class MasterSupplier */
 export interface MasterSupplier extends AppAuditEntity {
@@ -17,7 +17,7 @@ export interface MasterSupplier extends AppAuditEntity {
 }
 
 /** Init nilai awal MasterSupplier */
-export const masterSupplierInit = <MasterSupplier> {
+export const masterSupplierInit = {
   ...appAuditEntityInit,
   alamat: '',
   email: '',
@@ -94,19 +94,20 @@ export const masterSupplierErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data MasterSupplier */
-export function masterSupplierForm(init: MasterSupplier = masterSupplierInit,
+export function masterSupplierForm(init: any = masterSupplierInit,
                                    disables = masterSupplierDisables,
+                                   forGeneralization = false,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
-    alamat: [{value: init.alamat, disabled: disables.alamat}, Validators.required],
-    email: [{value: init.email, disabled: disables.email}, Validators.email],
-    fax: [{value: init.fax, disabled: disables.fax}, Validators.required],
-    kodeSupplier: [{value: init.kodeSupplier, disabled: disables.kodeSupplier}, Validators.required],
-    kodeTrans: [{value: init.kodeTrans, disabled: disables.kodeTrans}, Validators.required],
-    nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
-    paymentDueDate: [{value: init.paymentDueDate, disabled: disables.paymentDueDate}, Validators.required],
+    alamat: [{value: init.alamat, disabled: disables.alamat}, statusGeneralization(Validators.required, forGeneralization)],
+    email: [{value: init.email, disabled: disables.email}, statusGeneralization(Validators.email, forGeneralization)],
+    fax: [{value: init.fax, disabled: disables.fax}, statusGeneralization(Validators.required, forGeneralization)],
+    kodeSupplier: [{value: init.kodeSupplier, disabled: disables.kodeSupplier}, statusGeneralization(Validators.required, forGeneralization)],
+    kodeTrans: [{value: init.kodeTrans, disabled: disables.kodeTrans}, statusGeneralization(Validators.required, forGeneralization)],
+    nama: [{value: init.nama, disabled: disables.nama}, statusGeneralization(Validators.required, forGeneralization)],
+    paymentDueDate: [{value: init.paymentDueDate, disabled: disables.paymentDueDate}, statusGeneralization(Validators.required, forGeneralization)],
     picName: {value: init.picName, disabled: disables.picName},
     picNumber: {value: init.picNumber, disabled: disables.picNumber},
     telepon: {value: init.telepon, disabled: disables.telepon}

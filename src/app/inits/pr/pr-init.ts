@@ -1,5 +1,5 @@
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
-import {MasterUnit, masterUnitInit} from '../master/master-unit-init';
+import {MasterUnit, masterUnitDisables, masterUnitForm, masterUnitInit} from '../master/master-unit-init';
 import {MasterWarna, masterWarnaForm, masterWarnaInit} from '../master/master-warna';
 import {MasterItem, masterItemDisables, masterItemForm, masterItemInit} from '../master/master-item';
 import {Pengguna, penggunaDisables, penggunaForm, penggunaInit} from '../administrator/pengguna-init';
@@ -40,10 +40,11 @@ export interface PermintaanPembelian extends AppAuditEntity {
   nomorPrefixPr?: string;
   statusDokumenPr?: string;
   tanggalPermintaan?: any;
+  onPo?: boolean;
 }
 
 /** Init nilai awal Permintaan Pembelian Detail Warna  */
-export const permintaanPembelianDetailWarnaInit = <PermintaanPembelianDetailWarna>{
+export const permintaanPembelianDetailWarnaInit =  {
   ...appAuditEntityInit,
   warna: masterWarnaInit,
   jumlah: '',
@@ -52,7 +53,7 @@ export const permintaanPembelianDetailWarnaInit = <PermintaanPembelianDetailWarn
 };
 
 /** Init nilai awal  */
-export const permintaanPembelianDetailInit = <PermintaanPembelianDetail> {
+export const permintaanPembelianDetailInit =  {
   ...appAuditEntityInit,
   item: masterItemInit,
   catatan: '',
@@ -60,21 +61,22 @@ export const permintaanPembelianDetailInit = <PermintaanPembelianDetail> {
 };
 
 /** Init nilai awal Permintaan Pembelian */
-export const permintaanPembelianInit = <PermintaanPembelian> {
+export const permintaanPembelianInit = {
   ...appAuditEntityInit,
   catatan: '',
   counterPr: '',
   detail: [],
   salesman: penggunaInit,
   nomorDokumenPr: '',
-  // prApprovedBy: penggunaInit,
+  prApprovedBy: penggunaInit,
   prApprovedDate: '',
   prCanceledDate: '',
   prCanceledReason: '',
   prCancelledBy: penggunaInit,
   nomorPrefixPr: '',
   statusDokumenPr: statusDokumen.DRAFT,
-  tanggalPermintaan: ''
+  tanggalPermintaan: '',
+  onPo: false
 };
 
 /** Init nilai awal status disable formcontrol Permintaan Pembelian Detail Warna */
@@ -135,21 +137,22 @@ export const permintaanPembelianErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian Detail Warna*/
-export function permintaanPembelianDetailWarnaForm(init: PermintaanPembelianDetailWarna = permintaanPembelianDetailWarnaInit,
+export function permintaanPembelianDetailWarnaForm(init = permintaanPembelianDetailWarnaInit,
                                                    disables = permintaanPembelianDetailWarnaDisables,
                                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
     warna: masterWarnaForm(init.warna),
     jumlah: [{value: init.jumlah, disabled: disables.jumlah}, Validators.required],
-    unit: new FormBuilder().group({
-      uuid: [{value: init.unit.uuid, disabled: disables.unit}, Validators.required]
-    }),
+    // unit: new FormBuilder().group({
+    //   uuid: [{value: init.unit.uuid, disabled: disables.unit}, Validators.required]
+    // }),
+    unit: masterUnitForm(init.unit, {...masterUnitDisables, uuid: true}, true),
     catatan: {value: init.catatan, disabled: disables.catatan}
   });
 }
 
-function generatePermintaanPembelianDetailWarna(temp: PermintaanPembelianDetailWarna[]) {
+function generatePermintaanPembelianDetailWarna(temp: any[]) {
   const data = [];
   temp.forEach(value => data.push(permintaanPembelianDetailWarnaForm(value)));
   return data;
@@ -157,7 +160,7 @@ function generatePermintaanPembelianDetailWarna(temp: PermintaanPembelianDetailW
 
 
 /** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian Detail*/
-export function permintaanPembelianDetailForm(init: PermintaanPembelianDetail = permintaanPembelianDetailInit,
+export function permintaanPembelianDetailForm(init = permintaanPembelianDetailInit,
                                         disables = permintaanPembelianDetailDisables,
                                         initAuditForm: Function = appAuditEntityForm): FormGroup {
 
@@ -174,14 +177,14 @@ export function permintaanPembelianDetailForm(init: PermintaanPembelianDetail = 
   });
 }
 
-function generatePermintaanPembelianDetail(temp: PermintaanPembelianDetail[]) {
+function generatePermintaanPembelianDetail(temp: any[]) {
   const data = [];
   temp.forEach(value => data.push(permintaanPembelianDetailForm(value)));
   return data;
 }
 
 /** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian */
-export function permintaanPembelianForm(init: PermintaanPembelian = permintaanPembelianInit,
+export function permintaanPembelianForm(init = permintaanPembelianInit,
                                disables = permintaanPembelianDisables,
                                initAuditForm: Function = appAuditEntityForm): FormGroup {
 
@@ -206,7 +209,8 @@ export function permintaanPembelianForm(init: PermintaanPembelian = permintaanPe
     }),
     nomorPrefixPr: [{value: init.nomorPrefixPr, disabled: disables.nomorPrefixPr}, Validators.required],
     statusDokumenPr: {value: init.statusDokumenPr, disabled: disables.statusDokumenPr},
-    tanggalPermintaan: [{value: init.tanggalPermintaan, disabled: disables.tanggalPermintaan}, Validators.required]
+    tanggalPermintaan: [{value: init.tanggalPermintaan, disabled: disables.tanggalPermintaan}, Validators.required],
+    onPo: {value: init.onPo, disabled: false}
   });
 
 }

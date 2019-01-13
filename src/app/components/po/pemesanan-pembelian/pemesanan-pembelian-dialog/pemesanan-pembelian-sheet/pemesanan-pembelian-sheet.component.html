@@ -1,0 +1,27 @@
+<mat-form-field id="cari-dokumen">
+  <mat-label>
+    Nomor Dokumen Permintaan Pembelian
+  </mat-label>
+  <input appElementFocus
+         [formControl]="nomorDokumenPr"
+         [textMask]="maskSearch"
+         placeholder="Nomor Dokumen Permintaan Pembelian"
+         autocomplete="off" matInput>
+
+</mat-form-field>
+
+
+<div id="result">
+  <mat-nav-list>
+    <a *ngFor="let pr of dataPr" mat-list-item
+       (click)="openDocument(pr)">
+      <mat-icon mat-list-icon>receipt</mat-icon>
+      <span mat-line class="result-info">{{pr.nomorDokumenPr}}</span>
+      <span mat-line class="footer-info">Salesman: {{pr.salesman.karyawan.nama}}</span>
+    </a>
+
+
+  </mat-nav-list>
+</div>
+
+

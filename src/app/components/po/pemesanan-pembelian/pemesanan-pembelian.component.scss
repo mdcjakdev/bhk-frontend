@@ -1,0 +1,25 @@
+@import "~src/assets/css/dan-theme";
+@import "~src/assets/css/dan-mix";
+
+.full-width-table {
+  width: 100%;
+}
+
+
+.mat-column-uuid {
+  width: 30px;
+}
+
+
+#table-detail {
+  margin-left: 20px;
+  table  {
+    font-size: $standard-font-size;
+    td {
+      vertical-align: top;
+      li {
+        padding-left: 15px;
+      }
+    }
+  }
+}

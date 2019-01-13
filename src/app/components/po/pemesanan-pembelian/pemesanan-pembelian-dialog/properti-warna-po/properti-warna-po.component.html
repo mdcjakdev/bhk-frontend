@@ -1,0 +1,89 @@
+<div id="dialog-block">
+
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+    <div>
+      <mat-icon style="margin-bottom: 8px;">bubble_chart</mat-icon>
+      <strong>&nbsp;Warna {{data.data.warna.namaWarna}}</strong>
+    </div>
+  </h4>
+
+
+  <mat-dialog-content >
+    <form [formGroup]="form" class="form-app">
+      <input type="hidden" formControlName="uuid"/>
+
+      <!--jumlah-->
+      <mat-form-field [appearance]="formFieldAppearance">
+        <mat-label>Jumlah</mat-label>
+        <input appElementFocus matInput autocomplete="off" [textMask]="masker" placeholder="Jumlah" formControlName="jumlah" required
+               [errorStateMatcher]="stateMatchers.jumlah.matcher">
+
+        <mat-error
+          *ngIf="reactiveFormUtil.formControl(form, 'jumlah').hasError('required')">{{stateMatchers.jumlah.message}}</mat-error>
+      </mat-form-field>
+
+      <!--unit-->
+      <mat-form-field formGroupName="unit">
+        <mat-select #selectUnit
+                    [placeholder]="(unitLazy.isEnabled()) ? 'Unit' : (unitLazy.failToFetch ? 'Gagal memuat data unit ....' : 'Memuat data unit ......')"
+                    formControlName="uuid"
+                    [errorStateMatcher]="stateMatchers.unit.matcher" [required]="unitLazy.isEnabled()">
+          <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+          <mat-divider></mat-divider>
+          <mat-option [value]="v.uuid" *ngFor="let v of unitLazy.data">
+            {{v.name}}
+          </mat-option>
+          <mat-divider></mat-divider>
+          <mat-option *ngIf="!unitLazy.isLast" (click)="unitLazy.refresh()" class="lebih-banyak">
+            <div *ngIf="!unitLazy.waitingLoadMore || unitLazy.failToFetch; else load" >Muat lebih banyak
+              ....
+            </div>
+            <ng-template #load>
+              <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                mode="indeterminate"></mat-progress-bar>
+            </ng-template>
+          </mat-option>
+        </mat-select>
+        <button *ngIf="unitLazy.failToFetch" matSuffix mat-icon-button matTooltip="Segarkan Lokasi"
+                (click)="unitLazy.refresh()"
+                [matTooltipPosition]="'left'">
+          <mat-icon color="primary">refresh</mat-icon>
+        </button>
+        <mat-error
+          *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'unit'), 'uuid').hasError('required')">
+          {{stateMatchers.unit.message}}</mat-error>
+      </mat-form-field>
+
+
+      <!--Nomor matching-->
+      <mat-form-field [appearance]="formFieldAppearance">
+        <mat-label>Nomor Matching</mat-label>
+        <input appElementFocus matInput autocomplete="off"   placeholder="Nomor Matching" formControlName="nomorMatching" required
+               [errorStateMatcher]="stateMatchers.nomorMatching.matcher">
+
+        <mat-error
+          *ngIf="reactiveFormUtil.formControl(form, 'nomorMatching').hasError('required')">{{stateMatchers.nomorMatching.message}}</mat-error>
+      </mat-form-field>
+
+
+      <section style="margin: 10px 0px 10px 0px">
+        <mat-checkbox color="primary" formControlName="forRetail">For Retail</mat-checkbox>
+      </section>
+
+      <!--Note-->
+      <mat-form-field [appearance]="formFieldAppearance">
+        <mat-label>Note</mat-label>
+        <textarea  matInput placeholder="Note" style="height: 75px" formControlName="catatan"></textarea>
+      </mat-form-field>
+
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" (click)="ok(form.getRawValue())"
+            [disabled]="okButtonCondition()">OK
+    </button>
+  </mat-dialog-actions>
+
+</div>

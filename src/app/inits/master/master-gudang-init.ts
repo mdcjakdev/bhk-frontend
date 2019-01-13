@@ -93,7 +93,7 @@ export const masterGudangErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Master Gudang*/
-export function masterGudangForm(init: MasterGudang = masterGudangInit,
+export function masterGudangForm(init: any = masterGudangInit,
                                  disables = masterGudangDisables,
                                  initAuditForm: Function = appAuditEntityForm): FormGroup {
 

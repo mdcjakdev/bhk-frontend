@@ -72,10 +72,12 @@ $dan-green: (
   )
 );
 //$dan-green: $dan-green;
-//$dan-green: $mat-light-blue;
+$dan-green: $mat-teal;
 //$dan-green: $mat-red;
 
-$dan-accent: $mat-deep-orange;
+//$dan-accent: $mat-deep-orange;
+$dan-accent: $mat-pink;
+
 //$dan-accent: (
 //  50: #E1F5FE,
 //  100: #B3E5FC,
@@ -176,7 +178,7 @@ $dan-red: (
 //$dan-app-accent: mat-palette($dan-accent);
 //$dan-app-warning: mat-palette($dan-red, 400, 100, 700);
 
-$dan-app-primary: mat-palette($dan-green, 700, 100, 900);
+$dan-app-primary: mat-palette($dan-green, 600, 100, 900);
 $dan-app-accent: mat-palette($dan-accent);
 $dan-app-warning: mat-palette($dan-red, 400, 100, 700);
 

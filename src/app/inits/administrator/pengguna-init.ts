@@ -14,7 +14,7 @@ export const penggunaInit = {
   ...appAuditEntityInit,
   username: '',
   password: '',
-  karyawan: <MasterKaryawan>{
+  karyawan: {
     uuid: ''
   }
 };
@@ -48,7 +48,7 @@ export const penggunaErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Pengguna */
-export function penggunaForm(init: Pengguna = penggunaInit,
+export function penggunaForm(init: any = penggunaInit,
                                  disables = penggunaDisables,
                                  forGeneralization = false,
                                  initAuditForm: Function = appAuditEntityForm): FormGroup {
@@ -57,7 +57,7 @@ export function penggunaForm(init: Pengguna = penggunaInit,
     ...initAuditForm(init, disables).controls,
     username: [{value: init.username, disabled: disables.username}, (forGeneralization) ? Validators.nullValidator : Validators.required],
     password: [{value: init.password, disabled: disables.password}, (forGeneralization) ? Validators.nullValidator : [Validators.required, Validators.minLength(8)]],
-    karyawan: masterKaryawanForm(init.karyawan, {...masterKaryawanDisables, uuid: true})
+    karyawan: masterKaryawanForm(init.karyawan, {...masterKaryawanDisables, uuid: true}, true)
   });
 
 }

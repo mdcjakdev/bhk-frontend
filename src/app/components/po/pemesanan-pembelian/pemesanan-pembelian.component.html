@@ -1,0 +1,386 @@
+<div [ngClass]="(this.bhkSharedService.loadingBarIndicator | async) ? nextPageAnimation : pageComeUpAnimation" >
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openDialogData()" [disabled]="awaitSearch"
+            (contextmenu)="preventDefaultMode($event)">
+      <mat-icon>note_add</mat-icon>
+      <span>Buat permintaan</span>
+    </button>
+    <button mat-menu-item (click)="getData()" [disabled]="awaitSearch"
+            (contextmenu)="preventDefaultMode($event)">
+      <mat-icon>hdr_weak</mat-icon>
+      <span>Segarkan</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (contextmenu)="preventDefaultMode($event)">
+      <mat-icon>receipt</mat-icon>
+      <span>Bantuan Halaman</span>
+    </button>
+  </mat-menu>
+  <mat-menu #menuData="matMenu" xPosition="after" yPosition="below"
+            (closed)="tableMenuRightClickOnClose($event)"
+            (contextmenu)="preventDefaultMode($event)">
+    <button mat-menu-item (click)="detail()" (contextmenu)="preventDefaultMode($event)">
+      <mat-icon>description</mat-icon>
+      <span>Rincian informasi</span>
+    </button>
+    <button mat-menu-item [disabled]="awaitSearch" (click)="update()" (contextmenu)="preventDefaultMode($event)">
+      <mat-icon>edit</mat-icon>
+      <span>Ubah data</span>
+    </button>
+    <button mat-menu-item [disabled]="awaitSearch" (click)="delete()" (contextmenu)="preventDefaultMode($event)">
+      <mat-icon>delete</mat-icon>
+      <span>Hapus data</span>
+    </button>
+    <!--<mat-divider></mat-divider>-->
+
+  </mat-menu>
+
+  <div id="card-wrapper">
+
+
+    <!--CARD TITLE-->
+    <mat-card id="card-page">
+      <span
+        [style.position]="'absolute'"
+        [style.marginLeft.px]="xContextMenuOfTable" [style.marginTop.px]="yContextMenuOfTable"
+        #triggerMenuRow [matMenuTriggerFor]="menuData"></span>
+
+      <mat-card-title>
+        <mat-progress-bar *ngIf="awaitRefresh" color="accent" mode="indeterminate"></mat-progress-bar>
+
+        <mat-toolbar-row>
+          <label class="accent">Pemesanan Pembelian</label>
+          <span style="flex: 1 1 auto"></span>
+
+          <!--// tampilkan status loading jika masih proses refresh-->
+          <mat-progress-spinner *ngIf="awaitRefresh"
+                                color="accent"
+                                diameter="24"
+                                mode="indeterminate">
+          </mat-progress-spinner>
+
+
+          <button mat-icon-button
+                  matTooltip="Aksi pada halaman"
+                  [matTooltipPosition]="'below'" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+        </mat-toolbar-row>
+      </mat-card-title>
+      <mat-card-subtitle class="move-subtitle-up">Proses pemesanan pembelian untuk item baru</mat-card-subtitle>
+
+      <mat-divider></mat-divider>
+      <!---->
+      <mat-card-content style="position: relative"><br>
+
+        <mat-accordion>
+          <mat-expansion-panel hideToggle id="card-search"
+                               (afterCollapse)="searchCollapsed()"
+                               (afterExpand)="searchExpanded()">
+            <mat-expansion-panel-header>
+              <mat-progress-spinner *ngIf="awaitSearch && awaitSearchIsCollapsed; else searchIcon"
+                                    class="example-margin"
+                                    color="accent"
+                                    diameter="24"
+                                    mode="indeterminate">
+              </mat-progress-spinner>
+              <ng-template #searchIcon>
+                <mat-icon color="accent">search</mat-icon>
+              </ng-template>
+
+              <mat-panel-title style="padding: 0px">
+                <i *ngIf="awaitSearch && awaitSearchIsCollapsed; else searchMessage" class="accent">
+                  Sedang melakukan pencarian...
+                </i>
+
+                <ng-template #searchMessage>
+                  <label class="font-color bold">Pencarian Data</label>
+                </ng-template>
+
+              </mat-panel-title>
+              <mat-progress-bar *ngIf="awaitSearch" color="accent" mode="indeterminate"></mat-progress-bar>
+            </mat-expansion-panel-header>
+
+
+            <mat-action-row>
+              <button style="margin-right: 10px" mat-stroked-button color="accent" (click)="tes2()">
+                Cari
+              </button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+      </mat-card-content>
+    </mat-card>
+    <br>
+
+
+    <!--TABLE-->
+    <div class="mat-elevation-z8">
+      <table mat-table class="full-width-table" multiTemplateDataRows [dataSource]="dataSource" matSort
+             aria-label="Elements">
+
+        <ng-container [matColumnDef]="properties"
+                      *ngFor="let properties of tableProperties.displayedColumns; index as i">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong
+            class="primary">{{tableProperties.displayedHeaders[i]}}</strong></th>
+          <td mat-cell *matCellDef="let row; let indexRow = dataIndex"
+              [class.expanded-detail]="selectedValue === row"
+              [ngStyle]="{
+                'border-bottom-width': (selectedValue === row && !isRightClick) ? '0px' : '1px',
+                'border-color': 'rgba(0, 0, 0, 0.08)',
+                'font-weight': (isUuid(properties) ? 'bold' : 'none')
+              }">{{printValue(properties, delegateLevelValue(row, tableProperties.levelsOnData[i]), indexRow)}}</td>
+        </ng-container>
+
+        <!--/** detail expand data */-->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="tableProperties.displayedColumns.length"
+              style="border-bottom-width: 0px">
+            <div class="row example-element-detail"
+                 [@detailExpand]="(element == selectedValue && !isRightClick) ? 'expanded' : 'collapsed'">
+              <div class="example-div-element-detail">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 primary">
+                  <mat-icon style="margin-bottom: 8px;">description</mat-icon>
+                  <strong>&nbsp;&nbsp;&nbsp;Rincian Permintaan Pembelian</strong>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 detail-expand">
+                  <!--<div id="table-detail">-->
+                    <!--<table class="full-width-table">-->
+
+                      <!--&lt;!&ndash;Status&ndash;&gt;-->
+                      <!--<tr>-->
+                        <!--<td style="padding-left: 25px" colspan="3">-->
+                          <!--<mat-chip-list>-->
+                            <!--<mat-chip [ngStyle]="{-->
+                              <!--'background-color': statusColor(element.statusDokumenPr).background,-->
+                              <!--'color': statusColor(element.statusDokumenPr).color-->
+                            <!--}">-->
+                              <!--{{element.statusDokumenPr}}-->
+                            <!--</mat-chip>-->
+                          <!--</mat-chip-list>-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--<tr style="height: 10px;">-->
+                        <!--<td colspan="3"></td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Tanggal&ndash;&gt;-->
+                      <!--<tr>-->
+                        <!--<td style="width: 250px;">-->
+                          <!--<li><strong>Tanggal Permintaan</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.tanggalPermintaan}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Prefix&ndash;&gt;-->
+                      <!--<tr>-->
+                        <!--<td>-->
+                          <!--<li><strong>Prefix</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.nomorPrefixPr}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Nomor Dokumen&ndash;&gt;-->
+                      <!--<tr>-->
+                        <!--<td>-->
+                          <!--<li><strong>Nomor Dokumen</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.nomorDokumenPr}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Salesman&ndash;&gt;-->
+                      <!--<tr>-->
+                        <!--<td>-->
+                          <!--<li><strong>Salesman</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.salesman.karyawan.nama}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Approved By&ndash;&gt;-->
+                      <!--<tr *ngIf="ifApproved(element.statusDokumenPr)">-->
+                        <!--<td>-->
+                          <!--<li><strong>Approved By</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.prApprovedBy}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Approved Date&ndash;&gt;-->
+                      <!--<tr *ngIf="ifApproved(element.statusDokumenPr)">-->
+                        <!--<td>-->
+                          <!--<li><strong>Approved Date</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.prApprovedDate}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Canceled By&ndash;&gt;-->
+                      <!--<tr *ngIf="ifCancel(element.statusDokumenPr)">-->
+                        <!--<td>-->
+                          <!--<li><strong>Canceled By</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.prCancelledBy}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;Canceled Date&ndash;&gt;-->
+                      <!--<tr *ngIf="ifCancel(element.statusDokumenPr)">-->
+                        <!--<td>-->
+                          <!--<li><strong>Canceled Date</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.prCanceledDate}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;canceled reason&ndash;&gt;-->
+                      <!--<tr *ngIf="ifCancel(element.statusDokumenPr)">-->
+                        <!--<td>-->
+                          <!--<li><strong>Canceled Reason</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.prCanceledReason}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--&lt;!&ndash;catatan&ndash;&gt;-->
+                      <!--<tr>-->
+                        <!--<td>-->
+                          <!--<li><strong>Catatan</strong></li>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--<strong>:</strong>&nbsp;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                          <!--{{element.catatan}}-->
+                        <!--</td>-->
+                      <!--</tr>-->
+
+                      <!--&lt;!&ndash;detail&ndash;&gt;-->
+                      <!--<tr>-->
+                        <!--<td colspan="3" style="height: 10px"></td>-->
+                      <!--</tr>-->
+                      <!--<tr *ngIf="element.detail.length > 0">-->
+                        <!--<td colspan="3">-->
+                          <!--<li class="primary">-->
+                            <!--<strong class="primary">Detail &nbsp;({{element.detail.length}})</strong>-->
+                          <!--</li>-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                      <!--<tr>-->
+                        <!--<td colspan="3">-->
+                          <!--<table>-->
+                            <!--<tr *ngFor="let b of element.detail">-->
+                              <!--<td colspan="2" style="padding-left: 34px">-->
+                                <!--<table>-->
+                                  <!--<tr>-->
+                                    <!--<td colspan="2">-->
+                                        <!--<span class="accent" style="text-decoration: underline;">-->
+                                          <!--{{b.item.namaKain}}-->
+                                        <!--</span>-->
+                                    <!--</td>-->
+                                  <!--</tr>-->
+                                  <!--<tr>-->
+                                    <!--<td>-->
+                                      <!--<li><strong>Catatan&nbsp;:&nbsp;</strong></li>-->
+                                    <!--</td>-->
+                                    <!--<td>-->
+                                      <!--{{b.catatan}}-->
+                                    <!--</td>-->
+                                  <!--</tr>-->
+                                  <!--<tr>-->
+                                    <!--<td colspan="2">-->
+                                      <!--<li class="primary">-->
+                                        <!--<strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>-->
+                                      <!--</li>-->
+                                    <!--</td>-->
+                                  <!--</tr>-->
+                                  <!--<div *ngFor="let w of b.detailWarna">-->
+                                    <!--<tr>-->
+                                      <!--<td colspan="2" style="padding-left: 35px">-->
+                                        <!--<mat-chip-list>-->
+                                          <!--<mat-chip [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,-->
+                                           <!--'color': invertColor(w.warna.kodeWarnaHexadecimal)-->
+                                           <!--}">-->
+                                            <!--{{w.warna.namaWarna}}&nbsp;-->
+                                            <!--({{w.jumlah}} {{w.unit.name}})-->
+                                          <!--</mat-chip>-->
+                                        <!--</mat-chip-list>-->
+                                        <!--<table style="font-size: 10px">-->
+                                          <!--<tr>-->
+                                            <!--<td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>-->
+                                            <!--<td>{{w.catatan}}</td>-->
+                                          <!--</tr>-->
+                                        <!--</table>-->
+                                      <!--</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr style="height: 5px">-->
+                                      <!--<td colspan="2"></td>-->
+                                    <!--</tr>-->
+                                  <!--</div>-->
+                                <!--</table>-->
+                              <!--</td>-->
+                            <!--</tr>-->
+                          <!--</table>-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                    <!--</table>-->
+                  <!--</div>-->
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="tableProperties.displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: tableProperties.displayedColumns;"
+            class="example-element-row"
+            (contextmenu)="onTableRightClicked($event, row)"
+            [class.example-expanded-row]="selectedValue === row"
+            (click)="onTableLeftClick(row)"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      </table>
+
+      <mat-paginator #paginator
+                     [showFirstLastButtons]="true"
+                     (page)="onDataSizeChanged($event)"
+                     [length]="totalElements()"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[10, 25, 50, 100]">
+      </mat-paginator>
+    </div>
+  </div>
+
+
+</div>

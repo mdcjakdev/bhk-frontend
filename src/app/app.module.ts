@@ -8,6 +8,7 @@ import {LoginComponent} from './components/login/login.component';
 import {SharedModule} from './modules/shared/shared.module';
 import {FormsModule} from '@angular/forms';
 import {SalesOrderComponent} from './components/sales-order/sales-order.component';
+import { PemesananPembelianSheetComponent } from './components/po/pemesanan-pembelian/pemesanan-pembelian-dialog/pemesanan-pembelian-sheet/pemesanan-pembelian-sheet.component';
 
 @NgModule({
   declarations: [

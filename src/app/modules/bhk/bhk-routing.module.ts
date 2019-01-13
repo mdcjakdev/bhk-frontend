@@ -18,6 +18,10 @@ const routes: Routes = [
       {
         path: 'pr',
         loadChildren: 'src\\app\\modules\\bhk\\pr\\pr.module#PrModule'
+      },
+      {
+        path: 'po',
+        loadChildren: 'src\\app\\modules\\bhk\\po\\po.module#PoModule'
       }
     ]
   }

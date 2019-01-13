@@ -47,7 +47,7 @@ export class MenuList {
     ]
   };
 
-  private po = <MenuModel> { ...createMenu, selector: ['po'], menu: 'Pemesanan', icon: 'account_balance_wallet'};
+  private po = <MenuModel> { ...createMenu, url: '/app/po', selector: ['po'], menu: 'Pemesanan', icon: 'account_balance_wallet'};
 
   private pr = <MenuModel> { ...createMenu, url: '/app/pr', selector: ['pr'], menu: 'Permintaan', icon: 'chrome_reader_mode'};
 

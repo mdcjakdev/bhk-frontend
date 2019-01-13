@@ -1,7 +1,5 @@
 import {MenuModel} from './menu-model';
 import {ReactiveFormUtil} from './reactive-form-util';
-import {MatFormFieldAppearance} from '@angular/material';
-import {printWord} from './utils';
 
 export const UUID_COLUMN = 'uuid';
 
@@ -48,7 +46,7 @@ export const createMenu = <MenuModel>{
 /**
  * Standard form filed style
  */
-export const formFieldAppearance = {
+export const formFieldAppearanceSet = {
   LEGACY: 'legacy',
   STANDARD: 'standard',
   FILL: 'fill',
@@ -57,7 +55,7 @@ export const formFieldAppearance = {
 
 /** data-data konstant yang bisa diakses **/
 export class Constants {
-  formFieldAppearance = formFieldAppearance.LEGACY;
+  formFieldAppearance = formFieldAppearanceSet.LEGACY;
   public reactiveFormUtil = new ReactiveFormUtil();
 }
 

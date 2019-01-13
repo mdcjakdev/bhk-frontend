@@ -1,0 +1,846 @@
+<div id="dialog-block">
+
+  <!--<div class="dialog-block-content">-->
+  <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
+  </mat-progress-bar>
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent default-background' : 'primary'">
+    <div>
+      <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
+      <mat-icon *ngIf="!isDataNull() && isDelete()" style="margin-bottom: 4px;">delete</mat-icon>
+
+      <strong *ngIf="!isDataNull() && isDelete(); else elseHeader">&nbsp;Hapus Data</strong>
+      <ng-template #elseHeader>
+        <strong *ngIf="!isDataNull() && isDetail()">&nbsp;Rincian</strong>&nbsp;<strong>Pemesanan Pembelian</strong>
+      </ng-template>
+    </div>
+  </h4>
+
+  <!-- Detail-->
+  <mat-dialog-content *ngIf="!isDataNull() && isDetail()">
+    <div id="table-detail" style="padding: 25px 15px 0 0;" >
+      <table class="full-width-table">
+
+        <!--Status-->
+        <tr>
+          <td style="padding-left: 25px" colspan="3">
+            <mat-chip-list>
+              <mat-chip class="mat-chips-default-padding" [ngStyle]="{
+                              'background-color': statusColor(data.data.statusDokumenPo).background,
+                              'color': statusColor(data.data.statusDokumenPo).color
+                            }">
+                {{data.data.statusDokumenPo}}
+              </mat-chip>
+            </mat-chip-list>
+          </td>
+        </tr>
+        <tr style="height: 10px;">
+          <td colspan="3"></td>
+        </tr>
+        <!--Tanggal-->
+        <tr>
+          <td style="width: 250px;">
+            <li><strong>Tanggal Pemesanan</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.tanggalPemesanan}}
+          </td>
+        </tr>
+        <!--Prefix-->
+        <tr>
+          <td>
+            <li><strong>Prefix</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.nomorPrefixPo}}
+          </td>
+        </tr>
+        <!--Nomor Dokumen-->
+        <tr>
+          <td>
+            <li><strong>Nomor Dokumen</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.nomorDokumenPo}}
+          </td>
+        </tr>
+        <!--Salesman-->
+        <tr>
+          <td>
+            <li><strong>Salesman</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.salesman.karyawan.nama}}
+          </td>
+        </tr>
+        <!--Approved By-->
+        <tr *ngIf="ifApproved(data.data.statusDokumenPo)">
+          <td>
+            <li><strong>Approved By</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.poApprovedBy}}
+          </td>
+        </tr>
+        <!--Approved Date-->
+        <tr *ngIf="ifApproved(data.data.statusDokumenPo)">
+          <td>
+            <li><strong>Approved Date</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.poApprovedDate}}
+          </td>
+        </tr>
+        <!--Canceled By-->
+        <tr *ngIf="ifCancel(data.data.statusDokumenPo)">
+          <td>
+            <li><strong>Canceled By</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.poCancelledBy}}
+          </td>
+        </tr>
+        <!--Canceled Date-->
+        <tr *ngIf="ifCancel(data.data.statusDokumenPo)">
+          <td>
+            <li><strong>Canceled Date</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.poCanceledDate}}
+          </td>
+        </tr>
+        <!--canceled reason-->
+        <tr *ngIf="ifCancel(data.data.statusDokumenPo)">
+          <td>
+            <li><strong>Canceled Reason</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.poCanceledReason}}
+          </td>
+        </tr>
+        <!--catatan-->
+        <tr>
+          <td>
+            <li><strong>Catatan</strong></li>
+          </td>
+          <td>
+            <strong>:</strong>&nbsp;
+          </td>
+          <td>
+            {{data.data.catatan}}
+          </td>
+        </tr>
+
+        <!--detail-->
+        <tr>
+          <td colspan="3" style="height: 10px"></td>
+        </tr>
+        <tr *ngIf="data.data.detail.length > 0">
+          <td colspan="3">
+            <li class="primary">
+              <strong class="primary">Detail &nbsp;({{data.data.detail.length}})</strong>
+            </li>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <table>
+              <tr *ngFor="let b of data.data.detail">
+                <td colspan="2" style="padding-left: 34px">
+                  <table>
+                    <tr>
+                      <td colspan="2">
+                                        <span class="accent" style="text-decoration: underline;">
+                                          {{b.item.namaKain}}
+                                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <li><strong>Catatan&nbsp;:&nbsp;</strong></li>
+                      </td>
+                      <td>
+                        {{b.catatan}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <li class="primary">
+                          <strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>
+                        </li>
+                      </td>
+                    </tr>
+                    <div *ngFor="let w of b.detailWarna">
+                      <tr>
+                        <td colspan="2" style="padding-left: 35px">
+                          <mat-chip-list>
+                            <mat-chip class="mat-chips-default-padding"
+                                      [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(w.warna.kodeWarnaHexadecimal) }">
+                              {{w.warna.namaWarna}}&nbsp;
+                              ({{w.jumlah}} {{w.unit.name}})
+                            </mat-chip>
+                          </mat-chip-list>
+                          <table style="font-size: 10px">
+                            <tr>
+                              <td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>
+                              <td>{{w.catatan}}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr style="height: 5px">
+                        <td colspan="2"></td>
+                      </tr>
+                    </div>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </mat-dialog-content>
+
+  <!-- Utama-->
+  <mat-dialog-content *ngIf="!isDataNull() && (isInsert() || isUpdate())">
+    <form [formGroup]="form">
+
+      <!--<div class="row">-->
+      <mat-tab-group #tabGroup
+                     (selectedIndexChange)="onTabChanged($event)"
+                     [selectedIndex]="selectedIndex"
+                     [animationDuration]="'500ms'"
+                     color="primary">
+        <!-- Pemilihan -->
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <span class="mat-tab-label-text">Jenis Pemesanan Pembelian</span>
+          </ng-template>
+          <div>
+            <div class="container-row">
+              <div class="row row-pemesanan static-body-height">
+                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 50px">
+                  <mat-form-field [appearance]="formFieldAppearance">
+
+                    <mat-select placeholder="Jenis Pemesanan Pembelian"
+
+                                [formControl]="jenisPemesanan"
+                                [errorStateMatcher]="jenisPemesananStateMatcher"
+                                required>
+                      <mat-option class="pilih">--&nbsp; Tentukan Jenis Pemesanan Pembelian &nbsp;--</mat-option>
+                      <mat-divider></mat-divider>
+                      <mat-option value="LANGSUNG">Langsung</mat-option>
+                      <mat-option (click)="onJenisPemesananClicked($event)" value="DARI PR">Dari Permintaan</mat-option>
+                    </mat-select>
+
+                    <mat-error
+                      *ngIf="jenisPemesanan.hasError('required')">
+                      Tentukan Jenis Pemesanan Pembelian
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Data-->
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <span class="mat-tab-label-text">Daftar Pemesanan Pembelian</span>
+          </ng-template>
+          <div class="container-row">
+            <form [formGroup]="form">
+              <div class="row-pemesanan static-body-height">
+                <div class="row">
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--tanggal Po-->
+                    <mat-form-field [appearance]="formFieldAppearance">
+                      <mat-label>{{
+                        ((isInsert())
+                          ? (documentProperties.waiting) ? 'Mengambil tanggal Po dari server' : ((documentProperties.failed) ? 'Gagal mengambil tanggal Po dari server' : 'Tanggal Pemesanan Pembelian')
+                          : 'Tanggal Pemesanan Pembelian')
+                        }}</mat-label>
+                      <input matInput autocomplete="off"
+                             formControlName="tanggalPemesanan" required
+                             [errorStateMatcher]="stateMatchers.nomorDokumenPo.matcher">
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(form, 'tanggalPemesanan').hasError('required')">
+                        {{stateMatchers.tanggalPemesanan.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--Nomor Dokumen-->
+                    <mat-form-field [appearance]="formFieldAppearance">
+                      <mat-label>{{
+                        ((isInsert())
+                            ? (documentProperties.waiting ? 'Mengambil nomor dokumen dari server' : (documentProperties.failed ? 'Gagal mengambil nomor dokumen dari server' : 'Nomor Dokumen'))
+                            : 'Nomor Dokumen'
+                        )
+                        }}</mat-label>
+                      <input matInput autocomplete="off"
+                             formControlName="nomorDokumenPo" required
+                             [errorStateMatcher]="stateMatchers.nomorDokumenPo.matcher">
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(form, 'nomorDokumenPo').hasError('required')">
+                        {{stateMatchers.nomorDokumenPo.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--salesman-->
+                    <mat-form-field formGroupName="salesman" [appearance]="formFieldAppearance">
+                      <mat-select #selectSalesman
+                                  [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......' )"
+                                  formControlName="uuid"
+                                  [errorStateMatcher]="stateMatchers.salesman.matcher"
+                                  [required]="salesmanLazy.isEnabled()">
+                        <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option [value]="v.uuid" *ngFor="let v of salesmanLazy.data">
+                          {{v.karyawan.nama}}
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option *ngIf="!salesmanLazy.isLast" (click)="salesmanLazy.refresh()" class="lebih-banyak">
+                          <div *ngIf="!salesmanLazy.waitingLoadMore || salesmanLazy.failToFetch; else load">Muat lebih
+                            banyak
+                            ....
+                          </div>
+                          <ng-template #load>
+                            <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                              mode="indeterminate"></mat-progress-bar>
+                          </ng-template>
+                        </mat-option>
+                      </mat-select>
+                      <button *ngIf="salesmanLazy.failToFetch" matSuffix mat-icon-button
+                              matTooltip="Segarkan Salesman"
+                              [matTooltipPosition]="'left'"
+                              (click)="salesmanLazy.refresh()">
+                        <mat-icon color="primary">refresh</mat-icon>
+                      </button>
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'salesman'), 'uuid').hasError('required')">
+                        {{stateMatchers.salesman.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--Pelanggan-->
+                    <mat-form-field formGroupName="pelanggan" [appearance]="formFieldAppearance">
+                      <mat-select #selectPelanggan
+                                  [placeholder]="(isPemesananPembelianLoaded || pelangganLazy.isEnabled()) ? 'Pelanggan' : (pelangganLazy.failToFetch ? 'Gagal memuat data pelanggan ....' : 'Memuat data pelanggan ......' )"
+                                  formControlName="uuid"
+                                  [errorStateMatcher]="stateMatchers.pelanggan.matcher"
+                                  [required]="isPemesananPembelianLoaded || pelangganLazy.isEnabled()">
+                        <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option [value]="v.uuid" *ngFor="let v of pelangganLazy.data">
+                          {{v.nama}}
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option *ngIf="!pelangganLazy.isLast" (click)="pelangganLazy.refresh()" class="lebih-banyak">
+                          <div *ngIf="!pelangganLazy.waitingLoadMore || pelangganLazy.failToFetch; else loadPelanggan">Muat lebih
+                            banyak
+                            ....
+                          </div>
+                          <ng-template #loadPelanggan>
+                            <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                              mode="indeterminate"></mat-progress-bar>
+                          </ng-template>
+                        </mat-option>
+                      </mat-select>
+                      <button *ngIf="pelangganLazy.failToFetch" matSuffix mat-icon-button
+                              matTooltip="Segarkan Pelanggan"
+                              [matTooltipPosition]="'left'"
+                              (click)="pelangganLazy.refresh()">
+                        <mat-icon color="primary">refresh</mat-icon>
+                      </button>
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'pelanggan'), 'uuid').hasError('required')">
+                        {{stateMatchers.pelanggan.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--Supplier-->
+                    <mat-form-field formGroupName="supplier" [appearance]="formFieldAppearance">
+                      <mat-select #selectSupplier
+                                  [placeholder]="(isPemesananPembelianLoaded || supplierLazy.isEnabled()) ? 'Supplier' : (supplierLazy.failToFetch ? 'Gagal memuat data supplier ....' : 'Memuat data supplier ......' )"
+                                  formControlName="uuid"
+                                  [errorStateMatcher]="stateMatchers.supplier.matcher"
+                                  [required]="isPemesananPembelianLoaded || supplierLazy.isEnabled()">
+                        <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option [value]="v.uuid" *ngFor="let v of supplierLazy.data">
+                          {{v.nama}}
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                        <mat-option *ngIf="!supplierLazy.isLast" (click)="supplierLazy.refresh()" class="lebih-banyak">
+                          <div *ngIf="!supplierLazy.waitingLoadMore || supplierLazy.failToFetch; else loadSupplier">Muat lebih
+                            banyak
+                            ....
+                          </div>
+                          <ng-template #loadSupplier>
+                            <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                              mode="indeterminate"></mat-progress-bar>
+                          </ng-template>
+                        </mat-option>
+                      </mat-select>
+                      <button *ngIf="supplierLazy.failToFetch" matSuffix mat-icon-button
+                              matTooltip="Segarkan Supplier"
+                              [matTooltipPosition]="'left'"
+                              (click)="supplierLazy.refresh()">
+                        <mat-icon color="primary">refresh</mat-icon>
+                      </button>
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'supplier'), 'uuid').hasError('required')">
+                        {{stateMatchers.supplier.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <!--urgent-->
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <section style="margin-top: 15px">
+                      <mat-checkbox color="primary" formControlName="urgent">Urgent</mat-checkbox>
+                    </section>
+                  </div>
+
+
+                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!--PIC-->
+                    <mat-form-field [appearance]="formFieldAppearance">
+                      <mat-label>PIC</mat-label>
+                      <input matInput autocomplete="off"
+                             formControlName="namaPic" required
+                             [errorStateMatcher]="stateMatchers.namaPic.matcher">
+                      <mat-error
+                        *ngIf="reactiveFormUtil.formControl(form, 'namaPic').hasError('required')">
+                        {{stateMatchers.namaPic.message}}</mat-error>
+                    </mat-form-field>
+                  </div>
+
+
+
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div style="float:left!important;font-size: 13px ">
+                      <strong class="primary">Daftar Pemesanan Barang</strong>
+                      &nbsp;
+                      <button mat-icon-button matTooltip="Tambah Data Pemesanan Barang"
+                              [matTooltipPosition]="'left'"
+                              (click)="initializePemesananDetail(reactiveFormUtil.getFormArray('detail', form))">
+                        <mat-icon color="primary">add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="row" style="width: 100%; margin-left: 2px">
+                    <div formArrayName="detail" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div
+                        *ngFor="let detailData of reactiveFormUtil.getFormArrays('detail', form); index as detailIndex">
+                        <!--<mat-form-field [appearance]="formFieldAppearance">-->
+                        <mat-card id="detail-card">
+
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <i><span class="accent">{{detailTitle(detailData, detailIndex)}}</span></i>
+                            <button style="float: right" mat-icon-button matTooltip="Hapus"
+                                    [matTooltipPosition]="'below'"
+                                    (click)="removeDetailPemesananItem(reactiveFormUtil.getFormArray('detail', form), detailIndex)">
+                              <mat-icon class="icon-delete-subcategory">delete</mat-icon>
+                            </button>
+                          </div>
+
+                          <mat-card-content>
+                            <div [formGroupName]="detailIndex" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <input type="hidden" formControlName="uuid">
+
+                              <!--item-->
+                              <mat-form-field formGroupName="item" [appearance]="formFieldAppearance">
+                                <mat-select appMatSelectViewChild
+                                            (viewChild)="afterItemMasterViewInit($event, detailIndex)"
+                                            (selectionChange)="onItemSelectionChange($event, detailIndex, detailData)"
+                                            [placeholder]="(itemLazy[detailIndex].isEnabled()) ? 'Nama Kain' : (itemLazy[detailIndex].failToFetch ? 'Gagal memuat data barang....' : 'Memuat data barang ......' )"
+                                            formControlName="uuid"
+                                            [errorStateMatcher]="stateMatchers.detail.item.matcher"
+                                            [required]="itemLazy[detailIndex].isEnabled()">
+                                  <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+                                  <mat-divider></mat-divider>
+                                  <mat-option [value]="v.uuid" *ngFor="let v of itemLazy[detailIndex].data">
+                                    {{v.namaKain}}
+                                  </mat-option>
+                                  <mat-divider></mat-divider>
+                                  <mat-option *ngIf="!itemLazy[detailIndex].isLast"
+                                              (click)="itemLazy[detailIndex].refresh()" class="lebih-banyak">
+                                    <div
+                                      *ngIf="!itemLazy[detailIndex].waitingLoadMore || itemLazy[detailIndex].failToFetch; else load">
+                                      Muat lebih
+                                      banyak
+                                      ....
+                                    </div>
+                                    <ng-template #load>
+                                      <mat-progress-bar style="position: relative; border-radius: 0px" color="primary"
+                                                        mode="indeterminate"></mat-progress-bar>
+                                    </ng-template>
+                                  </mat-option>
+                                </mat-select>
+                                <button *ngIf="itemLazy[detailIndex].failToFetch" matSuffix mat-icon-button
+                                        matTooltip="Segarkan Data Barang"
+                                        (click)="itemLazy[detailIndex].refresh()"
+                                        [matTooltipPosition]="'left'">
+                                  <mat-icon color="primary">refresh</mat-icon>
+                                </button>
+                                <mat-error
+                                  *ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(detailData, 'item'), 'uuid').hasError('required')">
+                                  {{stateMatchers.detail.item.message}}</mat-error>
+                              </mat-form-field>
+
+                              <!--pilih warna-->
+                              <mat-form-field formArrayName="detailWarna">
+                                <mat-chip-list #chipList>
+                                  <mat-chip
+                                    [ngStyle]="{ 'background-color': temp.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(temp.warna.kodeWarnaHexadecimal) }"
+                                    (removed)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)"
+                                    *ngFor="let temp of getDetailWarnaValues(detailData, 'detailWarna'); index as tempIndex">
+                                    {{temp.warna.namaWarna}}
+                                    <mat-icon matTooltip="Ubah" class="first-chip-icon mat-standard-chip-icon"
+                                              [matTooltipPosition]="'below'"
+                                              (click)="editPropertiWarnaChips(detailData, detailIndex, tempIndex)">arrow_drop_down_circle</mat-icon>
+                                    <mat-icon matTooltip="Hapus" class="mat-standard-chip-icon"
+                                              [matTooltipPosition]="'below'"
+                                              (click)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)">
+                                      cancel
+                                    </mat-icon>
+                                  </mat-chip>
+                                  <div>
+                                    <input
+                                      matInput
+                                      appMatAutocompleteTriggerViewChild
+                                      (viewChild)="onWarnaTriggerInitialized($event)"
+                                      (click)="dataWarnaTrigger[detailIndex].openPanel()"
+                                      placeholder="Pilihan Warna"
+
+                                      [matAutocomplete]="auto"
+                                      [matChipInputFor]="chipList">
+
+                                  </div>
+                                </mat-chip-list>
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                                                  (optionSelected)="selected($event, reactiveFormUtil.getFormArray('detailWarna', detailData), detailIndex)">
+                                  <mat-option *ngFor="let temp of dataWarna[detailIndex]" [value]="temp">
+                                    {{temp.namaWarna }}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+
+                              <!--catatan-->
+                              <mat-form-field [appearance]="formFieldAppearance">
+                                <mat-label>Catatan Detail Pemesanan</mat-label>
+                                <textarea matInput placeholder="Catatan Detail Pemesanan"
+                                          formControlName="catatan"></textarea>
+                              </mat-form-field>
+
+                            </div>
+
+
+                          </mat-card-content>
+                        </mat-card>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!--catatan-->
+                    <mat-form-field [appearance]="formFieldAppearance" style="margin-bottom: 25px">
+                      <mat-label>Catatan Pemesanan Barang</mat-label>
+                      <textarea matInput placeholder="Catatan Pemesanan Barang"
+                                formControlName="catatan"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!--Pratinjau-->
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <span class="mat-tab-label-text">Pratinjau</span>
+          </ng-template>
+          <div class="container-row">
+            <div class="row row-pemesanan static-body-height">
+              <!--{{previewValue | json}}-->
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px">
+                <table class="full-width-table">
+
+                  <!--Tanggal-->
+                  <tr>
+                    <td style="width: 250px;">
+                      <li><strong>Tanggal Pemesanan</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.tanggalPemesanan}}
+                    </td>
+                  </tr>
+                  <!--Prefix-->
+                  <tr>
+                    <td>
+                      <li><strong>Prefix</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.nomorPrefixPo}}
+                    </td>
+                  </tr>
+                  <!--Nomor Dokumen-->
+                  <tr>
+                    <td>
+                      <li><strong>Nomor Dokumen</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.nomorDokumenPo}}
+                    </td>
+                  </tr>
+                  <!--Salesman-->
+                  <tr>
+                    <td>
+                      <li><strong>Salesman</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.salesman.karyawan.nama}}
+                    </td>
+                  </tr>
+                  <!--Approved By-->
+                  <tr *ngIf="ifApproved(previewValue.statusDokumenPo)">
+                    <td>
+                      <li><strong>Approved By</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.poApprovedBy}}
+                    </td>
+                  </tr>
+                  <!--Approved Date-->
+                  <tr *ngIf="ifApproved(previewValue.statusDokumenPo)">
+                    <td>
+                      <li><strong>Approved Date</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.poApprovedDate}}
+                    </td>
+                  </tr>
+                  <!--Canceled By-->
+                  <tr *ngIf="ifCancel(previewValue.statusDokumenPo)">
+                    <td>
+                      <li><strong>Canceled By</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.poCancelledBy}}
+                    </td>
+                  </tr>
+                  <!--Canceled Date-->
+                  <tr *ngIf="ifCancel(previewValue.statusDokumenPo)">
+                    <td>
+                      <li><strong>Canceled Date</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.poCanceledDate}}
+                    </td>
+                  </tr>
+                  <!--canceled reason-->
+                  <tr *ngIf="ifCancel(previewValue.statusDokumenPo)">
+                    <td>
+                      <li><strong>Canceled Reason</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.poCanceledReason}}
+                    </td>
+                  </tr>
+                  <!--catatan-->
+                  <tr>
+                    <td>
+                      <li><strong>Catatan</strong></li>
+                    </td>
+                    <td>
+                      <strong>:</strong>&nbsp;
+                    </td>
+                    <td>
+                      {{previewValue.catatan}}
+                    </td>
+                  </tr>
+
+                  <!--detail-->
+                  <tr>
+                    <td colspan="3" style="height: 10px"></td>
+                  </tr>
+                  <tr *ngIf="previewValue.detail.length > 0">
+                    <td colspan="3">
+                      <li class="primary">
+                        <strong class="primary">Detail &nbsp;({{previewValue.detail.length}})</strong>
+                      </li>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">
+                      <table>
+                        <tr *ngFor="let b of previewValue.detail">
+                          <td colspan="2" style="padding-left: 34px">
+                            <table>
+                              <tr>
+                                <td colspan="2">
+                                        <span class="accent" style="text-decoration: underline;">
+                                          {{b.item.namaKain}}
+                                        </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <li><strong>Catatan&nbsp;:&nbsp;</strong></li>
+                                </td>
+                                <td>
+                                  {{b.catatan}}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2">
+                                  <li class="primary">
+                                    <strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>
+                                  </li>
+                                </td>
+                              </tr>
+                              <div *ngFor="let w of b.detailWarna">
+                                <tr>
+                                  <td colspan="2" style="padding-left: 35px">
+                                    <mat-chip-list>
+                                      <mat-chip class="mat-chips-default-padding"
+                                                [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(w.warna.kodeWarnaHexadecimal) }">
+                                        {{w.warna.namaWarna}}&nbsp;
+                                        ({{w.jumlah}} {{w.unit.name}})
+                                      </mat-chip>
+                                    </mat-chip-list>
+                                    <table style="font-size: 10px">
+                                      <tr>
+                                        <td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>
+                                        <td>{{w.catatan}}</td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                                <tr style="height: 5px">
+                                  <td colspan="2"></td>
+                                </tr>
+                              </div>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-divider class="divider-actions" *ngIf="!isDataNull() && (isInsert() || isUpdate())"></mat-divider>
+
+
+  <mat-dialog-actions *ngIf="!isDataNull() && (isInsert() || isUpdate())" align="end">
+
+    <button *ngIf="sebelumnyaCondition()"
+            matPrefix
+            mat-flat-button
+            (click)="previous()"
+            color="accent">
+      Kembali
+      <!--<mat-icon>chevron_right</mat-icon>-->
+    </button>
+
+    <span style="flex: 1 1 auto;"></span>
+    <!--[disabled]="simpanButtonCondition(form.valid)"-->
+    <button mat-flat-button
+            [disabled]="selanjutnyaCondition()"
+            (click)="next()"
+            color="primary">
+      {{(selectedIndex === 2) ? 'Simpan' : 'Selanjutnya'}}
+      <!--<mat-icon>chevron_right</mat-icon>-->
+    </button>
+  </mat-dialog-actions>
+
+  <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
+    <button mat-button [mat-dialog-close]="close">
+      <span>Tidak</span>
+    </button>
+    <button mat-button (click)="delete(data.data.uuid)">
+      <span>Ya</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>

@@ -23,14 +23,14 @@ export interface MasterCategory extends AppAuditEntity {
 }
 
 /** Init nilai awal Sub Kategori */
-export const masterSubCategoryInit = <MasterSubCategory>{
+export const masterSubCategoryInit = {
   ...appAuditEntityInit,
   kode: '',
   nama: ''
 };
 
 /** Init nilai awal Kategori */
-export const masterCategoryInit = <MasterCategory>{
+export const masterCategoryInit = {
   ...appAuditEntityInit,
   kodeKategori: '',
   tipeKategori: '',
@@ -84,7 +84,7 @@ export const masterCategoryErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Sub Category */
-export function masterSubCategoryForm(init: MasterSubCategory = masterSubCategoryInit,
+export function masterSubCategoryForm(init: any = masterSubCategoryInit,
                                       disables = masterSubCategoryDisables,
                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
@@ -105,7 +105,7 @@ function generateSubCategory(dataSubKategori: MasterSubCategory[]) {
 }
 
 /** Fungsi Init Reactive Form Group untuk data Category */
-export function masterCategoryForm(init: MasterCategory = masterCategoryInit,
+export function masterCategoryForm(init: any = masterCategoryInit,
                                    disables = masterCategoryDisables,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 

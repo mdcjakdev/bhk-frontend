@@ -1,6 +1,6 @@
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AppErrorStateMatcher} from '../../shared/utils';
+import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 import {
   MasterCategory,
   masterCategoryDisables, masterCategoryErrorStateMatchers, masterCategoryForm,
@@ -45,19 +45,19 @@ export interface MasterItem extends AppAuditEntity {
 }
 
 /** Init nilai awal Master Item Barcode */
-export const masterItemBarcodeInit = <MasterItemBarcode>{
+export const masterItemBarcodeInit = {
   ...appAuditEntityInit,
   barcode: ''
 };
 
 /** Init nilai awal Master Item Nama Alias */
-export const masterItemNamaAliasInit = <MasterItemNamaAlias>{
+export const masterItemNamaAliasInit = {
   ...appAuditEntityInit,
   namaAlias: ''
 };
 
 /** Init nilai awal Master Item */
-export const masterItemInit = <MasterItem>{
+export const masterItemInit = {
   ...appAuditEntityInit,
   kode: '',
   barcode: [],
@@ -149,7 +149,7 @@ export const masterItemErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Master Item Barcode  */
-export function masterItemBarcodeForm(init: MasterItemBarcode = masterItemBarcodeInit,
+export function masterItemBarcodeForm(init = masterItemBarcodeInit,
                                       disables = masterItemBarcodeDisables,
                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
@@ -157,7 +157,7 @@ export function masterItemBarcodeForm(init: MasterItemBarcode = masterItemBarcod
     barcode: [{value: init.barcode, disabled: disables.barcode}, Validators.required]
   });
 }
-function generateMasterItemBarcode(temp: MasterItemBarcode[]) {
+function generateMasterItemBarcode(temp: any[]) {
   const data = [];
   temp.forEach(value => data.push(masterItemBarcodeForm(value)));
   return data;
@@ -165,12 +165,13 @@ function generateMasterItemBarcode(temp: MasterItemBarcode[]) {
 
 
 /** Fungsi Init Reactive Form Group untuk data Master Item Nama Alias */
-export function masterItemNamaAliasForm(init: MasterItemNamaAlias = masterItemNamaAliasInit,
+export function masterItemNamaAliasForm(init: any = masterItemNamaAliasInit,
                                       disables = masterItemNamaAliasDisables,
+                                      forGeneralization = false,
                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
-    namaAlias: [{value: init.namaAlias, disabled: disables.namaAlias}, Validators.required]
+    namaAlias: [{value: init.namaAlias, disabled: disables.namaAlias}, statusGeneralization(Validators.required, forGeneralization)]
   });
 }
 function generateMasterItemNamaAlias(temp: MasterItemNamaAlias[]) {
@@ -180,7 +181,7 @@ function generateMasterItemNamaAlias(temp: MasterItemNamaAlias[]) {
 }
 
 /** Fungsi Init Reactive Form Group untuk data Master Item Nama Alias */
-export function masterItemWarnaRelationForm(init: MasterWarna = masterWarnaInit,
+export function masterItemWarnaRelationForm(init = masterWarnaInit,
                                         initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm().controls,
@@ -195,7 +196,7 @@ export function generateMasterItemWarnaRelation(temp: MasterWarna[]) {
 
 
 /** Fungsi Init Reactive Form Group untuk data Master Item */
-export function masterItemForm(init: MasterItem = masterItemInit,
+export function masterItemForm(init: any = masterItemInit,
                                    disables = masterItemDisables,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 

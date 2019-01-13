@@ -1,7 +1,18 @@
 import {ErrorStateMatcher} from '@angular/material';
-import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
+import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import * as moment from 'moment';
 
+export function qualifyObject(object, property: string, defaultValue = '') {
+  if (object[property] === undefined || object[property] === null) {
+    return defaultValue;
+  } else {
+    return object[property]
+  }
+}
+
+export function statusGeneralization(validators: Function | any, forGeneralization = false) {
+  return (forGeneralization) ? Validators.nullValidator : validators;
+}
 
 export class AppErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

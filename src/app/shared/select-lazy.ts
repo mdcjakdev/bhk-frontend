@@ -94,6 +94,7 @@ export class SelectLazy<E> {
 
 
   isEnabled() {
+    // console.log(this.controlName, !(<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disabled);
     return !(<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disabled;
   }
 
@@ -114,7 +115,7 @@ export class SelectLazy<E> {
     }
   }
 
-  _loadMore(callback?: (data?: E[]) => void) {
+  _loadMore(callback?: (data?: E[]) => void, timeout?) {
     if (!this.waitingLoadMore) {
       this.waitingLoadMore = true;
     }
@@ -170,6 +171,7 @@ export class SelectLazy<E> {
                     }
                   }
 
+
                 });
 
                 // jika proses update, load trs datanya sampai dengan sama lokasi dari data yang akan diupdate
@@ -204,7 +206,7 @@ export class SelectLazy<E> {
           }
         }
       );
-    }, delayAnotherProcess);
+    }, (timeout) ?  timeout : delayAnotherProcess);
   }
 }
 

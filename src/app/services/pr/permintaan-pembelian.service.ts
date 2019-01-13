@@ -15,6 +15,11 @@ export class PermintaanPembelianService {
     return http.get(apiHost + ':' + apiPort + '/api/pr/utilitas/propertidokumen/');
   }
 
+  getDocumentForPO(nomorDokumen, ke, http = this.http) {
+    return http.get(apiHost + ':' + apiPort
+      + '/api/pr/dokumen/po/?nomorDokumen=' + nomorDokumen + '&ke=' + ke);
+  }
+
   postData(body) {
     return this.http.post(apiHost + ':' + apiPort + '/api/pr/', body);
   }

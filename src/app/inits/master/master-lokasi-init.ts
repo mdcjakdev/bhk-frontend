@@ -39,7 +39,7 @@ export const masterLokasiErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data Master Lokasi*/
-export function masterLokasiForm(init: MasterLokasi = masterLokasiInit,
+export function masterLokasiForm(init: any = masterLokasiInit,
                                     disables = masterLokasiDisables,
                                     initAuditForm: Function = appAuditEntityForm): FormGroup {
 

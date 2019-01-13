@@ -5,6 +5,7 @@ $standard-font-size-lg: 17px;
 $standard-font-size-md: 14px;
 $standard-font-size: 13px;
 $standard-font-size-sm: 12px;
+$standard-font-size-xs: 11px;
 $header-color: rgba(0, 0, 0, 0.05);
 
 
@@ -214,6 +215,12 @@ $header-color: rgba(0, 0, 0, 0.05);
     background: mat-color($warn);
   }
 
+
+
+  .mat-checkbox {
+    font-size: $standard-font-size;
+    color: $color-icon-and-font;
+  }
 
 
 

@@ -5,7 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   DateAdapter,
   MAT_DIALOG_DATA,
-  MatAutocompleteModule,
+  MatAutocompleteModule, MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule, MatCheckboxModule,
@@ -103,7 +103,9 @@ import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-vi
 
     MatTabsModule,
 
-    TextMaskModule
+    TextMaskModule,
+    MatBottomSheetModule
+
 
     // Md2DatepickerModule
 
@@ -183,7 +185,9 @@ import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-vi
 
     MatTabsModule,
 
-    TextMaskModule
+    TextMaskModule,
+
+    MatBottomSheetModule
 
 
     // Md2DatepickerModule

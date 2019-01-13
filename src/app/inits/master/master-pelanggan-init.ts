@@ -1,4 +1,4 @@
-import {AppErrorStateMatcher} from '../../shared/utils';
+import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -67,19 +67,20 @@ export const masterPelangganErrorStateMatchers = {
 
 
 /** Fungsi Init Reactive Form Group untuk data MasterPelanggan */
-export function masterPelangganForm(init: MasterPelanggan = masterPelangganInit,
+export function masterPelangganForm(init: any = masterPelangganInit,
                                    disables = masterPelangganDisables,
+                                   forGeneralization = false,
                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
-    alamat: [{value: init.alamat, disabled: disables.alamat}, Validators.required],
+    alamat: [{value: init.alamat, disabled: disables.alamat}, statusGeneralization(Validators.required, forGeneralization)],
     fax: {value: init.fax, disabled: disables.fax},
-    hp: [{value: init.hp, disabled: disables.hp}, Validators.required],
-    nama: [{value: init.nama, disabled: disables.nama}, Validators.required],
+    hp: [{value: init.hp, disabled: disables.hp}, statusGeneralization(Validators.required, forGeneralization)],
+    nama: [{value: init.nama, disabled: disables.nama}, statusGeneralization(Validators.required, forGeneralization)],
     npwp: {value: init.npwp, disabled: disables.npwp},
     telepon: {value: init.telepon, disabled: disables.telepon},
-    tipePelanggan: [{value: init.tipePelanggan, disabled: disables.tipePelanggan}, Validators.required]
+    tipePelanggan: [{value: init.tipePelanggan, disabled: disables.tipePelanggan}, statusGeneralization(Validators.required, forGeneralization)]
   });
 
 }
