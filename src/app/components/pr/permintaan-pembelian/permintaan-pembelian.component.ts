@@ -12,6 +12,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {PermintaanPembelianService} from '../../../services/pr/permintaan-pembelian.service';
 import {permintaanPembelianDisables, permintaanPembelianInit} from '../../../inits/pr/pr-init';
 import {DashboardSharedService} from '../../../services/dashboard-shared.service';
+import {penggunaInit} from '../../../inits/administrator/pengguna-init';
+import {qualifyObject} from '../../../shared/utils';
 
 @Component({
   selector: 'app-permintaan-pembelian',
@@ -135,7 +137,11 @@ export class PermintaanPembelianComponent
         : ((action === Action.INSERT || action === Action.UPDATE) ? '70%' : '500px'),
       data: {
         action: action,
-        data: data,
+        data: {
+          ...data,
+          prApprovedBy: qualifyObject(data, 'prApprovedBy', penggunaInit),
+          prCancelledBy: qualifyObject(data, 'prCancelledBy', penggunaInit)
+        },
         disables: permintaanPembelianDisables
       },
       autoFocus: false,

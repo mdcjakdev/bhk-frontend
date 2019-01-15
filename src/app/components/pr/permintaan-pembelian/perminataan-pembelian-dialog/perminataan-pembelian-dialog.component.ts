@@ -20,7 +20,7 @@ import {
   SNACKBAR_WARNING_STYLE,
   UUID_COLUMN
 } from '../../../../shared/constants';
-import {AppErrorStateMatcher, SUCCESS} from '../../../../shared/utils';
+import {AppErrorStateMatcher, SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {PermintaanPembelianService} from '../../../../services/pr/permintaan-pembelian.service';
 import {
   permintaanPembelianDetailDisables,
@@ -100,6 +100,8 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
       data,
       permintaanPembelianForm(data.data, data.disables),
       permintaanPembelianErrorStateMatchers);
+
+
 
     // init untuk data salesman
     this.salesmanLazy = new SelectLazy(
@@ -532,7 +534,7 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
     this.dialogRef.disableClose = true;
     Ui.blockUI('#dialog-block', 0.6, 4, 0, 4);
     setTimeout(() => {
-      this.permintaanPembelianService.postData(value).pipe(first()).subscribe(
+      this.permintaanPembelianService.postData(trimReactiveObject(value)).pipe(first()).subscribe(
         value1 => {
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
