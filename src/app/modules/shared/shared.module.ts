@@ -5,10 +5,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   DateAdapter,
   MAT_DIALOG_DATA,
-  MatAutocompleteModule, MatBottomSheetModule,
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
-  MatCardModule, MatCheckboxModule,
+  MatCardModule,
+  MatCheckboxModule,
   MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
@@ -21,7 +24,8 @@ import {
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatOptionModule, MatPaginatorIntl,
+  MatOptionModule,
+  MatPaginatorIntl,
   MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
@@ -43,12 +47,14 @@ import {TextMaskModule} from 'angular2-text-mask';
 import {AppMatPaginatorIntl} from '../../shared/app-mat-paginator-intl';
 import {MatAutocompleteTriggerViewChildDirective} from '../../shared/directives/mat-autocomplete-trigger-view-child.directive';
 import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-view-child.directive';
+import {MatTooltipAsNotificationDirective} from '../../shared/directives/mat-tooltip-as-notification.directive';
 
 
 @NgModule({
   declarations: [
     ElementFocusDirective,
     MatSelectViewChildDirective,
+    MatTooltipAsNotificationDirective,
     MatAutocompleteTriggerViewChildDirective
   ],
   imports: [
@@ -104,7 +110,8 @@ import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-vi
     MatTabsModule,
 
     TextMaskModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatBadgeModule
 
 
     // Md2DatepickerModule
@@ -131,6 +138,7 @@ import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-vi
   exports: [
     ElementFocusDirective,
     MatSelectViewChildDirective,
+    MatTooltipAsNotificationDirective,
     MatAutocompleteTriggerViewChildDirective,
 
 
@@ -187,7 +195,8 @@ import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-vi
 
     TextMaskModule,
 
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatBadgeModule
 
 
     // Md2DatepickerModule

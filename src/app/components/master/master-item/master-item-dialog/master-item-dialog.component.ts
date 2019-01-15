@@ -1,13 +1,6 @@
 import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {
-  MAT_DIALOG_DATA,
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger,
-  MatDialogRef,
-  MatSnackBar
-} from '@angular/material';
+import {MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatDialogRef, MatSnackBar} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
@@ -23,7 +16,6 @@ import {
 } from '../../../../inits/master/master-item';
 import {FormArray, FormGroup} from '@angular/forms';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
 import {MasterWarna, masterWarnaForm} from '../../../../inits/master/master-warna';
 import {SelectLazy} from '../../../../shared/select-lazy';

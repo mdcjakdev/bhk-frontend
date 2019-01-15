@@ -98,24 +98,24 @@ export class SelectLazy<E> {
     return !(<FormGroup>this.form.controls[this.controlName]).controls[UUID_COLUMN].disabled;
   }
 
-  refresh() {
+  refresh(callback?: (data?: any[]) => void) {
     this.failToFetch = false;
     this.waitingLoadMore = false;
-    this.loadMore();
+    this.loadMore(callback);
   }
 
-  loadMore() {
+  loadMore(callback?: (data?: any[]) => void) {
     this.select.open();
     if (!this.waitingLoadMore) {
       // ubah jadi status menunggu proses load data selesai jadi true
       this.waitingLoadMore = true;
       setTimeout(() => {
-        this._loadMore();
+        this._loadMore(callback);
       }, 0);
     }
   }
 
-  _loadMore(callback?: (data?: E[]) => void, timeout?) {
+  _loadMore(callback?: (data?: E[] | any[]) => void, timeout?) {
     if (!this.waitingLoadMore) {
       this.waitingLoadMore = true;
     }
@@ -176,7 +176,7 @@ export class SelectLazy<E> {
 
                 // jika proses update, load trs datanya sampai dengan sama lokasi dari data yang akan diupdate
                 if (!this.isLast && !this.isInsert && !this.isUuidTrue) {
-                  this._loadMore();
+                  this._loadMore(callback);
                 }
 
               } else {

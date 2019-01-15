@@ -2,12 +2,16 @@ import {ErrorStateMatcher} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import * as moment from 'moment';
 
-export function qualifyObject(object, property: string, defaultValue = '') {
-  if (object[property] === undefined || object[property] === null) {
-    return defaultValue;
-  } else {
-    return object[property]
+export function qualifyObject(object, property: string, defaultValue: any = '') {
+  if (object !== undefined || object !== null) {
+    if (object[property] === undefined || object[property] === null) {
+      return defaultValue;
+    } else {
+      return object[property]
+    }
   }
+
+  return undefined;
 }
 
 export function statusGeneralization(validators: Function | any, forGeneralization = false) {

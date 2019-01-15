@@ -12,7 +12,7 @@ import {
 import {Pengguna, penggunaDisables, penggunaForm, penggunaInit} from '../administrator/pengguna-init';
 import {AppErrorStateMatcher, qualifyObject} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {statusDokumen} from '../../shared/constants';
+import {statusDokumen, UUID_COLUMN} from '../../shared/constants';
 import {masterKaryawanForm} from '../master/master-karyawan-init';
 import {
   MasterSupplier,
@@ -27,6 +27,7 @@ import {
   masterPelangganForm,
   masterPelangganInit
 } from '../master/master-pelanggan-init';
+import {PermintaanPembelian, permintaanPembelianDisables, permintaanPembelianForm, permintaanPembelianInit} from '../pr/pr-init';
 
 
 
@@ -50,6 +51,8 @@ export interface PemesananPembelianDetail extends AppAuditEntity {
 
 /** Model Class PO */
 export interface PemesananPembelian extends AppAuditEntity {
+  permintaanPembelian?: PermintaanPembelian;
+
   catatan?: string;
   counterPo?: any;
   detail?: PemesananPembelianDetail[];
@@ -94,6 +97,7 @@ export const pemesananPembelianDetailInit = {
 /** Init nilai awal Pemesanan Pembelian */
 export const pemesananPembelianInit = {
   ...appAuditEntityInit,
+  permintaanPembelian: permintaanPembelianInit,
   catatan: '',
   counterPo: '',
   detail: [],
@@ -236,6 +240,10 @@ export function pemesananPembelianForm(init: any = pemesananPembelianInit,
 
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
+    // permintaanPembelian: permintaanPembelianForm(init.permintaanPembelian, {...permintaanPembelianDisables, uuid: true}, true),
+    permintaanPembelian: new FormBuilder().group({
+      uuid: {value: (init.permintaanPembelian) ? qualifyObject(init.permintaanPembelian, UUID_COLUMN) : '', disabled: false}
+    }),
     catatan: {value: qualifyObject(init, 'catatan'), disabled: disables.catatan},
     counterPo: [{value: qualifyObject(init, 'catatan'), disabled: disables.counterPo}, Validators.required],
     detail: new FormBuilder().array(detail),

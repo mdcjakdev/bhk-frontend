@@ -27,4 +27,9 @@ export class PemesananPembelianService {
     return this.http.delete(apiHost + ':' + apiPort + '/api/po/' + id);
   }
 
+
+  checkPrByPoId(poId) {
+    return this.http.get(apiHost + ':' + apiPort + '/api/po/check/pr/' + poId);
+  }
+
 }

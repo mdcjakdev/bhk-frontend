@@ -3,11 +3,10 @@ import {MasterUnit, masterUnitDisables, masterUnitForm, masterUnitInit} from '..
 import {MasterWarna, masterWarnaForm, masterWarnaInit} from '../master/master-warna';
 import {MasterItem, masterItemDisables, masterItemForm, masterItemInit} from '../master/master-item';
 import {Pengguna, penggunaDisables, penggunaForm, penggunaInit} from '../administrator/pengguna-init';
-import {AppErrorStateMatcher} from '../../shared/utils';
+import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {statusDokumen} from '../../shared/constants';
 import {masterKaryawanForm} from '../master/master-karyawan-init';
-
 
 
 /** Model Class PR Detail Warna */
@@ -44,7 +43,7 @@ export interface PermintaanPembelian extends AppAuditEntity {
 }
 
 /** Init nilai awal Permintaan Pembelian Detail Warna  */
-export const permintaanPembelianDetailWarnaInit =  {
+export const permintaanPembelianDetailWarnaInit = {
   ...appAuditEntityInit,
   warna: masterWarnaInit,
   jumlah: '',
@@ -53,7 +52,7 @@ export const permintaanPembelianDetailWarnaInit =  {
 };
 
 /** Init nilai awal  */
-export const permintaanPembelianDetailInit =  {
+export const permintaanPembelianDetailInit = {
   ...appAuditEntityInit,
   item: masterItemInit,
   catatan: '',
@@ -128,7 +127,7 @@ export const permintaanPembelianDetailErrorStateMatchers = {
 /** Init StateMatcher formcontrol Permintaan Pembelian */
 export const permintaanPembelianErrorStateMatchers = {
   counterPr: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda counter ada'},
-  detail: {...permintaanPembelianDetailErrorStateMatchers },
+  detail: {...permintaanPembelianDetailErrorStateMatchers},
   salesman: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih salesman'},
   nomorDokumenPr: {matcher: new AppErrorStateMatcher(), message: 'Nomor dokumen tidak boleh kosong'},
   nomorPrefixPr: {matcher: new AppErrorStateMatcher(), message: 'Nomor prefix tidak boleh kosong'},
@@ -139,11 +138,12 @@ export const permintaanPembelianErrorStateMatchers = {
 /** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian Detail Warna*/
 export function permintaanPembelianDetailWarnaForm(init = permintaanPembelianDetailWarnaInit,
                                                    disables = permintaanPembelianDetailWarnaDisables,
+                                                   forGeneralization = false,
                                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
     warna: masterWarnaForm(init.warna),
-    jumlah: [{value: init.jumlah, disabled: disables.jumlah}, Validators.required],
+    jumlah: [{value: init.jumlah, disabled: disables.jumlah}, statusGeneralization(Validators.required, forGeneralization)],
     // unit: new FormBuilder().group({
     //   uuid: [{value: init.unit.uuid, disabled: disables.unit}, Validators.required]
     // }),
@@ -152,19 +152,21 @@ export function permintaanPembelianDetailWarnaForm(init = permintaanPembelianDet
   });
 }
 
-function generatePermintaanPembelianDetailWarna(temp: any[]) {
+function generatePermintaanPembelianDetailWarna(temp: any[], forGeneralization = false) {
   const data = [];
-  temp.forEach(value => data.push(permintaanPembelianDetailWarnaForm(value)));
+  const disables = (forGeneralization) ? {...permintaanPembelianDetailWarnaDisables, uuid: true} : permintaanPembelianDetailWarnaDisables;
+  temp.forEach(value => data.push(permintaanPembelianDetailWarnaForm(value, disables, forGeneralization)));
   return data;
 }
 
 
 /** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian Detail*/
 export function permintaanPembelianDetailForm(init = permintaanPembelianDetailInit,
-                                        disables = permintaanPembelianDetailDisables,
-                                        initAuditForm: Function = appAuditEntityForm): FormGroup {
+                                              disables = permintaanPembelianDetailDisables,
+                                              forGeneralization = false,
+                                              initAuditForm: Function = appAuditEntityForm): FormGroup {
 
-  const detailWarna = (init.detailWarna.length === 0) ? [] : generatePermintaanPembelianDetailWarna(init.detailWarna);
+  const detailWarna = (init.detailWarna.length === 0) ? [] : generatePermintaanPembelianDetailWarna(init.detailWarna, forGeneralization);
 
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
@@ -177,39 +179,47 @@ export function permintaanPembelianDetailForm(init = permintaanPembelianDetailIn
   });
 }
 
-function generatePermintaanPembelianDetail(temp: any[]) {
+function generatePermintaanPembelianDetail(temp: any[], forGeneralization = false) {
   const data = [];
-  temp.forEach(value => data.push(permintaanPembelianDetailForm(value)));
+  const disables = (forGeneralization) ? {...permintaanPembelianDetailDisables, uuid: true} : permintaanPembelianDetailDisables;
+  temp.forEach(value => data.push(permintaanPembelianDetailForm(value, disables, forGeneralization)));
   return data;
 }
 
 /** Fungsi Init Reactive Form Group untuk data Permintaan Pembelian */
 export function permintaanPembelianForm(init = permintaanPembelianInit,
-                               disables = permintaanPembelianDisables,
-                               initAuditForm: Function = appAuditEntityForm): FormGroup {
+                                        disables = permintaanPembelianDisables,
+                                        forGeneralization = false,
+                                        initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   /** megeneralisasi nilai2 array dari detail item */
-  const detail = (init.detail.length === 0) ? [] : generatePermintaanPembelianDetail(init.detail);
+  const detail = (init.detail.length === 0) ? [] : generatePermintaanPembelianDetail(init.detail, forGeneralization);
 
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
     catatan: {value: init.catatan, disabled: disables.catatan},
-    counterPr: [{value: init.counterPr, disabled: disables.counterPr}, Validators.required],
+    counterPr: [{value: init.counterPr, disabled: disables.counterPr}, statusGeneralization(Validators.required, forGeneralization)],
     detail: new FormBuilder().array(detail),
     salesman: penggunaForm(init.salesman, {...penggunaDisables, uuid: true}, true),
-    nomorDokumenPr: [{value: init.nomorDokumenPr, disabled: disables.nomorDokumenPr}, Validators.required],
+    nomorDokumenPr: [{value: init.nomorDokumenPr, disabled: disables.nomorDokumenPr}, statusGeneralization(Validators.required, forGeneralization)],
     prApprovedBy: new FormBuilder().group({
-      uuid: {value: ((init.prApprovedBy === undefined || init.prApprovedBy === null) ? '' : init.prApprovedBy.uuid), disabled: disables.prApprovedBy}
+      uuid: {
+        value: ((init.prApprovedBy === undefined || init.prApprovedBy === null) ? '' : init.prApprovedBy.uuid),
+        disabled: disables.prApprovedBy
+      }
     }),
     prApprovedDate: {value: init.prApprovedDate, disabled: disables.prApprovedDate},
     prCanceledDate: {value: init.prCanceledDate, disabled: disables.prCanceledDate},
     prCanceledReason: {value: init.prCanceledReason, disabled: disables.prCanceledReason},
     prCancelledBy: new FormBuilder().group({
-      uuid: {value: ((init.prCancelledBy === undefined || init.prCancelledBy === null) ? '' : init.prCancelledBy.uuid), disabled: disables.prCancelledBy},
+      uuid: {
+        value: ((init.prCancelledBy === undefined || init.prCancelledBy === null) ? '' : init.prCancelledBy.uuid),
+        disabled: disables.prCancelledBy
+      },
     }),
-    nomorPrefixPr: [{value: init.nomorPrefixPr, disabled: disables.nomorPrefixPr}, Validators.required],
+    nomorPrefixPr: [{value: init.nomorPrefixPr, disabled: disables.nomorPrefixPr}, statusGeneralization(Validators.required, forGeneralization)],
     statusDokumenPr: {value: init.statusDokumenPr, disabled: disables.statusDokumenPr},
-    tanggalPermintaan: [{value: init.tanggalPermintaan, disabled: disables.tanggalPermintaan}, Validators.required],
+    tanggalPermintaan: [{value: init.tanggalPermintaan, disabled: disables.tanggalPermintaan}, statusGeneralization(Validators.required, forGeneralization)],
     onPo: {value: init.onPo, disabled: false}
   });
 
