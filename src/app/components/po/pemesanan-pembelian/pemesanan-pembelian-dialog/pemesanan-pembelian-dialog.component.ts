@@ -8,7 +8,7 @@ import {
   MatDialog,
   MatDialogRef,
   MatSelect,
-  MatSnackBar
+  MatSnackBar, MatTooltip
 } from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
@@ -21,7 +21,7 @@ import {
   SNACKBAR_WARNING_STYLE,
   UUID_COLUMN
 } from '../../../../shared/constants';
-import {AppErrorStateMatcher, SUCCESS} from '../../../../shared/utils';
+import {AppErrorStateMatcher, qualifyObject, SUCCESS} from '../../../../shared/utils';
 
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SelectLazy} from '../../../../shared/select-lazy';
@@ -60,6 +60,12 @@ import {appAuditEntityInit} from '../../../../inits/init';
 export class PemesananPembelianDialogComponent extends DialogUtil
   implements OnInit, AfterViewInit {
 
+  /* Indikator yang menandakan bahwa dokumen yang ada merupakan data dari PR (mempunya pr id)*/
+  havePrId = false;
+
+  /* indikator yang menyatakan bahwa proses checking data ke database, apakah punya pr id atau tidak berstatus gagal */
+  failCheckPrId = false;
+
   invertColor = invertColor;
 
   close = undefined;
@@ -86,6 +92,7 @@ export class PemesananPembelianDialogComponent extends DialogUtil
 
   @ViewChild('selectSupplier') selectSupplier;
   supplierLazy: SelectLazy<MasterSupplier>;
+
 
   itemLazy: SelectLazy<MasterItem>[] = [];
 
@@ -147,20 +154,6 @@ export class PemesananPembelianDialogComponent extends DialogUtil
 
     /** Data awal PO akan diinisialisasi secara otomatis bila aksi adalah proses update data */
     if (this.isUpdate()) {
-      // this.selectedIndex = 1;
-      // this.initializing();
-      // if (data.data.detail) {
-      //   let i = 0;
-      //   for (const detail of data.data.detail) {
-      //     this.initializePemesananDetail(
-      //       (<FormGroup>this.reactiveFormUtil.getFormArray('detail', this.form).controls[i]),
-      //       true,
-      //       detail,
-      //       i
-      //     );
-      //     i++;
-      //   }
-      // }
       this.onPatchingForm(data.data);
     }
 
@@ -217,15 +210,21 @@ export class PemesananPembelianDialogComponent extends DialogUtil
   /* Menginisialisasi data yang dibutuhkan agar proses ini berjalan */
   initializing() {
 
-
     // hanya jika belum terbuka sama sekali
     if (!this.isPemesananPembelianLoaded) {
-
-      console.log('masuk')
-
-
       if (this.isInsert() || this.isUpdate()) {
-        this.salesmanLazy._loadMore();
+        this.salesmanLazy._loadMore(callback => {
+
+          const valueIdPr = <string>(<FormGroup>this.form.controls['permintaanPembelian']).controls[UUID_COLUMN].value;
+          if (valueIdPr.trim().length > 0) {
+            (<FormGroup>this.form.controls['salesman']).controls[UUID_COLUMN].disable();
+            this.havePrId = true;
+          } else {
+            this.havePrId = false;
+          }
+
+        });
+
         this.supplierLazy._loadMore();
         this.pelangganLazy._loadMore();
       }
@@ -234,7 +233,6 @@ export class PemesananPembelianDialogComponent extends DialogUtil
     }
 
     if (this.isInsert()) {
-      console.log('INSSETY');
       /* generate properti dokumen dari server */
       this.generateDocumentProperties();
     }
@@ -246,12 +244,14 @@ export class PemesananPembelianDialogComponent extends DialogUtil
     this.salesmanLazy.select = this.selectSalesman;
     this.supplierLazy.select = this.selectSupplier;
     this.pelangganLazy.select = this.selectPelanggan;
+
+
   }
 
   onTabChanged(index) {
     if (index === 1) { // tab data pemesanan pembelian
+
       setTimeout(() => {
-        // console.log(this.form)
         this.initializing();
       }, 0);
     }
@@ -259,17 +259,47 @@ export class PemesananPembelianDialogComponent extends DialogUtil
 
   ngOnInit() {
     /* Subscribe perubahan nilai salesman*/
-    (<FormGroup> this.form.controls['salesman']).controls[UUID_COLUMN].valueChanges.subscribe(value => {
+    (<FormGroup>this.form.controls['salesman']).controls[UUID_COLUMN].valueChanges.subscribe(value => {
       this.salesmanLazy.data.filter(value1 => value1.uuid === value)
         .map((value2: any) => {
-          (<FormGroup> (<FormGroup> this.form.controls['salesman']).controls['karyawan']).patchValue(value2.karyawan);
+          (<FormGroup>(<FormGroup>this.form.controls['salesman']).controls['karyawan']).patchValue(value2.karyawan);
         });
     });
 
     // set control jenis pemesanan telah di klik
     this.jenisPemesanan.markAsTouched({onlySelf: true});
+
+
+    this.checkPrId();
   }
 
+
+  checkPrId(controlToDisable?) {
+    this.havePrId = false; /**/
+    if (this.isUpdate()) {
+      this.pemesananPembelianService.checkPrByPoId(this.form.controls[UUID_COLUMN].value)
+        .subscribe((value: any) => {
+            if (value.prId) {
+              (<FormGroup>this.form.controls['permintaanPembelian']).controls[UUID_COLUMN].setValue(value.prId);
+              this.havePrId = true;
+
+              if (this.failCheckPrId && controlToDisable) {
+                (<FormGroup>this.form.controls[controlToDisable]).controls[UUID_COLUMN].disable();
+              }
+
+            }
+          },
+          error1 => this.failCheckPrId = true);
+    }
+  }
+
+
+  /* */
+  refreshSalesman() {
+    this.salesmanLazy.refresh(data1 => {
+      this.checkPrId('salesman');
+    });
+  }
 
   /* Menginisialisasi init item detail untuk PO pada dropdown dengan metode lazy load */
   initItemMasterSelect(i, uuid = '', fg = pemesananPembelianDetailForm()) {
@@ -405,7 +435,7 @@ export class PemesananPembelianDialogComponent extends DialogUtil
     });
 
     if (!firstInit) {
-      this.reactiveFormUtil.addFormArray(<FormGroup> detailFormGroup, fa);
+      this.reactiveFormUtil.addFormArray(<FormGroup>detailFormGroup, fa);
     }
   }
 
@@ -600,7 +630,7 @@ export class PemesananPembelianDialogComponent extends DialogUtil
 
 
     this.dialogRef.disableClose = true;
-    Ui.blockUI('#dialog-block', 0.6, 4, 0, 4);
+    Ui.blockUI('#dialog-block', 0.6, 3, 0, 3);
     setTimeout(() => {
       this.pemesananPembelianService.postData(value).pipe(first()).subscribe(
         value1 => {
@@ -623,7 +653,7 @@ export class PemesananPembelianDialogComponent extends DialogUtil
    */
   delete(uuid?): void {
     this.dialogRef.disableClose = true;
-    Ui.blockUI('#dialog-block', 0.5, 4, 0, 4);
+    Ui.blockUI('#dialog-block', 0.5, 3, 0, 3);
 
     setTimeout(() => {
       this.pemesananPembelianService.deleteData(uuid).pipe(first()).subscribe(
@@ -644,34 +674,22 @@ export class PemesananPembelianDialogComponent extends DialogUtil
   onJenisPemesananClicked(event) {
     this.bottomSheet.open(PemesananPembelianSheetComponent).afterDismissed().subscribe((value: any) => {
       if (value) {
-        this.isPemesananPembelianLoaded = false;
-        value = {...value, ...appAuditEntityInit};
-        const detail: any[] = value.detail;
 
-        /* Kosongkan dl semua form array detail yang ada */
-        while (this.reactiveFormUtil.getFormArray('detail', this.form).length !== 0) {
-          this.reactiveFormUtil.removeFormArray(this.reactiveFormUtil.getFormArray('detail', this.form), 0);
-        }
+        this.dialogRef.disableClose = true;
+        Ui.blockUI('#dialog-block', 0.9, 3, 0, 3);
 
-        /* Buat ulang form array untuk detail data */
-        for (let i = 0; i < detail.length; i++) {
-          this.reactiveFormUtil.addFormArray(<FormGroup> pemesananPembelianDetailForm(detail[i]), (<FormArray> this.form.controls['detail']));
-        }
+        setTimeout(() => {
+          this.resetDataBlock(value);
 
-        // patch nilai
-        this.form.patchValue(value);
+          setTimeout(() => {
+            /* close dialock block */
+            this.dialogRef.disableClose = false;
+            Ui.unblockUI('#dialog-block');
+          }, 500);
 
-        // re-init untuk data salesman
-        this.salesmanLazy = new SelectLazy(
-          this.form,
-          'salesman',
-          this.penggunaService.http,
-          this.penggunaService.getData,
-          value.salesman.uuid, false, {}, 10, 0, this.salesmanLazy.select);
+        }, 500);
 
 
-        /* Patching form initializing*/
-        this.onPatchingForm(value, true);
       } else {  // jika tidak ada pr yang terpilih
         this.jenisPemesanan.setValue(undefined);
       }
@@ -681,6 +699,73 @@ export class PemesananPembelianDialogComponent extends DialogUtil
     // this.bottomSheet.
   }
 
+
+  resetDataBlock(value) {
+    this.isPemesananPembelianLoaded = false;
+    (<FormGroup>this.form.controls['permintaanPembelian']).controls[UUID_COLUMN].patchValue(qualifyObject(value, UUID_COLUMN));
+
+    value = {...value, ...appAuditEntityInit};
+    const detail: any[] = value.detail;
+
+    /* Kosongkan dl semua form array detail yang ada */
+    while (this.reactiveFormUtil.getFormArray('detail', this.form).length !== 0) {
+      this.reactiveFormUtil.removeFormArray(this.reactiveFormUtil.getFormArray('detail', this.form), 0);
+    }
+
+    /* Buat ulang form array untuk detail data */
+    for (let i = 0; i < detail.length; i++) {
+      this.reactiveFormUtil.addFormArray(<FormGroup>pemesananPembelianDetailForm(detail[i]), (<FormArray>this.form.controls['detail']));
+    }
+
+    // patch nilai
+    this.form.patchValue(value);
+
+    // re-init untuk data salesman
+    this.salesmanLazy = new SelectLazy(
+      this.form,
+      'salesman',
+      this.penggunaService.http,
+      this.penggunaService.getData,
+      value.salesman.uuid, false, {}, 10, 0, this.salesmanLazy.select);
+
+
+    /* Patching form initializing*/
+    this.onPatchingForm(value, true);
+  }
+
+  onLangsungClicked() {
+
+
+    /* Kosongkan dl semua form array detail yang ada */
+    while (this.reactiveFormUtil.getFormArray('detail', this.form).length !== 0) {
+      this.reactiveFormUtil.removeFormArray(this.reactiveFormUtil.getFormArray('detail', this.form), 0);
+    }
+
+    this.form.patchValue(pemesananPembelianInit);
+    this.salesmanLazy = new SelectLazy(
+      this.form,
+      'salesman',
+      this.penggunaService.http,
+      this.penggunaService.getData,
+      '', false, {}, 10, 0, this.salesmanLazy.select);
+    this.salesmanLazy._loadMore();
+
+    this.isPemesananPembelianLoaded = false;
+
+  }
+
+  onTooltipInit($tooltip: MatTooltip) {
+
+    if (!$tooltip._isTooltipVisible()) {
+      // console.log('ya', $tooltip)
+      // $tooltip.show();
+      // this.changeDetector.detectChanges();
+    } else {
+      // console.log('tidak', $tooltip)
+    }
+
+    // this.changeDetector.detectChanges();
+  }
 }
 
 class WarnaItem {

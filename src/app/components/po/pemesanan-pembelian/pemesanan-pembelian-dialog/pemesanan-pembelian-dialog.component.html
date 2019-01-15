@@ -258,9 +258,10 @@
                                 required>
                       <mat-option class="pilih">--&nbsp; Tentukan Jenis Pemesanan Pembelian &nbsp;--</mat-option>
                       <mat-divider></mat-divider>
-                      <mat-option value="LANGSUNG">Langsung</mat-option>
+                      <mat-option (click)="onLangsungClicked()" value="LANGSUNG">Langsung</mat-option>
                       <mat-option (click)="onJenisPemesananClicked($event)" value="DARI PR">Dari Permintaan</mat-option>
                     </mat-select>
+
 
                     <mat-error
                       *ngIf="jenisPemesanan.hasError('required')">
@@ -323,10 +324,10 @@
                     <!--salesman-->
                     <mat-form-field formGroupName="salesman" [appearance]="formFieldAppearance">
                       <mat-select #selectSalesman
-                                  [placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......' )"
+                                  [placeholder]="(isPemesananPembelianLoaded || salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......' )"
                                   formControlName="uuid"
                                   [errorStateMatcher]="stateMatchers.salesman.matcher"
-                                  [required]="salesmanLazy.isEnabled()">
+                                  [required]="isPemesananPembelianLoaded || salesmanLazy.isEnabled()">
                         <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
                         <mat-divider></mat-divider>
                         <mat-option [value]="v.uuid" *ngFor="let v of salesmanLazy.data">
@@ -347,7 +348,7 @@
                       <button *ngIf="salesmanLazy.failToFetch" matSuffix mat-icon-button
                               matTooltip="Segarkan Salesman"
                               [matTooltipPosition]="'left'"
-                              (click)="salesmanLazy.refresh()">
+                              (click)="refreshSalesman()">
                         <mat-icon color="primary">refresh</mat-icon>
                       </button>
                       <mat-error
@@ -527,24 +528,37 @@
                                   {{stateMatchers.detail.item.message}}</mat-error>
                               </mat-form-field>
 
+                              <!--appMatTooltipAsNotification="matTooltip"-->
+                              <!--(tooltipInit)="onTooltipInit($event)"-->
+                              <!--matTooltip="Masih ada field yang kosong!!"-->
+                              <!--[matTooltipPosition]="'below'"-->
                               <!--pilih warna-->
                               <mat-form-field formArrayName="detailWarna">
                                 <mat-chip-list #chipList>
-                                  <mat-chip
-                                    [ngStyle]="{ 'background-color': temp.warna.kodeWarnaHexadecimal,
+                                  <!--matBadge="8" matBadgePosition="after" matBadgeColor="warn" [matBadgeOverlap]="false"-->
+                                  <div *ngFor="let temp of getDetailWarnaValues(detailData, 'detailWarna'); index as tempIndex" >
+                                    <mat-chip
+
+
+                                      [ngStyle]="{ 'background-color': temp.warna.kodeWarnaHexadecimal,
                                            'color': invertColor(temp.warna.kodeWarnaHexadecimal) }"
-                                    (removed)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)"
-                                    *ngFor="let temp of getDetailWarnaValues(detailData, 'detailWarna'); index as tempIndex">
-                                    {{temp.warna.namaWarna}}
-                                    <mat-icon matTooltip="Ubah" class="first-chip-icon mat-standard-chip-icon"
-                                              [matTooltipPosition]="'below'"
-                                              (click)="editPropertiWarnaChips(detailData, detailIndex, tempIndex)">arrow_drop_down_circle</mat-icon>
-                                    <mat-icon matTooltip="Hapus" class="mat-standard-chip-icon"
-                                              [matTooltipPosition]="'below'"
-                                              (click)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)">
-                                      cancel
-                                    </mat-icon>
-                                  </mat-chip>
+                                      (removed)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)"
+                                      >
+                                      {{temp.warna.namaWarna}}
+                                      <mat-icon
+
+                                        matTooltip="Ubah" class="first-chip-icon mat-standard-chip-icon"
+                                        [matTooltipPosition]="'below'"
+                                        (click)="editPropertiWarnaChips(detailData, detailIndex, tempIndex)">arrow_drop_down_circle</mat-icon>
+                                      <mat-icon matTooltip="Hapus" class="mat-standard-chip-icon"
+                                                [matTooltipPosition]="'below'"
+                                                (click)="removeWarna(reactiveFormUtil.getFormArray('detailWarna', detailData), tempIndex)">
+                                        cancel
+                                      </mat-icon>
+                                    </mat-chip>
+                                    <!--<span ></span>-->
+                                  </div>
+
                                   <div>
                                     <input
                                       matInput

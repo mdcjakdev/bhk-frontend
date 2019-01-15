@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="searchWaiting" color="primary" mode="indeterminate"></mat-progress-bar>
 <mat-form-field id="cari-dokumen">
   <mat-label>
     Nomor Dokumen Permintaan Pembelian
@@ -7,6 +8,12 @@
          [textMask]="maskSearch"
          placeholder="Nomor Dokumen Permintaan Pembelian"
          autocomplete="off" matInput>
+
+  <!--<mat-progress-spinner matSuffix *ngIf="searchWaiting"-->
+                        <!--color="primary"-->
+                        <!--diameter="25"-->
+                        <!--mode="indeterminate">-->
+  <!--</mat-progress-spinner>-->
 
 </mat-form-field>
 

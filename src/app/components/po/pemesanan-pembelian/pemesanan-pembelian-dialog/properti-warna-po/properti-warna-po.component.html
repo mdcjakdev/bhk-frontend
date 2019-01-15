@@ -9,6 +9,7 @@
 
 
   <mat-dialog-content >
+    <!--press <kbd><kbd>ctrl</kbd> + <kbd>c</kbd></kbd> to copy-->
     <form [formGroup]="form" class="form-app">
       <input type="hidden" formControlName="uuid"/>
 
@@ -58,7 +59,7 @@
       <!--Nomor matching-->
       <mat-form-field [appearance]="formFieldAppearance">
         <mat-label>Nomor Matching</mat-label>
-        <input appElementFocus matInput autocomplete="off"   placeholder="Nomor Matching" formControlName="nomorMatching" required
+        <input  matInput autocomplete="off"   placeholder="Nomor Matching" formControlName="nomorMatching" required
                [errorStateMatcher]="stateMatchers.nomorMatching.matcher">
 
         <mat-error

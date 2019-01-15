@@ -13,6 +13,8 @@ import {DashboardSharedService} from '../../../services/dashboard-shared.service
 import {PemesananPembelianDialogComponent} from './pemesanan-pembelian-dialog/pemesanan-pembelian-dialog.component';
 import {PemesananPembelianService} from '../../../services/po/pemesanan-pembelian.service';
 import {pemesananPembelianDisables, pemesananPembelianInit} from '../../../inits/po/po-init';
+import {qualifyObject} from '../../../shared/utils';
+import {penggunaInit} from '../../../inits/administrator/pengguna-init';
 
 @Component({
   selector: 'app-pemesanan-pembelian',
@@ -137,7 +139,11 @@ export class PemesananPembelianComponent
         : ((action === Action.INSERT || action === Action.UPDATE) ? '70%' : '500px'),
       data: {
         action: action,
-        data: data,
+        data: {
+          ...data,
+          prApprovedBy: qualifyObject(data, 'prApprovedBy', penggunaInit),
+          prCancelledBy: qualifyObject(data, 'prCancelledBy', penggunaInit)
+        },
         disables: pemesananPembelianDisables
       },
       autoFocus: false,
