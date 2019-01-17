@@ -2,8 +2,34 @@ import {ErrorStateMatcher} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import * as moment from 'moment';
 
+
+export function isUrlAlreadyHasParams(url: string) {
+  return url.indexOf('?') > -1;
+}
+
+
+export function convertObjectAsHttpParams(object: any, definedUrl?: string) {
+  if (typeof object === 'undefined' || object === null) {
+    return '';
+  }
+
+  const hasQM = (typeof definedUrl !== 'undefined') ? isUrlAlreadyHasParams(definedUrl) : false;
+
+  let result = '';
+  let i = 0;
+  for (const param in object) {
+    if (object.hasOwnProperty(param)) {
+      result += (i === 0) ? ((hasQM) ? '&' : '?') : '&';
+      result += (param + '=' + object[param]);
+      i++;
+    }
+  }
+
+  return result;
+}
+
 export function qualifyObject(object, property: string, defaultValue: any = '') {
-  if (object !== undefined || object !== null) {
+  if (object !== undefined && object !== null) {
     if (object[property] === undefined || object[property] === null) {
       return defaultValue;
     } else {
@@ -11,7 +37,7 @@ export function qualifyObject(object, property: string, defaultValue: any = '') 
     }
   }
 
-  return undefined;
+  return defaultValue;
 }
 
 export function statusGeneralization(validators: Function | any, forGeneralization = false) {

@@ -16,11 +16,11 @@ const routes: Routes = [
         loadChildren: 'src\\app\\modules\\bhk\\administrator\\administrator.module#AdministratorModule'
       },
       {
-        path: 'pr',
+        path: 'pembelian/pr',
         loadChildren: 'src\\app\\modules\\bhk\\pr\\pr.module#PrModule'
       },
       {
-        path: 'po',
+        path: 'pembelian/po',
         loadChildren: 'src\\app\\modules\\bhk\\po\\po.module#PoModule'
       }
     ]

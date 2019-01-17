@@ -6,7 +6,12 @@ import {first} from 'rxjs/operators';
 import {delayHttpRequest, openAppSnackbar} from '../../../../shared/constants';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
 import {MasterKaryawanService} from '../../../../services/master/master-karyawan/master-karyawan.service';
-import {masterKaryawanErrorStateMatchers, masterKaryawanForm, tipeIdentitas} from '../../../../inits/master/master-karyawan-init';
+import {
+  masterKaryawanErrorStateMatchers,
+  masterKaryawanForm,
+  tipeIdentitas,
+  tipeStatusKaryawan
+} from '../../../../inits/master/master-karyawan-init';
 
 @Component({
   selector: 'app-master-karyawan-dialog',
@@ -18,6 +23,9 @@ export class MasterKaryawanDialogComponent
   implements OnInit {
 
   tipeIdentitas = tipeIdentitas;
+  tipeStatusKaryawan = tipeStatusKaryawan;
+
+
   close = undefined;
   public mask = ['(', '+', '6', '2', ')', ' ', /[1-9]/, /\d/, /\d/, '-', /\d/, /\d/,  /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   hpMasking = {

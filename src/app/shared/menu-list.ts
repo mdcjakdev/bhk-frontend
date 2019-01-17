@@ -47,9 +47,18 @@ export class MenuList {
     ]
   };
 
-  private po = <MenuModel> { ...createMenu, url: '/app/po', selector: ['po'], menu: 'Pemesanan', icon: 'account_balance_wallet'};
+  // private po = <MenuModel> { ...createMenu, url: '/app/po', selector: ['po'], menu: 'Pemesanan', icon: 'account_balance_wallet'};
 
-  private pr = <MenuModel> { ...createMenu, url: '/app/pr', selector: ['pr'], menu: 'Permintaan', icon: 'chrome_reader_mode'};
+  // private pr = <MenuModel> { ...createMenu, url: '/app/pr', selector: ['pr'], menu: 'Permintaan', icon: 'chrome_reader_mode'};
+
+  protected pembelianDataRootSelector = 'pembelian';
+  private pembelian = <MenuModel> { ...createMenu, selector: [this.pembelianDataRootSelector], menu: 'Pembelian', icon: 'all_inbox',
+    childs: [
+      this.back,
+      <MenuModel> { ...createMenu, url: '/app/pembelian/pr', selector: [this.pembelianDataRootSelector, 'pr'], menu: 'Permintaan', icon: 'chrome_reader_mode'},
+      <MenuModel> { ...createMenu, url: '/app/pembelian/po', selector: [this.pembelianDataRootSelector, 'po'], menu: 'Pemesanan', icon: 'account_balance_wallet'}
+    ]
+  };
 
   protected administratorDataRootSelector = 'administrator';
   private administrator = <MenuModel> { ...createMenu, selector: [this.administratorDataRootSelector], menu: 'Administrator', icon: 'supervised_user_circle',
@@ -89,8 +98,7 @@ export class MenuList {
       this.home, // menu home
       // this.mainData, // menu main data
       this.masterData, // menu master data
-      this.pr,
-      this.po,
+      this.pembelian,
       this.administrator // menu administrator
     ];
   }

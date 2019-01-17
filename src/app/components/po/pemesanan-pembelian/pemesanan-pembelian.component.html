@@ -144,219 +144,238 @@
               <div class="example-div-element-detail">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 primary">
                   <mat-icon style="margin-bottom: 8px;">description</mat-icon>
-                  <strong>&nbsp;&nbsp;&nbsp;Rincian Permintaan Pembelian</strong>
+                  <strong>&nbsp;&nbsp;&nbsp;Rincian Pemesanan Pembelian</strong>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 detail-expand">
-                  <!--<div id="table-detail">-->
-                    <!--<table class="full-width-table">-->
+                  <div id="table-detail" style="padding: 25px 15px 0 0;">
+                    <table class="full-width-table">
 
-                      <!--&lt;!&ndash;Status&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td style="padding-left: 25px" colspan="3">-->
-                          <!--<mat-chip-list>-->
-                            <!--<mat-chip [ngStyle]="{-->
-                              <!--'background-color': statusColor(element.statusDokumenPr).background,-->
-                              <!--'color': statusColor(element.statusDokumenPr).color-->
-                            <!--}">-->
-                              <!--{{element.statusDokumenPr}}-->
-                            <!--</mat-chip>-->
-                          <!--</mat-chip-list>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--<tr style="height: 10px;">-->
-                        <!--<td colspan="3"></td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Tanggal&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td style="width: 250px;">-->
-                          <!--<li><strong>Tanggal Permintaan</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.tanggalPermintaan}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Prefix&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Prefix</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.nomorPrefixPr}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Nomor Dokumen&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Nomor Dokumen</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.nomorDokumenPr}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Salesman&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Salesman</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.salesman.karyawan.nama}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Approved By&ndash;&gt;-->
-                      <!--<tr *ngIf="ifApproved(element.statusDokumenPr)">-->
-                        <!--<td>-->
-                          <!--<li><strong>Approved By</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.prApprovedBy}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Approved Date&ndash;&gt;-->
-                      <!--<tr *ngIf="ifApproved(element.statusDokumenPr)">-->
-                        <!--<td>-->
-                          <!--<li><strong>Approved Date</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.prApprovedDate}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Canceled By&ndash;&gt;-->
-                      <!--<tr *ngIf="ifCancel(element.statusDokumenPr)">-->
-                        <!--<td>-->
-                          <!--<li><strong>Canceled By</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.prCancelledBy}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;Canceled Date&ndash;&gt;-->
-                      <!--<tr *ngIf="ifCancel(element.statusDokumenPr)">-->
-                        <!--<td>-->
-                          <!--<li><strong>Canceled Date</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.prCanceledDate}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;canceled reason&ndash;&gt;-->
-                      <!--<tr *ngIf="ifCancel(element.statusDokumenPr)">-->
-                        <!--<td>-->
-                          <!--<li><strong>Canceled Reason</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.prCanceledReason}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--&lt;!&ndash;catatan&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td>-->
-                          <!--<li><strong>Catatan</strong></li>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--<strong>:</strong>&nbsp;-->
-                        <!--</td>-->
-                        <!--<td>-->
-                          <!--{{element.catatan}}-->
-                        <!--</td>-->
-                      <!--</tr>-->
+                      <!--Status-->
+                      <tr>
+                        <td style="padding-left: 25px" colspan="3">
+                          <mat-chip-list>
+                            <mat-chip class="mat-chips-default-padding" [ngStyle]="{
+                              'background-color': statusColor(element.statusDokumenPo).background,
+                              'color': statusColor(element.statusDokumenPo).color
+                            }">
+                              {{element.statusDokumenPo}}
+                            </mat-chip>
+                          </mat-chip-list>
+                        </td>
+                      </tr>
+                      <tr style="height: 10px;">
+                        <td colspan="3"></td>
+                      </tr>
+                      <!--Tanggal-->
+                      <tr>
+                        <td style="width: 250px;">
+                          <li><strong>Tanggal Pemesanan</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.tanggalPemesanan}}
+                        </td>
+                      </tr>
 
-                      <!--&lt;!&ndash;detail&ndash;&gt;-->
-                      <!--<tr>-->
-                        <!--<td colspan="3" style="height: 10px"></td>-->
-                      <!--</tr>-->
-                      <!--<tr *ngIf="element.detail.length > 0">-->
-                        <!--<td colspan="3">-->
-                          <!--<li class="primary">-->
-                            <!--<strong class="primary">Detail &nbsp;({{element.detail.length}})</strong>-->
-                          <!--</li>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                      <!--<tr>-->
-                        <!--<td colspan="3">-->
-                          <!--<table>-->
-                            <!--<tr *ngFor="let b of element.detail">-->
-                              <!--<td colspan="2" style="padding-left: 34px">-->
-                                <!--<table>-->
-                                  <!--<tr>-->
-                                    <!--<td colspan="2">-->
-                                        <!--<span class="accent" style="text-decoration: underline;">-->
-                                          <!--{{b.item.namaKain}}-->
-                                        <!--</span>-->
-                                    <!--</td>-->
-                                  <!--</tr>-->
-                                  <!--<tr>-->
-                                    <!--<td>-->
-                                      <!--<li><strong>Catatan&nbsp;:&nbsp;</strong></li>-->
-                                    <!--</td>-->
-                                    <!--<td>-->
-                                      <!--{{b.catatan}}-->
-                                    <!--</td>-->
-                                  <!--</tr>-->
-                                  <!--<tr>-->
-                                    <!--<td colspan="2">-->
-                                      <!--<li class="primary">-->
-                                        <!--<strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>-->
-                                      <!--</li>-->
-                                    <!--</td>-->
-                                  <!--</tr>-->
-                                  <!--<div *ngFor="let w of b.detailWarna">-->
-                                    <!--<tr>-->
-                                      <!--<td colspan="2" style="padding-left: 35px">-->
-                                        <!--<mat-chip-list>-->
-                                          <!--<mat-chip [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,-->
-                                           <!--'color': invertColor(w.warna.kodeWarnaHexadecimal)-->
-                                           <!--}">-->
-                                            <!--{{w.warna.namaWarna}}&nbsp;-->
-                                            <!--({{w.jumlah}} {{w.unit.name}})-->
-                                          <!--</mat-chip>-->
-                                        <!--</mat-chip-list>-->
-                                        <!--<table style="font-size: 10px">-->
-                                          <!--<tr>-->
-                                            <!--<td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>-->
-                                            <!--<td>{{w.catatan}}</td>-->
-                                          <!--</tr>-->
-                                        <!--</table>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr style="height: 5px">-->
-                                      <!--<td colspan="2"></td>-->
-                                    <!--</tr>-->
-                                  <!--</div>-->
-                                <!--</table>-->
-                              <!--</td>-->
-                            <!--</tr>-->
-                          <!--</table>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                    <!--</table>-->
-                  <!--</div>-->
+                      <!--Nomor Dokumen-->
+                      <tr>
+                        <td>
+                          <li><strong>Nomor Dokumen</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.nomorDokumenPo}}
+                        </td>
+                      </tr>
+                      <!--supplier-->
+                      <tr>
+                        <td>
+                          <li><strong>Supplier</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.supplier.nama}}
+                        </td>
+                      </tr>
+                      <!--Salesman-->
+                      <tr>
+                        <td>
+                          <li><strong>Salesman</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.salesman.karyawan.nama}}
+                        </td>
+                      </tr>
+                      <!--customer-->
+                      <tr>
+                        <td>
+                          <li><strong>Pelanggan</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.pelanggan.nama}}
+                        </td>
+                      </tr>
+                      <!--Approved By-->
+                      <tr *ngIf="ifApproved(element.statusDokumenPo)">
+                        <td>
+                          <li><strong>Approved By</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.poApprovedBy}}
+                        </td>
+                      </tr>
+                      <!--Approved Date-->
+                      <tr *ngIf="ifApproved(element.statusDokumenPo)">
+                        <td>
+                          <li><strong>Approved Date</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.poApprovedDate}}
+                        </td>
+                      </tr>
+                      <!--Canceled By-->
+                      <tr *ngIf="ifCancel(element.statusDokumenPo)">
+                        <td>
+                          <li><strong>Canceled By</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.poCancelledBy}}
+                        </td>
+                      </tr>
+                      <!--Canceled Date-->
+                      <tr *ngIf="ifCancel(element.statusDokumenPo)">
+                        <td>
+                          <li><strong>Canceled Date</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.poCanceledDate}}
+                        </td>
+                      </tr>
+                      <!--canceled reason-->
+                      <tr *ngIf="ifCancel(element.statusDokumenPo)">
+                        <td>
+                          <li><strong>Canceled Reason</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.poCanceledReason}}
+                        </td>
+                      </tr>
+                      <!--catatan-->
+                      <tr>
+                        <td>
+                          <li><strong>Catatan</strong></li>
+                        </td>
+                        <td>
+                          <strong>:</strong>&nbsp;
+                        </td>
+                        <td>
+                          {{element.catatan}}
+                        </td>
+                      </tr>
+
+                      <!--detail-->
+                      <tr>
+                        <td colspan="3" style="height: 10px"></td>
+                      </tr>
+                      <tr *ngIf="element.detail.length > 0">
+                        <td colspan="3">
+                          <li class="primary">
+                            <strong class="primary">Detail &nbsp;({{element.detail.length}})</strong>
+                          </li>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">
+                          <table>
+                            <tr *ngFor="let b of element.detail">
+                              <td colspan="2" style="padding-left: 34px">
+                                <table>
+                                  <tr>
+                                    <td colspan="2">
+                                        <span class="accent" style="text-decoration: underline;">
+                                          {{b.item.namaKain}}
+                                        </span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2">
+                                      <table>
+                                        <tr>
+                                          <td style="width: 90px">
+                                            <li><strong>Catatan&nbsp;:&nbsp;</strong></li>
+                                          </td>
+                                          <td>
+                                            {{b.catatan}}
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2">
+                                      <li class="primary">
+                                        <strong class="primary">Warna &nbsp;({{b.detailWarna.length}})</strong>
+                                      </li>
+                                    </td>
+                                  </tr>
+                                  <div *ngFor="let w of b.detailWarna">
+                                    <tr>
+                                      <td colspan="2" style="padding-left: 35px">
+                                        <mat-chip-list>
+                                          <mat-chip class="mat-chips-default-padding"
+                                                    [ngStyle]="{ 'background-color': w.warna.kodeWarnaHexadecimal,
+                                           'color': invertColor(w.warna.kodeWarnaHexadecimal) }">
+                                            {{w.warna.namaWarna}}&nbsp;
+                                            ({{w.jumlah}} {{w.unit.name}})
+                                          </mat-chip>
+                                        </mat-chip-list>
+                                        <table style="font-size: 10px">
+                                          <tr>
+                                            <td style="width: 50px;padding-left: 15px"><strong>Note : </strong></td>
+                                            <td>{{w.catatan}}</td>
+                                          </tr>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                    <tr style="height: 5px">
+                                      <td colspan="2"></td>
+                                    </tr>
+                                  </div>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

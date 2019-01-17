@@ -247,7 +247,7 @@ export function pemesananPembelianForm(init: any = pemesananPembelianInit,
     catatan: {value: qualifyObject(init, 'catatan'), disabled: disables.catatan},
     counterPo: [{value: qualifyObject(init, 'catatan'), disabled: disables.counterPo}, Validators.required],
     detail: new FormBuilder().array(detail),
-    salesman: penggunaForm(init.salesman, {...penggunaDisables, uuid: true}, true),
+    salesman: penggunaForm(init.salesman, {...penggunaDisables}, true),
     nomorDokumenPo: [{value: qualifyObject(init, 'nomorDokumenPo'), disabled: disables.nomorDokumenPo}, Validators.required],
     poApprovedBy: new FormBuilder().group({
       uuid: {value: ((init.poApprovedBy === undefined || init.poApprovedBy === null) ? '' : init.poApprovedBy.uuid), disabled: disables.poApprovedBy}
@@ -263,7 +263,7 @@ export function pemesananPembelianForm(init: any = pemesananPembelianInit,
 
     tanggalPemesanan: [{value: qualifyObject(init, 'tanggalPemesanan'), disabled: disables.tanggalPemesanan}, Validators.required],
     supplier: masterSupplierForm(init.supplier, {...masterSupplierDisables, uuid: true}, true),
-    pelanggan: masterPelangganForm(init.pelanggan, {...masterPelangganDisables, uuid: true}, true),
+    pelanggan: masterPelangganForm(init.pelanggan, {...masterPelangganDisables}, true),
     namaPic: [{value: qualifyObject(init, 'namaPic'), disabled: disables.namaPic}, Validators.required],
     urgent: {value: qualifyObject(init, 'urgent'), disabled: disables.urgent}
   });

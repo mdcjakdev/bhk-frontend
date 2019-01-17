@@ -286,7 +286,17 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
 
         /* init nilai untuk preview data */
         this.previewValue = {...this.form.getRawValue()};
-        // console.log(this.previewValue)
+
+        if ((<string> this.previewValue.tanggalPermintaan).trim().length === 0) {
+          openAppSnackbar(this.snackBar, 'Tanggal Permintaan tidak boleh kosong ...', SNACKBAR_WARNING_STYLE, 2000);
+          return;
+        }
+
+        if ((<string> this.previewValue.nomorDokumenPr).trim().length === 0) {
+          openAppSnackbar(this.snackBar, 'Nomor Dokumen tidak ada ...', SNACKBAR_WARNING_STYLE, 2000);
+          return;
+        }
+
       }
       this.selectedIndex++;
     }

@@ -15,6 +15,7 @@ import {PemesananPembelianService} from '../../../services/po/pemesanan-pembelia
 import {pemesananPembelianDisables, pemesananPembelianInit} from '../../../inits/po/po-init';
 import {qualifyObject} from '../../../shared/utils';
 import {penggunaInit} from '../../../inits/administrator/pengguna-init';
+import {masterItemNamaAliasInit} from '../../../inits/master/master-item';
 
 @Component({
   selector: 'app-pemesanan-pembelian',
@@ -133,16 +134,23 @@ export class PemesananPembelianComponent
    * Untuk Aksi pada data insert atau update
    */
   openDialogData(data = pemesananPembelianInit, action = Action.INSERT) {
+    const jumlahDetail = (<any[]> data.detail).length;
+    for (let i = 0; i < jumlahDetail; i++) {
+      const temp = qualifyObject(data.detail[i], 'namaAlias', masterItemNamaAliasInit);
+      // console.log(bb)
+      data.detail[i]['namaAlias'] = {...temp};
+    }
+
     const dialogRef = this.dialog.open(PemesananPembelianDialogComponent, {
       width: (action === Action.DELETE)
         ? '250px'
-        : ((action === Action.INSERT || action === Action.UPDATE) ? '70%' : '500px'),
+        : ((action === Action.INSERT || action === Action.UPDATE) ? '70%' : '800px'),
       data: {
         action: action,
         data: {
           ...data,
-          prApprovedBy: qualifyObject(data, 'prApprovedBy', penggunaInit),
-          prCancelledBy: qualifyObject(data, 'prCancelledBy', penggunaInit)
+          poApprovedBy: qualifyObject(data, 'prApprovedBy', penggunaInit),
+          poCancelledBy: qualifyObject(data, 'prCancelledBy', penggunaInit)
         },
         disables: pemesananPembelianDisables
       },
@@ -161,7 +169,8 @@ export class PemesananPembelianComponent
 
 
   update() {
-    this.openDialogData(this.selectedValue, Action.UPDATE);
+    const edit = {...this.selectedValue, nomorDokumenPo: '', tanggalPemesanan: ''};
+    this.openDialogData(edit, Action.UPDATE);
   }
 
   detail() {

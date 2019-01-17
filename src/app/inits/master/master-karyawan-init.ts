@@ -2,6 +2,11 @@ import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEnti
 import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
+export const tipeStatusKaryawan = [
+  'Permanent',
+  'Contract',
+  'Part Time'
+];
 
 export const tipeIdentitas = [
   'KTP',

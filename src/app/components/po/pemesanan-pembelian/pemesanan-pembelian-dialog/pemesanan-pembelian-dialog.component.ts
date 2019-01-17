@@ -8,7 +8,7 @@ import {
   MatDialog,
   MatDialogRef,
   MatSelect,
-  MatSnackBar, MatTooltip
+  MatSnackBar
 } from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
@@ -59,6 +59,9 @@ import {appAuditEntityInit} from '../../../../inits/init';
 })
 export class PemesananPembelianDialogComponent extends DialogUtil
   implements OnInit, AfterViewInit {
+
+  documentPropertiesParams = { supplierUuid: '', hasCustomer: false, poUuid: '' };
+
 
   /* Indikator yang menandakan bahwa dokumen yang ada merupakan data dari PR (mempunya pr id)*/
   havePrId = false;
@@ -124,6 +127,12 @@ export class PemesananPembelianDialogComponent extends DialogUtil
       pemesananPembelianForm(data.data, data.disables),
       pemesananPembelianErrorStateMatchers);
 
+    /** inisialisasi Generate properti dokumen seperti, nomor dokumen, prefix, counter dan tanggal PO dari server */
+    this.documentProperties = new AppHttpGenerate(
+      pemesananPembelianService.http,
+      pemesananPembelianService.getDocumentProperties
+    );
+
     // init untuk data salesman
     this.salesmanLazy = new SelectLazy(
       this.form,
@@ -158,11 +167,7 @@ export class PemesananPembelianDialogComponent extends DialogUtil
     }
 
 
-    /** inisialisasi Generate properti dokumen seperti, nomor dokumen, prefix, counter dan tanggal PO dari server */
-    this.documentProperties = new AppHttpGenerate(
-      pemesananPembelianService.http,
-      pemesananPembelianService.getDocumentProperties
-    );
+
   }
 
   onPatchingForm(patch, fromPr = false) {
@@ -232,9 +237,19 @@ export class PemesananPembelianDialogComponent extends DialogUtil
       this.isPemesananPembelianLoaded = true;
     }
 
-    if (this.isInsert()) {
+
+    if (this.isInsert() || this.isUpdate()) {
+
+      const rawValue = this.form.getRawValue();
+      const poUuid = rawValue[UUID_COLUMN];
+      const customer = rawValue.pelanggan[UUID_COLUMN];
+      const hasCustomer = (customer) ? (customer.trim().length > 0) : false;
+      let supplierUuid = rawValue.supplier[UUID_COLUMN];
+      supplierUuid = (supplierUuid === undefined) ? '' : supplierUuid;
+
       /* generate properti dokumen dari server */
-      this.generateDocumentProperties();
+      this.documentPropertiesParams = { supplierUuid: supplierUuid, hasCustomer: hasCustomer, poUuid: poUuid };
+      this.generateDocumentProperties(this.documentPropertiesParams);
     }
 
 
@@ -258,6 +273,41 @@ export class PemesananPembelianDialogComponent extends DialogUtil
   }
 
   ngOnInit() {
+    const poUuid = <string> this.form.controls[UUID_COLUMN].value;
+
+    /* Subscribe perubahan nilai supplier */
+    (<FormGroup>this.form.controls['supplier']).controls[UUID_COLUMN].valueChanges.subscribe(value => {
+      const customer = <string> (<FormGroup>this.form.controls['pelanggan']).controls[UUID_COLUMN].value;
+      const hasCustomer = (customer) ? (customer.trim().length > 0) : false;
+
+      const length = this.supplierLazy.data.filter(value1 => value1.uuid === value)
+        .map((value2: any) => {
+          this.generateDocumentProperties({ supplierUuid: value2.uuid, hasCustomer: hasCustomer, poUuid: poUuid })
+        }).length;
+
+      if (length === 0) {
+        this.generateDocumentProperties({ supplierUuid: '', hasCustomer: hasCustomer, poUuid: poUuid })
+      }
+    });
+
+
+    /* Subscribe perubahan nilai pelanggan */
+    (<FormGroup>this.form.controls['pelanggan']).controls[UUID_COLUMN].valueChanges.subscribe(value => {
+
+      let supplierUuid = (<FormGroup>this.form.controls['supplier']).controls[UUID_COLUMN].value;
+      supplierUuid = (supplierUuid === undefined) ? '' : supplierUuid;
+
+      const length = this.pelangganLazy.data.filter(value1 => value1.uuid === value)
+        .map((value2: any) => {
+          this.generateDocumentProperties({ supplierUuid: supplierUuid, hasCustomer: true, poUuid: poUuid })
+        }).length;
+
+      if (length === 0) {
+        this.generateDocumentProperties({ supplierUuid: supplierUuid, hasCustomer: false, poUuid: poUuid })
+      }
+    });
+
+
     /* Subscribe perubahan nilai salesman*/
     (<FormGroup>this.form.controls['salesman']).controls[UUID_COLUMN].valueChanges.subscribe(value => {
       this.salesmanLazy.data.filter(value1 => value1.uuid === value)
@@ -312,23 +362,32 @@ export class PemesananPembelianDialogComponent extends DialogUtil
     );
   }
 
+  setDocumentPropertiesToEmpty() {
+    this.form.controls['tanggalPemesanan'].setValue('');
+    this.form.controls['nomorDokumenPo'].setValue('');
+    this.form.controls['counterPo'].setValue('');
+    this.form.controls['nomorPrefixPo'].setValue('');
+  }
+
   /* mengambil properti dokumen PO dari server*/
-  generateDocumentProperties() {
-    if (this.isInsert()) {
-      this.form.controls['tanggalPemesanan'].setValue('');
-      this.form.controls['nomorDokumenPo'].setValue('');
-      this.form.controls['counterPo'].setValue('');
-      this.form.controls['nomorPrefixPo'].setValue('');
+  generateDocumentProperties(params = this.documentPropertiesParams,
+                             success?: (value: any) => void, failed?: (error: any) => void) {
+    this.setDocumentPropertiesToEmpty();
 
-      this.documentProperties.generate(value => {
-        this.form.controls['tanggalPemesanan'].setValue(value['date']);
-        this.form.controls['nomorDokumenPo'].setValue(value['nomorDokumen']);
-        this.form.controls['counterPo'].setValue(value['counter']);
-        this.form.controls['nomorPrefixPo'].setValue(value['prefix']);
-      }, error => {
-
-      });
-    }
+    this.documentProperties.generate(value => {
+      this.form.controls['tanggalPemesanan'].setValue(value['date']);
+      this.form.controls['nomorDokumenPo'].setValue(value['nomorDokumen']);
+      this.form.controls['counterPo'].setValue(value['counter']);
+      this.form.controls['nomorPrefixPo'].setValue(value['prefix']);
+      if (success) {
+        success(value);
+      }
+    }, error => {
+      this.setDocumentPropertiesToEmpty();
+      if (failed) {
+        failed(error);
+      }
+    }, params);
   }
 
 
@@ -373,6 +432,7 @@ export class PemesananPembelianDialogComponent extends DialogUtil
       this.save(this.form.getRawValue());
     } else {
       if (this.selectedIndex === 1) {
+
         if (this.poDetailCount() === 0) {
           openAppSnackbar(this.snackBar, 'Daftar Pemesanan Barang tidak boleh kosong ...', SNACKBAR_WARNING_STYLE, 2000);
           return;
@@ -387,8 +447,30 @@ export class PemesananPembelianDialogComponent extends DialogUtil
 
         /* init nilai untuk preview data */
         this.previewValue = {...this.form.getRawValue()};
-        // console.log(this.previewValue)
+
+
+        if ((<string> this.previewValue.tanggalPemesanan).trim().length === 0) {
+          openAppSnackbar(this.snackBar, 'Tanggal Pemesanan tidak boleh kosong ...', SNACKBAR_WARNING_STYLE, 2000);
+          return;
+        }
+
+        if ((<string> this.previewValue.nomorDokumenPo).trim().length === 0) {
+          openAppSnackbar(this.snackBar, 'Nomor Dokumen tidak ada ...', SNACKBAR_WARNING_STYLE, 2000);
+          return;
+        }
+
+
+        /* patch nilai supplier*/
+        const idSupplier = <string>(<FormGroup>this.form.controls['supplier']).controls[UUID_COLUMN].value;
+        this.supplierLazy.data.filter(value1 => value1.uuid === idSupplier)
+          .map((value2: any) => this.previewValue.supplier = {...value2});
+
+        /* patch nilai pelanggan*/
+        const idPelanggan = <string>(<FormGroup>this.form.controls['pelanggan']).controls[UUID_COLUMN].value;
+        this.pelangganLazy.data.filter(value1 => value1.uuid === idPelanggan)
+          .map((value2: any) => this.previewValue.pelanggan = {...value2});
       }
+
       this.selectedIndex++;
     }
   }
@@ -754,18 +836,18 @@ export class PemesananPembelianDialogComponent extends DialogUtil
 
   }
 
-  onTooltipInit($tooltip: MatTooltip) {
 
-    if (!$tooltip._isTooltipVisible()) {
-      // console.log('ya', $tooltip)
-      // $tooltip.show();
-      // this.changeDetector.detectChanges();
-    } else {
-      // console.log('tidak', $tooltip)
-    }
-
-    // this.changeDetector.detectChanges();
+  showWarnaDetailError(detailForm: FormGroup, i) {
+    return (<FormGroup>(<FormArray>detailForm.controls['detailWarna']).controls[i]).invalid;
   }
+
+  isWarnaDetailError(detailForm: FormGroup) {
+    console.log(this.form);
+    return (<FormArray>detailForm.controls['detailWarna']).invalid;
+  }
+
+
+
 }
 
 class WarnaItem {
@@ -774,4 +856,11 @@ class WarnaItem {
     public warna: MasterWarna[]
   ) {
   }
+}
+
+interface DocumentPropertiesParams {
+
+  supplierUuid: string;
+  hasCustomer: boolean;
+
 }

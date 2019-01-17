@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {apiHost, apiPort} from '../../shared/constants';
+import {convertObjectAsHttpParams} from '../../shared/utils';
 
 @Injectable()
 export class PemesananPembelianService {
@@ -11,8 +12,10 @@ export class PemesananPembelianService {
     return http.get(apiHost + ':' + apiPort + '/api/po/?page=' + page + '&size=' + size);
   }
 
-  getDocumentProperties(http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/po/utilitas/propertidokumen/');
+  getDocumentProperties(http = this.http, params?) {
+    let url = '/api/po/utilitas/propertidokumen/'
+    url += ((params !== undefined || params !== null) ? convertObjectAsHttpParams(params, url) : '');
+    return http.get(apiHost + ':' + apiPort + url);
   }
 
   postData(body) {

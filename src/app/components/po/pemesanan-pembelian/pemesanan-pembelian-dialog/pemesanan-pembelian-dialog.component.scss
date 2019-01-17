@@ -32,6 +32,15 @@
   }
 }
 
+.preview {
+  table  {
+    font-size: $standard-font-size;
+    td {
+      vertical-align: top;
+    }
+  }
+}
+
 
 .mat-badge {
   position: absolute;

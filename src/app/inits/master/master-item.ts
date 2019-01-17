@@ -1,6 +1,6 @@
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
+import {AppErrorStateMatcher, qualifyObject, statusGeneralization} from '../../shared/utils';
 import {
   MasterCategory,
   masterCategoryDisables, masterCategoryErrorStateMatchers, masterCategoryForm,
@@ -171,7 +171,7 @@ export function masterItemNamaAliasForm(init: any = masterItemNamaAliasInit,
                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
-    namaAlias: [{value: init.namaAlias, disabled: disables.namaAlias}, statusGeneralization(Validators.required, forGeneralization)]
+    namaAlias: [{value: qualifyObject(init, 'namaAlias'), disabled: disables.namaAlias}, statusGeneralization(Validators.required, forGeneralization)]
   });
 }
 function generateMasterItemNamaAlias(temp: MasterItemNamaAlias[]) {

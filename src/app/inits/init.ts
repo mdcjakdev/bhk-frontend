@@ -1,4 +1,5 @@
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {qualifyObject} from '../shared/utils';
 
 /**
  * Mendefinisikan standard dari model tabel yang ada di database
@@ -64,9 +65,9 @@ export const appAuditEntityDisables = {
 /** Inisialisasi form rective model dari basic entity */
 export function appBasicEntityForm(init: any = appBasicEntityInit, disables = appBasicEntityDisables): FormGroup {
   return new FormBuilder().group({
-    uuid: {value: init.uuid, disabled: disables.uuid },
-    createdDate: {value: init.createdDate, disabled: disables.createdDate },
-    lastModifiedDate: {value: init.lastModifiedDate, disabled: disables.lastModifiedDate },
+    uuid: {value: qualifyObject(init, 'uuid'), disabled: disables.uuid },
+    createdDate: {value: qualifyObject(init, 'createdDate'), disabled: disables.createdDate },
+    lastModifiedDate: {value: qualifyObject(init, 'lastModifiedDate'), disabled: disables.lastModifiedDate },
   });
 }
 
@@ -80,7 +81,7 @@ export function appAuditEntityForm(init: any = appAuditEntityInit,
                                    initForm: Function = appBasicEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initForm(init, disables).controls,
-    createdBy: {value: init.createdDate, disabled: disables.createdBy},
-    lastModifiedBy: {value: init.lastModifiedDate, disabled: disables.lastModifiedBy},
+    createdBy: {value: qualifyObject(init, 'createdDate'), disabled: disables.createdBy},
+    lastModifiedBy: {value: qualifyObject(init, 'lastModifiedDate'), disabled: disables.lastModifiedBy},
   });
 }

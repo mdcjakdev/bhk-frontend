@@ -32,6 +32,16 @@
   }
 }
 
+
+.preview {
+  table  {
+    font-size: $standard-font-size;
+    td {
+      vertical-align: top;
+    }
+  }
+}
+
 .mat-option {
   font-size: $standard-font-size;
 }

@@ -175,8 +175,14 @@
 
       <!--Status-->
       <mat-form-field [appearance]="formFieldAppearance">
-        <mat-label>Status</mat-label>
-        <input matInput autocomplete="off" placeholder="Status" formControlName="status">
+        <mat-select placeholder="Status Karyawan"
+                    formControlName="status">
+          <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
+          <mat-divider></mat-divider>
+          <mat-option [value]="v" *ngFor="let v of tipeStatusKaryawan">
+            {{v}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
 
