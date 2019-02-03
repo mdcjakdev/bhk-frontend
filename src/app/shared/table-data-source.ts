@@ -7,7 +7,7 @@ import {delegateLevelValue} from './constants';
 
 export class AppTableDataSource extends DataSource<any> {
 
-  private data: any = [];
+  public data: any = [];
   properties: any;
 
   constructor(data: any[], properties: any, public paginator: MatPaginator, public sort: MatSort) {

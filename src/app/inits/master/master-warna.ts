@@ -98,7 +98,8 @@ export function masterWarnaForm(init: any = masterWarnaInit,
 
   return new FormBuilder().group({
     ...initAuditForm(init).controls,
-    kodeWarna: [{value: init.kodeWarna, disabled: disables.kodeWarna}, statusGeneralization(Validators.required, forGeneralization)],
+    // kodeWarna: [{value: init.kodeWarna, disabled: disables.kodeWarna}, statusGeneralization(Validators.required, forGeneralization)],
+    kodeWarna: {value: init.kodeWarna, disabled: disables.kodeWarna},
     kodeWarnaHexadecimal: {value: init.kodeWarnaHexadecimal, disabled: disables.kodeWarnaHexadecimal},
     namaWarna: [{value: init.namaWarna, disabled: disables.namaWarna}, statusGeneralization(Validators.required, forGeneralization)],
     barcode: new FormBuilder().array(warnaBarcode) // init kosong untuk data relasi ke banyak

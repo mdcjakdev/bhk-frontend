@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MenuList} from '../../shared/menu-list';
 import {ComponentUtil} from '../../shared/component-util';
@@ -22,6 +22,8 @@ export class BhkDashboardComponent
 
   @ViewChild("sidenav") snav;
 
+  @ViewChild("mainContentContainer") mainContentContainer;
+
 
   next = 'animated  fadeOutDown';
 
@@ -36,10 +38,7 @@ export class BhkDashboardComponent
   }
 
   ngOnInit() {
-    // subscribe main scroll event scrolling
-    this.scrollRef.scrollable.elementScrolled().subscribe(
-      value => this.onScroll(value)
-    );
+
 
     // init menu awal yang terpilih
     this.menus.selectMenu(['app']);
@@ -53,6 +52,13 @@ export class BhkDashboardComponent
   }
 
   ngAfterViewInit(): void {
+
+
+    // subscribe main scroll event scrolling
+    this.scrollRef.scrollable.elementScrolled().subscribe(
+      value => this.onScroll(value)
+    );
+
   }
 
   getSidenavMode() {
@@ -100,6 +106,9 @@ export class BhkDashboardComponent
 
   @HostListener('scroll', ['$event'])
   onScroll(event) {
+    // const v = document.getElementById('mainContentContainerId');
+    // console.log('mainContentContainer ', this.mainContentContainer, v.offsetTop)
+    // console.log('event.pageYOffset ', window.pageYOffset)
     // tambah nilai perubahan pada setiap aksi user yang melakukan scroll pada page
     this.bhkSharedService.addScrolledByUser(event.target.scrollTop);
   }

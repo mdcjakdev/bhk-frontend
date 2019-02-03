@@ -105,14 +105,14 @@
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content >
+    <mat-sidenav-content id="mainContentContainerId">
 
       <!--< >-->
-      <ng-scrollbar #mainScroll
+      <ng-scrollbar  #mainScroll
                     class="main-scroll"
                     barClass="scroll-bar" thumbClass="scroll-thumbs"
                     [overlay]="true" [trackX]="true" [autoHide]="true">
-        <div class="main-content">
+        <div class="main-content"  #mainContentContainer>
           <router-outlet></router-outlet>
 
 

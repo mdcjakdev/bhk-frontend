@@ -6,29 +6,19 @@ import {
   masterItemDisables,
   masterItemForm,
   masterItemInit,
-  MasterItemNamaAlias, masterItemNamaAliasDisables, masterItemNamaAliasErrorStateMatchers, masterItemNamaAliasForm,
+  MasterItemNamaAlias,
+  masterItemNamaAliasDisables,
+  masterItemNamaAliasErrorStateMatchers,
+  masterItemNamaAliasForm,
   masterItemNamaAliasInit
 } from '../master/master-item';
 import {Pengguna, penggunaDisables, penggunaForm, penggunaInit} from '../administrator/pengguna-init';
 import {AppErrorStateMatcher, qualifyObject} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {statusDokumen, UUID_COLUMN} from '../../shared/constants';
-import {masterKaryawanForm} from '../master/master-karyawan-init';
-import {
-  MasterSupplier,
-  masterSupplierDisables,
-  masterSupplierErrorStateMatchers,
-  masterSupplierForm,
-  masterSupplierInit
-} from '../master/master-supplier';
-import {
-  MasterPelanggan, masterPelangganDisables,
-  masterPelangganErrorStateMatchers,
-  masterPelangganForm,
-  masterPelangganInit
-} from '../master/master-pelanggan-init';
-import {PermintaanPembelian, permintaanPembelianDisables, permintaanPembelianForm, permintaanPembelianInit} from '../pr/pr-init';
-
+import {MasterSupplier, masterSupplierDisables, masterSupplierForm, masterSupplierInit} from '../master/master-supplier';
+import {MasterPelanggan, masterPelangganDisables, masterPelangganForm, masterPelangganInit} from '../master/master-pelanggan-init';
+import {PermintaanPembelian, permintaanPembelianInit} from '../pr/pr-init';
 
 
 /** Model Class PO Detail Warna */
@@ -71,6 +61,7 @@ export interface PemesananPembelian extends AppAuditEntity {
   pelanggan?: MasterPelanggan;
   namaPic?: string;
   urgent?: boolean;
+  onCo?: boolean;
   
 }
 
@@ -114,7 +105,8 @@ export const pemesananPembelianInit = {
   supplier: masterSupplierInit,
   pelanggan: masterPelangganInit,
   namaPic: '',
-  urgent: false
+  urgent: false,
+  onCo: false
 };
 
 /** Init nilai awal status disable formcontrol Pemesanan Pembelian Detail Warna */
@@ -265,7 +257,8 @@ export function pemesananPembelianForm(init: any = pemesananPembelianInit,
     supplier: masterSupplierForm(init.supplier, {...masterSupplierDisables, uuid: true}, true),
     pelanggan: masterPelangganForm(init.pelanggan, {...masterPelangganDisables}, true),
     namaPic: [{value: qualifyObject(init, 'namaPic'), disabled: disables.namaPic}, Validators.required],
-    urgent: {value: qualifyObject(init, 'urgent'), disabled: disables.urgent}
+    urgent: {value: qualifyObject(init, 'urgent'), disabled: disables.urgent},
+    onCo: {value: init.onCo, disabled: false}
   });
 
 }

@@ -22,6 +22,10 @@ const routes: Routes = [
       {
         path: 'pembelian/po',
         loadChildren: 'src\\app\\modules\\bhk\\po\\po.module#PoModule'
+      },
+      {
+        path: 'pembelian/co',
+        loadChildren: 'src\\app\\modules\\bhk\\co\\co.module#CoModule'
       }
     ]
   }

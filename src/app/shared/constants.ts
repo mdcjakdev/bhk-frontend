@@ -4,8 +4,9 @@ import {ReactiveFormUtil} from './reactive-form-util';
 export const UUID_COLUMN = 'uuid';
 
 // export const apiHost = 'http://206.189.144.26';
-export const apiHost = 'http://localhost';
-// export const apiHost = 'http://192.168.0.29';
+// export const apiHost = 'http://104.248.149.36';
+// export const apiHost = 'http://localhost';
+export const apiHost = 'http://192.168.0.29';
 // export const apiPort = '4200';
 export const apiPort = '8000';
 // export const apiPort = '5000';
@@ -19,6 +20,8 @@ export const defaultMainContentPadding = 35;
 export const SNACKBAR_SUCCESS_STYLE = 'success-snackbar';
 export const SNACKBAR_ERROR_STYLE = 'error-snackbar';
 export const SNACKBAR_WARNING_STYLE = 'warning-snackbar';
+
+export const defaultStringLengthToShowInTable = 25;
 
 
 export const statusDokumen = {
@@ -59,15 +62,43 @@ export class Constants {
   public reactiveFormUtil = new ReactiveFormUtil();
 }
 
+
+
+export interface TablePropertiesConfig {
+
+  isArray: boolean;
+  onArrayIndex: number | Function;
+  onArrayLevelsData: string[];
+
+}
 /**
  * Mengambil nilai berdasarkan tingkatan kedalaman levelnya
  * @param value, nilai awal
  * @param levels, kedalaman level array nya
  */
-export function delegateLevelValue(value, levels: string[]) {
+export function delegateLevelValue(value, levels: string[], config?: TablePropertiesConfig) {
+
   for (const name of levels) {
     value = value[name];
   }
+
+  if (config !== null && config !== undefined) {
+    if (config.isArray) {
+
+      const index = (config.onArrayIndex instanceof  Function)
+        ? (<number> config.onArrayIndex(value))
+        : (<number> config.onArrayIndex);
+
+      if (index < 0) {
+        return '';
+      }
+
+      value = value[index];
+      value = delegateLevelValue(value, config.onArrayLevelsData);
+    }
+  }
+
+
   return value;
 }
 
@@ -99,29 +130,14 @@ export function invertColor(hex, bw = true) {
     hex = rgb2hex(hex);
   }
 
-
-
   if (hex.indexOf('#') === 0) {
     hex = hex.slice(1);
   }
 
-  // console.log(hex.substring(0, 1))
-
-
-
-
-  // convert 3-digit hex to 6-digits.
   if (hex.length === 3) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
   }
 
-
-
-  // console.log(hex)
-
-  // if (hex.length !== 6) {
-  //   throw new Error('Invalid HEX color.');
-  // }
   let r: any = parseInt(hex.slice(0, 2), 16);
   let g: any = parseInt(hex.slice(2, 4), 16);
   let b: any = parseInt(hex.slice(4, 6), 16);

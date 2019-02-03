@@ -1,9 +1,10 @@
-<div id="dialog-block">
+<div id="dialog-block" >
+  <!--cdkDrag cdkDragRootElement=".cdk-overlay-pane">-->
 
   <!--<div class="dialog-block-content">-->
   <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
   </mat-progress-bar>
-  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent default-background' : 'primary'">
+  <h4 mat-dialog-title  [ngClass]="(isDelete()) ? 'accent default-background' : 'primary'">
     <div>
       <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
       <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>
@@ -607,7 +608,10 @@
                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
                                                   (optionSelected)="selected($event, reactiveFormUtil.getFormArray('detailWarna', detailData), detailIndex)">
                                   <mat-option *ngFor="let temp of dataWarna[detailIndex]" [value]="temp">
-                                    {{temp.namaWarna }}
+
+                                    {{temp.namaWarna }} &nbsp;&nbsp;<span><strong>#KODE:</strong> <i
+                                    class="accent"> {{printKodeWarna(temp.kodeWarna)}}</i></span>
+
                                   </mat-option>
                                 </mat-autocomplete>
 

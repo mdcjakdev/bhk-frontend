@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {apiHost, apiPort} from '../../shared/constants';
 import {convertObjectAsHttpParams} from '../../shared/utils';
+import {PemesananPembelian} from '../../inits/po/po-init';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class PemesananPembelianService {
@@ -29,6 +31,13 @@ export class PemesananPembelianService {
   deleteData(id) {
     return this.http.delete(apiHost + ':' + apiPort + '/api/po/' + id);
   }
+
+
+  getDataById(id): Observable<PemesananPembelian> {
+    return this.http.get<PemesananPembelian>(`${apiHost}:${apiPort}/api/po/${id}`);
+  }
+
+
 
 
   checkPrByPoId(poId) {

@@ -123,10 +123,9 @@
           <!--kode-->
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Kode Warna</mat-label>
-            <input matInput placeholder="Kode Warna" formControlName="kodeWarna" required autocomplete="off"
-                   [errorStateMatcher]="stateMatchers.kodeWarna.matcher">
-            <mat-error
-              *ngIf="reactiveFormUtil.formControl(form, 'kodeWarna').hasError('required')">{{stateMatchers.kodeWarna.message}}</mat-error>
+            <input matInput placeholder="Kode Warna" formControlName="kodeWarna"  autocomplete="off">
+            <!--<mat-error-->
+              <!--*ngIf="reactiveFormUtil.formControl(form, 'kodeWarna').hasError('required')">{{stateMatchers.kodeWarna.message}}</mat-error>-->
           </mat-form-field>
 
 

@@ -8,7 +8,6 @@ import {ERROR_STATUS_CODE_0} from '../../../shared/system-error-messages';
 import {Action} from '../../../shared/action.enum';
 import {Ui} from '../../../shared/ui';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {permintaanPembelianDisables, permintaanPembelianInit} from '../../../inits/pr/pr-init';
 import {DashboardSharedService} from '../../../services/dashboard-shared.service';
 import {PemesananPembelianDialogComponent} from './pemesanan-pembelian-dialog/pemesanan-pembelian-dialog.component';
 import {PemesananPembelianService} from '../../../services/po/pemesanan-pembelian.service';

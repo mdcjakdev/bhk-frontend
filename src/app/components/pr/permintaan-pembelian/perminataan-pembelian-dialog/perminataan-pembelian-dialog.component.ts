@@ -139,6 +139,10 @@ export class PermintaanPembelianDialogComponent extends DialogUtil
   }
 
 
+  printKodeWarna(value: string) {
+    return (value === undefined || value.length === 0) ? '- ' : value;
+  }
+
   /* Title dari setiap detail PR*/
   detailTitle(i: FormGroup, index) {
     if ((<FormGroup>i.controls['item']).controls['namaItem'] !== undefined) {

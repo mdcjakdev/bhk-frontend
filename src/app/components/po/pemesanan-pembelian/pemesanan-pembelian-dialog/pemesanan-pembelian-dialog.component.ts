@@ -170,6 +170,12 @@ export class PemesananPembelianDialogComponent extends DialogUtil
 
   }
 
+
+  printKodeWarna(value: string) {
+    return (value === undefined || value.length === 0) ? '- ' : value;
+  }
+
+
   onPatchingForm(patch, fromPr = false) {
     this.selectedIndex = 1;
 

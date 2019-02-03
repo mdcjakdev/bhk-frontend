@@ -6,20 +6,6 @@ import {SharedModule} from '../shared/shared.module';
 import {DashboardSharedService} from '../../services/dashboard-shared.service';
 
 
-// import  as moment from 'moment';
-
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'LL',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
 
 
 @NgModule({

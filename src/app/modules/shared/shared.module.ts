@@ -48,6 +48,7 @@ import {AppMatPaginatorIntl} from '../../shared/app-mat-paginator-intl';
 import {MatAutocompleteTriggerViewChildDirective} from '../../shared/directives/mat-autocomplete-trigger-view-child.directive';
 import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-view-child.directive';
 import {MatTooltipAsNotificationDirective} from '../../shared/directives/mat-tooltip-as-notification.directive';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import {MatTooltipAsNotificationDirective} from '../../shared/directives/mat-too
   ],
   imports: [
     CommonModule,
+    DragDropModule,
 
     MatDatepickerModule,
     MatNativeDateModule,
@@ -140,6 +142,8 @@ import {MatTooltipAsNotificationDirective} from '../../shared/directives/mat-too
     MatSelectViewChildDirective,
     MatTooltipAsNotificationDirective,
     MatAutocompleteTriggerViewChildDirective,
+
+    DragDropModule,
 
 
     MatDatepickerModule,

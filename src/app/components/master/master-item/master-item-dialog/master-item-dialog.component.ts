@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatDialogRef, MatSnackBar} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
@@ -14,7 +14,7 @@ import {
   masterItemForm,
   masterItemNamaAliasForm
 } from '../../../../inits/master/master-item';
-import {FormArray, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MasterWarnaService} from '../../../../services/master/master-warna/master-warna.service';
 import {MasterWarna, masterWarnaForm} from '../../../../inits/master/master-warna';
@@ -52,9 +52,12 @@ export class MasterItemDialogComponent extends DialogUtil
   @ViewChild('selectKategori') selectKategori;
   kategoriLazy: SelectLazy<MasterCategory>;
 
+  colorSelector = new FormControl('');
 
+  @ViewChild('warnaTrigger') warnaTriggerElement: ElementRef<HTMLInputElement>;
   // @ViewChild('selectWarna') selectWarna;
   dataWarna: any[] = [];
+  filteredDataWarna: any[] = [];
   warnaPage = 0;
   waitingLoadMoreWarna = false;
   isLastWarna = false;
@@ -101,9 +104,38 @@ export class MasterItemDialogComponent extends DialogUtil
 
   }
 
+
+  printKodeWarna(value: string) {
+    return (value === undefined || value.length === 0) ? '- ' : value;
+  }
+
   ngAfterViewInit(): void {
     this.unitLazy.select = this.selectUnit;
     this.kategoriLazy.select = this.selectKategori;
+
+    this.colorSelector.valueChanges.subscribe(value => {
+      try {
+        if (value === undefined || value === null || (<string> value).trim().length === 0) {
+          this.filteredDataWarna = [...this.dataWarna];
+          return;
+        }
+
+        value = (<string> value).trim();
+        this._filter(value);
+      } catch (e) {
+        this.filteredDataWarna = [...this.dataWarna];
+        this.colorSelector.setValue('', { onlySelf: true })
+      }
+    })
+  }
+
+
+  private _filter(value: string) {
+    const filterValue = value.toLowerCase();
+
+    this.filteredDataWarna = [...this.dataWarna.filter(object => object.namaWarna.toLocaleLowerCase().includes(filterValue))];
+
+    // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
   }
 
   ngOnInit() {
@@ -275,8 +307,7 @@ export class MasterItemDialogComponent extends DialogUtil
 
   selected(event: MatAutocompleteSelectedEvent, fa: FormArray): void {
     if (event.option.value !== null) {
-      // (<FormArray> this.form.controls['warna'])
-      console.log((<FormArray> this.form.controls['warna']).getRawValue())
+
       const alreadySelectedWarna = [...(<FormArray> this.form.controls['warna']).getRawValue()];
       if (alreadySelectedWarna
         .filter(value => value.uuid === event.option.value.uuid)
@@ -287,6 +318,9 @@ export class MasterItemDialogComponent extends DialogUtil
       }
 
       this.addNewWarna(fa, event.option.value);
+
+      this.warnaTriggerElement.nativeElement.value = '';
+      this.colorSelector.setValue('', {onlySelf: true})
     }
   }
 
@@ -298,11 +332,7 @@ export class MasterItemDialogComponent extends DialogUtil
     this.reactiveFormUtil.removeFormArray(fa, i);
   }
 
-  private _filter(value: string) {
-    const filterValue = value.toLowerCase();
 
-    // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
-  }
 
 
 
@@ -333,7 +363,7 @@ export class MasterItemDialogComponent extends DialogUtil
 
   _loadMoreWarna() {
     setTimeout(() => {
-      this.masterWarnaService.getData(this.warnaPage, 1).subscribe(
+      this.masterWarnaService.getData(this.warnaPage, 50).subscribe(
         (value: any) => {
           this.warnaPage++;
           if (value !== undefined && value.content !== undefined) {
@@ -346,6 +376,8 @@ export class MasterItemDialogComponent extends DialogUtil
                 this.dataWarna.push(v);
               });
 
+
+              this.filteredDataWarna = [...this.filteredDataWarna, ...d];
             }
           }
           this.waitingLoadMoreWarna = false;

@@ -430,14 +430,16 @@
                                            'color': invertColor(temp.kodeWarnaHexadecimal) }"
                 *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
                 (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex, temp)">
-                {{temp.namaWarna}}
+                {{temp.namaWarna}} {{temp.kodeWarna.length === 0 ? '' : '('+ temp.kodeWarna +')'}}
                 <mat-icon matTooltip="Hapus"
                           [matTooltipPosition]="'below'"
-                          matChipRemove>cancel</mat-icon>
+                          matChipRemove>cancel
+                </mat-icon>
               </mat-chip>
               <input
                 matInput
                 placeholder="Warna"
+                [formControl]="colorSelector"
                 #warnaTrigger
                 (click)="openAutoComplete()"
                 [matAutocomplete]="auto"
@@ -445,8 +447,9 @@
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
                               (optionSelected)="selected($event, reactiveFormUtil.getFormArray('warna', form))">
-              <mat-option *ngFor="let temp of dataWarna" [value]="temp">
-                {{temp.namaWarna }}
+              <mat-option *ngFor="let temp of filteredDataWarna" [value]="temp">
+                {{temp.namaWarna }} &nbsp;&nbsp;<span><strong>#KODE:</strong> <i
+                class="accent"> {{printKodeWarna(temp.kodeWarna)}}</i></span>
               </mat-option>
               <mat-divider></mat-divider>
               <mat-option [value]="null" *ngIf="!isLastWarna" (click)="refreshWarna()" class="lebih-banyak">
@@ -534,9 +537,6 @@
           <mat-form-field [appearance]="formFieldAppearance">
             <mat-label>Additional</mat-label>
             <input matInput autocomplete="off" placeholder="Additional" formControlName="tambahan">
-            <!--<mat-error-->
-            <!--*ngIf="reactiveFormUtil.formControl(form, 'tambahan').hasError('required')">-->
-            <!--{{stateMatchers.tambahan.message}}</mat-error>-->
           </mat-form-field>
         </div>
 

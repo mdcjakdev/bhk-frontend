@@ -39,10 +39,6 @@ export class PemesananPembelianSheetComponent implements OnInit, AfterViewInit {
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
   }
 
-  openLink(event: MouseEvent): void {
-    this.bottomSheetRef.dismiss({haha: 'sssssssss'});
-    event.preventDefault();
-  }
 
   ngOnInit(): void {
   }
@@ -75,10 +71,8 @@ export class PemesananPembelianSheetComponent implements OnInit, AfterViewInit {
         this.permintaanPemeberlianService.getDocumentForPO(nk, this.ke).pipe()
           .subscribe(value => {
               if (value['asyncTry'] === this.ke) {
-                // setTimeout(() => {
                 this.searchWaiting = false;
                 Ui.unblockUI('#result');
-                // }, 100)
 
                 if (value['empty']) { // jika data kosong
                   this.dataPr = [];

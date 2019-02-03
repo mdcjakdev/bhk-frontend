@@ -35,10 +35,10 @@ export class MasterItemComponent
    * @var receivedData, yang akan ditampilkan pada data tabel
    */
   tableProperties = {
-    displayedColumns: ['uuid', 'namaItem', 'kategori', 'subKategori', 'unit', 'jenisKain'],
-    displayedHeaders: ['No', 'Item', 'Kategori', 'Sub Kategori', 'Unit', 'Jenis Kain'],
-    levelsOnData: [['uuid'], ['namaItem'], ['kategori', 'namaKategori'], ['subKategori', 'nama'], ['unit', 'name'], ['jenisKain']],
-    isStringDataTypes: [true, true, true, true, true, true]
+    displayedColumns: ['uuid', 'kategori', 'subKategori', 'namaKain', 'namaAlias', 'unit'],
+    displayedHeaders: ['No', 'Kategori', 'Sub Kategori', 'Item', 'Alias', 'Unit'],
+    levelsOnData: [['uuid'], ['kategori', 'namaKategori'], ['subKategori', 'nama'], ['namaKain'], ['namaAlias'], ['unit', 'name']],
+    configs: [null, null, null, null, {isArray: true, onArrayIndex: (value: any[]) => value.length - 1, onArrayLevelsData: ['namaAlias']}, null]
   };
   selectedValue: any = null;
   private isRightClick;

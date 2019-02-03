@@ -2,7 +2,7 @@ import {ChangeDetectorRef, OnDestroy, ViewChild} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {
   defaultMainContentPadding,
-  defaultNavSideBarSize,
+  defaultNavSideBarSize, defaultStringLengthToShowInTable,
   delayHttpRequest,
   delegateLevelValue,
   statusDokumen,
@@ -23,9 +23,11 @@ export class ComponentUtil<T extends DataSource<any> | any>
   implements OnDestroy {
 
 
-  public nextPageAnimation = 'animated  fadeOutDown';
+  public defaultStringLengthToShowInTable = defaultStringLengthToShowInTable;
+
+  public nextPageAnimation = 'animated  fadeOutDownBig';
   public pageComeUpAnimation = '';
-  public delayBeforeGoToNextPage = 700;
+  public delayBeforeGoToNextPage = 200;
 
   public pageIndex = 0;
 
@@ -201,12 +203,21 @@ export class ComponentUtil<T extends DataSource<any> | any>
   }
 
 
-  printValue(column, columnValue, index, conditionVoid: Function = this.defaultNoActionVoid, showLength = 25) {
+  printValue(column, columnValue, index, conditionVoid: Function = this.defaultNoActionVoid, showLength = this.defaultStringLengthToShowInTable) {
     let v = conditionVoid(column, columnValue);
     v = (column === UUID_COLUMN) ? ((index + 1) + (this.pageIndex * this.pageSize)) : v;
     return printWord(v, showLength);
   }
 
+
+  showValueAsTooltip(value) {
+    if (typeof value === 'boolean') {
+      return value ? 'Ya' : 'Tidak';
+    } else {
+      const l = value.toString().length;
+      return (l > defaultStringLengthToShowInTable) ? value : '';
+    }
+  }
 
   isReceivedDataUndefined() {
     return this.receivedData === undefined;
@@ -223,8 +234,8 @@ export class ComponentUtil<T extends DataSource<any> | any>
    * @param value, nilai awal
    * @param levels, kedalaman level array nya
    */
-  delegateLevelValue(value, levels: string[]) {
-    return delegateLevelValue(value, levels);
+  delegateLevelValue(value, levels: string[], config: any) {
+    return delegateLevelValue(value, levels, config);
   }
 
   /**
@@ -308,8 +319,9 @@ export class ComponentUtil<T extends DataSource<any> | any>
     // tr-show-menu = css untuk memberikan backgroun pada data tabel yang aktif
     this.onTableTargetSelected.classList.add('tr-show-menu');
     this.preventDefaultMode(event);
-    this.xContextMenuOfTable = this.positioningXY(event, navSize, contentPadding, fromTop).x;
-    this.yContextMenuOfTable = this.positioningXY(event, navSize, contentPadding, fromTop).y;
+    const position = this.positioningXY(event, navSize, contentPadding, fromTop);
+    this.xContextMenuOfTable = position.x;
+    this.yContextMenuOfTable = position.y;
     menu.openMenu();
 
     // menambahkan listener contextmenu pada cdk overlay dari menu yang tampil
@@ -333,9 +345,19 @@ export class ComponentUtil<T extends DataSource<any> | any>
 
   serviceGetData(functionGetData: Observable<any> | any,
                  callbackGetDataSuccess: Function,
-                 callbackGetDataError?: Function) {
+                 callbackGetDataError?: Function,
+                 config?: any) {
     this.awaitRefresh = true;
-    Ui.blockUI(this.CARD_WRAPPER_ID);
+
+    if (config) {
+      if (config.enableBlocking) {
+        Ui.blockUI(this.CARD_WRAPPER_ID);
+      }
+    } else {
+      Ui.blockUI(this.CARD_WRAPPER_ID);
+    }
+
+    // Ui.blockUI(this.CARD_WRAPPER_ID);
     setTimeout(() => {
       functionGetData.pipe(first()).subscribe(
         value => {
@@ -343,7 +365,15 @@ export class ComponentUtil<T extends DataSource<any> | any>
           callbackGetDataSuccess(this.receivedData);
         },
         error1 => {
-          Ui.unblockUI(this.CARD_WRAPPER_ID);
+          if (config) {
+            if (config.enableBlocking) {
+              Ui.unblockUI(this.CARD_WRAPPER_ID);
+            }
+          } else {
+            Ui.unblockUI(this.CARD_WRAPPER_ID);
+          }
+
+
           this.awaitRefresh = false;
           if (callbackGetDataError) {
             callbackGetDataError(error1);
@@ -352,7 +382,14 @@ export class ComponentUtil<T extends DataSource<any> | any>
         () => {
           this.firstInit = (!this.firstInit) ? !this.firstInit : this.firstInit; // init awal kompoenent
 
-          Ui.unblockUI(this.CARD_WRAPPER_ID);
+          if (config) {
+            if (config.enableBlocking) {
+              Ui.unblockUI(this.CARD_WRAPPER_ID);
+            }
+          } else {
+            Ui.unblockUI(this.CARD_WRAPPER_ID);
+          }
+
           this.awaitRefresh = false;
         }
       );

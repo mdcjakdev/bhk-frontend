@@ -133,6 +133,8 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header><strong
             class="primary">{{tableProperties.displayedHeaders[i]}}</strong></th>
           <td mat-cell *matCellDef="let row; let indexRow = dataIndex"
+              matTooltip="{{showValueAsTooltip(delegateLevelValue(row, tableProperties.levelsOnData[i]))}}"
+              [matTooltipPosition]="'left'"
               [class.expanded-detail]="selectedValue === row"
               [ngStyle]="{
                 'border-bottom-width': (selectedValue === row && !isRightClick) ? '0px' : '1px',

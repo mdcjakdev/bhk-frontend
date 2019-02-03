@@ -129,12 +129,14 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header><strong
             class="primary">{{tableProperties.displayedHeaders[i]}}</strong></th>
           <td mat-cell *matCellDef="let row; let indexRow = dataIndex"
+              matTooltip="{{showValueAsTooltip(delegateLevelValue(row, tableProperties.levelsOnData[i], tableProperties.configs[i]))}}"
+              [matTooltipPosition]="'left'"
               [class.expanded-detail]="selectedValue === row"
               [ngStyle]="{
                 'border-bottom-width': (selectedValue === row && !isRightClick) ? '0px' : '1px',
                 'border-color': 'rgba(0, 0, 0, 0.08)',
                 'font-weight': (isUuid(properties) ? 'bold' : 'none')
-              }">{{printValue(properties, delegateLevelValue(row, tableProperties.levelsOnData[i]), indexRow)}}</td>
+              }">{{printValue(properties, delegateLevelValue(row, tableProperties.levelsOnData[i], tableProperties.configs[i]), indexRow)}}</td>
         </ng-container>
 
         <!--/** detail expand data */-->

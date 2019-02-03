@@ -1,16 +1,9 @@
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppErrorStateMatcher, qualifyObject, statusGeneralization} from '../../shared/utils';
-import {
-  MasterCategory,
-  masterCategoryDisables, masterCategoryErrorStateMatchers, masterCategoryForm,
-  masterCategoryInit,
-  MasterSubCategory,
-  masterSubCategoryDisables, masterSubCategoryErrorStateMatchers, masterSubCategoryForm,
-  masterSubCategoryInit
-} from './master-category-init';
-import {MasterUnit, masterUnitDisables, masterUnitErrorStateMatchers, masterUnitForm, masterUnitInit} from './master-unit-init';
-import {MasterWarna, masterWarnaDisables, masterWarnaForm, masterWarnaInit} from './master-warna';
+import {MasterCategory, masterCategoryInit, MasterSubCategory, masterSubCategoryInit} from './master-category-init';
+import {MasterUnit, masterUnitInit} from './master-unit-init';
+import {MasterWarna, masterWarnaForm, masterWarnaInit} from './master-warna';
 
 
 /** Model Class Master Item Barcode */
