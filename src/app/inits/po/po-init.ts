@@ -13,7 +13,7 @@ import {
   masterItemNamaAliasInit
 } from '../master/master-item';
 import {Pengguna, penggunaDisables, penggunaForm, penggunaInit} from '../administrator/pengguna-init';
-import {AppErrorStateMatcher, qualifyObject} from '../../shared/utils';
+import {AppErrorStateMatcher, qualifyObject, statusGeneralization} from '../../shared/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {statusDokumen, UUID_COLUMN} from '../../shared/constants';
 import {MasterSupplier, masterSupplierDisables, masterSupplierForm, masterSupplierInit} from '../master/master-supplier';
@@ -55,14 +55,14 @@ export interface PemesananPembelian extends AppAuditEntity {
   poCancelledBy?: Pengguna;
   nomorPrefixPo?: string;
   statusDokumenPo?: string;
-  
+
   tanggalPemesanan?: any;
   supplier?: MasterSupplier;
   pelanggan?: MasterPelanggan;
   namaPic?: string;
   urgent?: boolean;
   onCo?: boolean;
-  
+
 }
 
 /** Init nilai awal Pemesanan Pembelian Detail Warna  */
@@ -154,7 +154,7 @@ export const pemesananPembelianDetailWarnaErrorStateMatchers = {
   warna: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih warna'},
   jumlah: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda menginputkan jumlah data'},
   unit: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih unit'},
-  nomorMatching: {matcher: new AppErrorStateMatcher(), message: 'Nomor matching harus diisi' }
+  nomorMatching: {matcher: new AppErrorStateMatcher(), message: 'Nomor matching harus diisi'}
 };
 
 /** Init StateMatcher formcontrol permintaanPembelianDetail */
@@ -167,7 +167,7 @@ export const pemesananPembelianDetailErrorStateMatchers = {
 /** Init StateMatcher formcontrol Pemesanan Pembelian */
 export const pemesananPembelianErrorStateMatchers = {
   counterPo: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda counter ada'},
-  detail: {...pemesananPembelianDetailErrorStateMatchers },
+  detail: {...pemesananPembelianDetailErrorStateMatchers},
   salesman: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda memilih salesman'},
   nomorDokumenPo: {matcher: new AppErrorStateMatcher(), message: 'Nomor dokumen tidak boleh kosong'},
   nomorPrefixPo: {matcher: new AppErrorStateMatcher(), message: 'Nomor prefix tidak boleh kosong'},
@@ -180,15 +180,16 @@ export const pemesananPembelianErrorStateMatchers = {
 
 /** Fungsi Init Reactive Form Group untuk data Pemesanan Pembelian Detail Warna*/
 export function pemesananPembelianDetailWarnaForm(init: any = pemesananPembelianDetailWarnaInit,
-                                                   disables = pemesananPembelianDetailWarnaDisables,
-                                                   initAuditForm: Function = appAuditEntityForm): FormGroup {
+                                                  disables = pemesananPembelianDetailWarnaDisables,
+                                                  forGeneralization = false,
+                                                  initAuditForm: Function = appAuditEntityForm): FormGroup {
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
     warna: masterWarnaForm(init.warna, {...masterWarnaDisables, uuid: true}, true),
     jumlah: [{value: init.jumlah, disabled: disables.jumlah}, Validators.required],
     unit: masterUnitForm(init.unit, {...masterUnitDisables, uuid: true}, true),
     catatan: {value: init.catatan, disabled: disables.catatan},
-    nomorMatching: [{value: init.nomorMatching, disabled: disables.nomorMatching}, Validators.required],
+    nomorMatching: [{value: init.nomorMatching, disabled: disables.nomorMatching}, statusGeneralization(Validators.required, forGeneralization)],
     forRetail: {value: init.forRetail, disabled: disables.forRetail},
   });
 }
@@ -202,8 +203,9 @@ function generatePemesananPembelianDetailWarna(temp: PemesananPembelianDetailWar
 
 /** Fungsi Init Reactive Form Group untuk data Pemesanan Pembelian Detail*/
 export function pemesananPembelianDetailForm(init: any = pemesananPembelianDetailInit,
-                                              disables = pemesananPembelianDetailDisables,
-                                              initAuditForm: Function = appAuditEntityForm): FormGroup {
+                                             disables = pemesananPembelianDetailDisables,
+                                             forGeneralization = false,
+                                             initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   const detailWarna = (init.detailWarna.length === 0) ? [] : generatePemesananPembelianDetailWarna(init.detailWarna);
 
@@ -222,10 +224,12 @@ function generatePemesananPembelianDetail(temp: PemesananPembelianDetail[]) {
   return data;
 }
 
+
 /** Fungsi Init Reactive Form Group untuk data Pemesanan Pembelian */
 export function pemesananPembelianForm(init: any = pemesananPembelianInit,
-                                        disables = pemesananPembelianDisables,
-                                        initAuditForm: Function = appAuditEntityForm): FormGroup {
+                                       disables = pemesananPembelianDisables,
+                                       forGeneralization = false,
+                                       initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   /** megeneralisasi nilai2 array dari detail item */
   const detail = (init.detail.length === 0) ? [] : generatePemesananPembelianDetail(init.detail);
@@ -237,26 +241,32 @@ export function pemesananPembelianForm(init: any = pemesananPembelianInit,
       uuid: {value: (init.permintaanPembelian) ? qualifyObject(init.permintaanPembelian, UUID_COLUMN) : '', disabled: false}
     }),
     catatan: {value: qualifyObject(init, 'catatan'), disabled: disables.catatan},
-    counterPo: [{value: qualifyObject(init, 'catatan'), disabled: disables.counterPo}, Validators.required],
+    counterPo: [{value: qualifyObject(init, 'catatan'), disabled: disables.counterPo}, statusGeneralization(Validators.required, forGeneralization)],
     detail: new FormBuilder().array(detail),
     salesman: penggunaForm(init.salesman, {...penggunaDisables}, true),
-    nomorDokumenPo: [{value: qualifyObject(init, 'nomorDokumenPo'), disabled: disables.nomorDokumenPo}, Validators.required],
+    nomorDokumenPo: [{value: qualifyObject(init, 'nomorDokumenPo'), disabled: disables.nomorDokumenPo}, statusGeneralization(Validators.required, forGeneralization)],
     poApprovedBy: new FormBuilder().group({
-      uuid: {value: ((init.poApprovedBy === undefined || init.poApprovedBy === null) ? '' : init.poApprovedBy.uuid), disabled: disables.poApprovedBy}
+      uuid: {
+        value: ((init.poApprovedBy === undefined || init.poApprovedBy === null) ? '' : init.poApprovedBy.uuid),
+        disabled: disables.poApprovedBy
+      }
     }),
     poApprovedDate: {value: qualifyObject(init, 'poApprovedDate'), disabled: disables.poApprovedDate},
     poCanceledDate: {value: qualifyObject(init, 'poCanceledDate'), disabled: disables.poCanceledDate},
     poCanceledReason: {value: qualifyObject(init, 'poCanceledReason'), disabled: disables.poCanceledReason},
     poCancelledBy: new FormBuilder().group({
-      uuid: {value: ((init.poCancelledBy === undefined || init.poCancelledBy === null) ? '' : init.poCancelledBy.uuid), disabled: disables.poCancelledBy},
+      uuid: {
+        value: ((init.poCancelledBy === undefined || init.poCancelledBy === null) ? '' : init.poCancelledBy.uuid),
+        disabled: disables.poCancelledBy
+      },
     }),
-    nomorPrefixPo: [{value: qualifyObject(init, 'nomorPrefixPo'), disabled: disables.nomorPrefixPo}, Validators.required],
+    nomorPrefixPo: [{value: qualifyObject(init, 'nomorPrefixPo'), disabled: disables.nomorPrefixPo}, statusGeneralization(Validators.required, forGeneralization)],
     statusDokumenPo: {value: qualifyObject(init, 'statusDokumenPo'), disabled: disables.statusDokumenPo},
 
-    tanggalPemesanan: [{value: qualifyObject(init, 'tanggalPemesanan'), disabled: disables.tanggalPemesanan}, Validators.required],
+    tanggalPemesanan: [{value: qualifyObject(init, 'tanggalPemesanan'), disabled: disables.tanggalPemesanan}, statusGeneralization(Validators.required, forGeneralization)],
     supplier: masterSupplierForm(init.supplier, {...masterSupplierDisables, uuid: true}, true),
     pelanggan: masterPelangganForm(init.pelanggan, {...masterPelangganDisables}, true),
-    namaPic: [{value: qualifyObject(init, 'namaPic'), disabled: disables.namaPic}, Validators.required],
+    namaPic: [{value: qualifyObject(init, 'namaPic'), disabled: disables.namaPic}, statusGeneralization(Validators.required, forGeneralization)],
     urgent: {value: qualifyObject(init, 'urgent'), disabled: disables.urgent},
     onCo: {value: init.onCo, disabled: false}
   });

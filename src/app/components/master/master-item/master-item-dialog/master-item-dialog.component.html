@@ -431,6 +431,7 @@
                 *ngFor="let temp of getWarnaValues(form, 'warna'); index as tempIndex"
                 (removed)="removeWarna(reactiveFormUtil.getFormArray('warna', form), tempIndex, temp)">
                 {{temp.namaWarna}} {{temp.kodeWarna.length === 0 ? '' : '('+ temp.kodeWarna +')'}}
+                <!--<mat-icon matTooltip="Hapus"-->
                 <mat-icon matTooltip="Hapus"
                           [matTooltipPosition]="'below'"
                           matChipRemove>cancel

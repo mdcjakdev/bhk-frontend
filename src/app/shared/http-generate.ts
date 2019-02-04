@@ -10,6 +10,9 @@ export class AppHttpGenerate {
 
   public failed = false;
 
+
+  public document: any;
+
   constructor(
     public http: HttpClient,
     public functionRequest: Function
@@ -29,6 +32,7 @@ export class AppHttpGenerate {
 
       setHttp.pipe(first()).subscribe(
         value1 => {
+          this.document = value1;
           this.waiting = false;
           if (success) {
             success(value1);

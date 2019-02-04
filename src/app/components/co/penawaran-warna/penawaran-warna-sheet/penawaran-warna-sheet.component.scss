@@ -1,0 +1,58 @@
+@import "~src/assets/css/dan-theme";
+@import "~src/assets/css/dan-mix";
+
+.mat-nav-list {
+  padding: 0px !important;
+}
+
+.mat-progress-bar {
+  position: absolute;
+  height: 4px;
+}
+
+#dokumen {
+  padding: 24px 23px 8px 24px;
+
+  ::ng-deep .mat-form-field-underline {
+    margin-left: -50px !important;
+    width: 130% !important;
+  }
+}
+
+::ng-deep .mat-form-field-infix {
+  display: block !important;
+  position: relative !important;
+  flex: auto !important;
+  min-width: 0 !important;
+  padding-bottom: 10px !important;
+}
+
+//
+::ng-deep .mat-bottom-sheet-container {
+  padding: 0px;
+  height: 100% !important;
+  width: 850px !important;
+  overflow: hidden !important;
+}
+
+
+#result {
+  ::ng-deep .mat-list-item-content {
+    padding: 0px 16px 0px 16px !important;
+  }
+  margin-top: -1.24em;
+  z-index: 0;
+  height: 380px;
+  overflow: auto !important;
+}
+
+
+.footer-info {
+  font-size: $standard-font-size-xs !important;
+  color: mat-color($dan-app-accent);
+}
+
+
+.result-info {
+  font-size: $standard-font-size !important;
+}

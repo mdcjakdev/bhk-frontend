@@ -1,0 +1,92 @@
+<div id="dialog-block" [formGroup]="formCoDetail">
+  <h4 mat-dialog-title class="primary">
+    <div>
+      <mat-icon style="margin-bottom: 4px;">featured_play_list</mat-icon>
+
+      <strong style="margin-left: 10px">&nbsp;Kain {{getNamaKainOrAlias()}}</strong>
+    </div>
+  </h4>
+
+  <div mat-dialog-content class="form-app">
+
+    <mat-accordion formArrayName="warna" style="padding-topp: 20px;">
+
+      <mat-expansion-panel
+        *ngFor="let warna of reactiveFormUtil.getFormArrays('warna', formCoDetail); index as warnaIndex">
+        <mat-expansion-panel-header>
+
+          <mat-panel-title>
+            {{data.detailWarna[warnaIndex].warna.namaWarna}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{data.detailWarna[warnaIndex].warna.kodeWarna}}
+
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div [formGroupName]="warnaIndex" class="container-info row">
+
+
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <span  class="info-title">Penawaran Warna {{data.detailWarna[warnaIndex].warna.namaWarna}}</span>
+            <button mat-flat-button class="add-info-button button-style"
+                    (click)="addNewInfo(reactiveFormUtil.getFormArray('info', warna))"
+                    color="accent"
+                    matTooltip="Tambah Informasi Penawaran"
+                    matTooltipPosition="before">
+              Tambah
+              <!--<mat-icon aria-label="Tambah info penawaran">add</mat-icon>-->
+
+            </button>
+          </div>
+
+          <div formArrayName="info" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <mat-card *ngFor="let info of reactiveFormUtil.getFormArrays('info', warna); index as infoIndex"
+                      id="info">
+
+              <mat-card-content>
+                <button mat-icon-button matTooltip="Print"
+                        matTooltipPosition="below">
+                  <mat-icon class="icon-delete-info">print</mat-icon>
+                </button>
+                <button mat-icon-button
+                        (click)="removeInfo(reactiveFormUtil.getFormArray('info', warna), infoIndex)"
+                        matTooltip="Hapus"
+                        matTooltipPosition="below">
+                  <mat-icon class="icon-delete-info">delete</mat-icon>
+                </button>
+                <div [formGroupName]="infoIndex" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <input type="hidden" formControlName="uuid">
+
+                  <!--sj number-->
+                  <mat-form-field [appearance]="formFieldAppearance">
+                    <mat-label>SJ Number</mat-label>
+                    <input matInput autocomplete="off" placeholder="SJ Number" formControlName="sjNumber" >
+                  </mat-form-field>
+
+                  <!--Note-->
+                  <mat-form-field [appearance]="formFieldAppearance">
+                    <mat-label>Catatan</mat-label>
+                    <textarea  matInput placeholder="Note" style="height: 75px" formControlName="catatan"></textarea>
+                  </mat-form-field>
+                </div>
+
+              </mat-card-content>
+
+            </mat-card>
+          </div>
+
+        </div>
+      </mat-expansion-panel>
+
+
+    </mat-accordion>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button class="button-style" mat-flat-button (click)="onNoClick()" color="primary">
+      Selesai
+    </button>
+  </mat-dialog-actions>
+
+</div>

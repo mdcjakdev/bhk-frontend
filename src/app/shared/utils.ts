@@ -3,6 +3,13 @@ import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/form
 import * as moment from 'moment';
 
 
+export function generateArrayForm(initValue: any[], formGroupFunction: Function) {
+  const data = [];
+  initValue.forEach(value => data.push(formGroupFunction(value)));
+  return data;
+}
+
+
 export function isUrlAlreadyHasParams(url: string) {
   return url.indexOf('?') > -1;
 }

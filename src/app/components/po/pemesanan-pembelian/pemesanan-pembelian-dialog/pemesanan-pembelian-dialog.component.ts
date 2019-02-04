@@ -523,7 +523,7 @@ export class PemesananPembelianDialogComponent extends DialogUtil
     });
 
     if (!firstInit) {
-      this.reactiveFormUtil.addFormArray(<FormGroup>detailFormGroup, fa);
+      this.reactiveFormUtil.addFormArray(<FormGroup>detailFormGroup, fa, true);
     }
   }
 

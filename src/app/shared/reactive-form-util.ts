@@ -24,15 +24,22 @@ export class ReactiveFormUtil {
   /**
    * Untuk penambahan data pada form array
    */
-  addFormArray(initFormValue: FormGroup, formArray) {
-    formArray.push(initFormValue);
+  addFormArray(initFormValue: FormGroup, formArray: FormArray | FormGroup, first = false) {
+    if (first) {
+      this.insertFormArrayFirst(initFormValue, <FormArray> formArray);
+    } else {
+      (<FormArray> formArray).push(initFormValue);
+    }
+  }
+
+
+  private insertFormArrayFirst(initFormValue: FormGroup, formArray: FormArray) {
+    formArray.insert(0, initFormValue);
   }
 
 
   removeFormArray(fa: FormArray, i) {
-    // if (y) {
       fa.removeAt(i);
-    // }
   }
 
 }
