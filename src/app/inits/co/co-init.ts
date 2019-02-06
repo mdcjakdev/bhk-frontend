@@ -18,6 +18,10 @@ import {AppErrorStateMatcher, generateArrayForm, qualifyObject, statusGeneraliza
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UUID_COLUMN} from '../../shared/constants';
 
+export const statusPenawaran = {
+  accepted: 'ACC',
+  notAccepted: 'NOT_ACC'
+};
 
 export interface PenawaranWarnaInfo extends AppAuditEntity {
   sjNumber?: any;
@@ -46,7 +50,6 @@ export interface PenawaranWarna {
   nomorDokumen?: string;
   nomorPrefix?: string;
   counter?: any;
-  vendor?: MasterSupplier;
   status?: string;
   detail?: PenawaranWarnaDetail[];
 
@@ -59,7 +62,7 @@ export const penawaranWarnaInfoInit = {
   sjNumber: '',
   tanggalPengiriman: '',
   tanggalPenerimaan: '',
-  status: '',
+  status: statusPenawaran.notAccepted,
   catatan: '',
 };
 
@@ -85,7 +88,6 @@ export const penawaranWarnaInit = {
   nomorDokumen: '',
   nomorPrefix: '',
   counter: '',
-  vendor: '',
   status: '',
   detail: []
 };
@@ -99,7 +101,6 @@ export interface PenawaranWarna {
   nomorDokumen?: string;
   nomorPrefix?: string;
   counter?: any;
-  vendor?: MasterSupplier;
   status?: string;
   detail?: PenawaranWarnaDetail[];
 
@@ -136,7 +137,6 @@ export const penawaranWarnaDisables = {
   nomorDokumen: true,
   nomorPrefix: false,
   counter: false,
-  vendor: false,
   status: false
 };
 
@@ -166,7 +166,6 @@ export const penawaranWarnaErrorStateMatchers = {
   nomorDokumen: {matcher: new AppErrorStateMatcher(), message: 'Nomor Dokumen harus ada'},
   nomorPrefix: {matcher: new AppErrorStateMatcher(), message: 'Nomor prefix harus ada'},
   counter: {matcher: new AppErrorStateMatcher(), message: 'Counter harus ada'},
-  vendor: {matcher: new AppErrorStateMatcher(), message: 'Silahkan pilih salah satu vendor'}
   // status: {matcher: new AppErrorStateMatcher(), message: 'Pastikan anda counter ada'}
 };
 
@@ -186,7 +185,10 @@ export function penawaranWarnaInfoForm(init = penawaranWarnaInfoInit,
     }, statusGeneralization(Validators.required, forGeneralization)],
     tanggalPengiriman: {value: qualifyObject(init, 'tanggalPengiriman'), disabled: disables.tanggalPengiriman},
     tanggalPenerimaan: {value: qualifyObject(init, 'tanggalPenerimaan'), disabled: disables.tanggalPenerimaan},
-    status: {value: qualifyObject(init, 'status'), disabled: disables.status},
+    status: [{
+      value: qualifyObject(init, 'status'),
+      disabled: disables.status
+    }, statusGeneralization(Validators.required, forGeneralization)],
     catatan: {value: qualifyObject(init, 'catatan'), disabled: disables.catatan}
   });
 }
@@ -258,14 +260,10 @@ export function penawaranWarnaForm(init = penawaranWarnaInit,
       value: qualifyObject(init, 'counter'),
       disabled: disables.counter
     }, statusGeneralization(Validators.required, forGeneralization)],
-    vendor: [{
-      value: qualifyObject(init, 'vendor'),
-      disabled: disables.vendor
-    }, statusGeneralization(Validators.required, forGeneralization)],
-    status: [{
+    status: {
       value: qualifyObject(init, 'status'),
       disabled: disables.status
-    }, statusGeneralization(Validators.required, forGeneralization)],
+    },
     detail: new FormBuilder().array(detail)
   });
 }

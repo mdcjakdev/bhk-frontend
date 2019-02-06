@@ -19,6 +19,10 @@ export class PenawaranWarnaService {
     return http.get(apiHost + ':' + apiPort + url);
   }
 
+  getByPoId(id) {
+    return this.http.get(`${apiHost}:${apiPort}/api/co/by/poid/${id}`);
+  }
+
   getListOfPoDocument(bodyParams) {
     return this.http.post(apiHost + ':' + apiPort + '/api/co/utilitas/list/po/', bodyParams);
   }

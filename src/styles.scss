@@ -1,9 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.css";
+
 @import "assets/css/dan-mix";
 @import "~animate.css/animate.min.css";
 
+
+@import "~bootstrap/scss/bootstrap";
+//
+//@import "~bootstrap/scss/functions";
+//@import "~bootstrap/scss/variables";
+//@import "~bootstrap/scss/mixins";
+//
+//
+//$grid-breakpoints: (
+//  xs: 0,
+//  sm: 576px,
+//  md: 1100px,
+//  lg: 1150px,
+//  xl: 1200px
+//) !default;
+//
+//
+//@include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
+//@include _assert-starts-at-zero($grid-breakpoints);
+//@import "~bootstrap/dist/css/bootstrap.css";
 
 /* width */
 ::-webkit-scrollbar {
@@ -80,8 +100,8 @@ mat-sidenav {
 
 #card-wrapper {
   .mat-card#card-page {
-    //border-bottom: 0px solid #000;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.12), 0 0px 0px rgba(0, 0, 0, 0.24);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 
     .mat-card-title {
@@ -125,8 +145,6 @@ mat-sidenav {
 
           .mat-progress-bar {
             height: 2px;
-            //border-bottom-right-radius: 3px;
-            //border-bottom-left-radius: 3px;
             margin-left: -25px;
             margin-top: 38px;
             position: absolute
@@ -139,7 +157,23 @@ mat-sidenav {
   }
 
   .mat-elevation-z8 {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.13), 0px 1px 0px 0 rgba(0, 0, 0, 0.15);
+
+    table {
+      border-top: 1px solid rgba(0, 0, 0, 0.13) !important;
+    }
+
+    #table-detail {
+
+      table {
+        border-top: 0px solid rgba(0, 0, 0, 0.13) !important;
+      }
+
+    }
+
+
+
   }
 
 
@@ -168,9 +202,6 @@ mat-sidenav {
     padding-left: 34px;
   }
   .example-element-detail {
-    //padding-top: 30px;
-    //padding-bottom: 30px;
-    //padding-left: 34px;
     overflow: hidden;
     display: flex;
   }

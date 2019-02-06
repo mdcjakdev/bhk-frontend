@@ -104,6 +104,6 @@ export class PemesananPembelianSheetComponent implements OnInit, AfterViewInit {
 
   openDocument(pr: any) {
     this.bottomSheetRef.dismiss(pr);
-    event.preventDefault();
+    // event.preventDefault();
   }
 }

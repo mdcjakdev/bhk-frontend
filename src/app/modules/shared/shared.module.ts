@@ -49,6 +49,7 @@ import {MatAutocompleteTriggerViewChildDirective} from '../../shared/directives/
 import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-view-child.directive';
 import {MatTooltipAsNotificationDirective} from '../../shared/directives/mat-tooltip-as-notification.directive';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {StopMonitorDirective} from '../../shared/directives/stop-monitor.directive';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     ElementFocusDirective,
     MatSelectViewChildDirective,
     MatTooltipAsNotificationDirective,
-    MatAutocompleteTriggerViewChildDirective
+    MatAutocompleteTriggerViewChildDirective,
+    StopMonitorDirective
   ],
   imports: [
     CommonModule,
@@ -142,6 +144,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatSelectViewChildDirective,
     MatTooltipAsNotificationDirective,
     MatAutocompleteTriggerViewChildDirective,
+    StopMonitorDirective,
 
     DragDropModule,
 

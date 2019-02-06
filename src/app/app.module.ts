@@ -16,6 +16,7 @@ import {SalesOrderComponent} from './components/sales-order/sales-order.componen
     SalesOrderComponent
 
 
+
   ],
   imports: [
     BrowserAnimationsModule,
