@@ -100,12 +100,12 @@
           class="col-lg-4 col-md-6 col-sm-6 col-xs-6 col-lg">
           <mat-card
             [ngClass]="dataStyles[cardIndex]"
-            (click)="cardClicked(cardIndex)"
-            (contextmenu)="onTableRightClicked($event, cardIndex)">
+            (click)="cardClicked(cardIndex, penawaran)"
+            (contextmenu)="onTableRightClicked($event, cardIndex, penawaran)">
 
             <mat-card-content>
               <mat-icon>web</mat-icon>
-              {{x}}
+
             </mat-card-content>
             <mat-divider></mat-divider>
             <mat-card-footer>

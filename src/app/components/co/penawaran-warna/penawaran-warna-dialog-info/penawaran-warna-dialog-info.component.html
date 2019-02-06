@@ -1,7 +1,7 @@
 <div id="dialog-block" [formGroup]="formCoDetail">
-  <h4 mat-dialog-title class="primary">
+  <h4 mat-dialog-title>
     <div>
-      <mat-icon style="margin-bottom: 4px;">featured_play_list</mat-icon>
+      <mat-icon color="primary" style="margin-bottom: 4px;">confirmation_number</mat-icon>
 
       <strong style="margin-left: 10px">&nbsp;Kain {{getNamaKainOrAlias()}}</strong>
     </div>
@@ -28,10 +28,10 @@
 
 
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <span  class="info-title">Penawaran Warna {{data.detailWarna[warnaIndex].warna.namaWarna}}</span>
-            <button mat-flat-button class="add-info-button button-style"
+            <span class="info-title">Penawaran Warna {{data.detailWarna[warnaIndex].warna.namaWarna}}</span>
+            <button mat-flat-button  class="add-info-button button-style"
                     (click)="addNewInfo(reactiveFormUtil.getFormArray('info', warna))"
-                    color="accent"
+                    color="warn"
                     matTooltip="Tambah Informasi Penawaran"
                     matTooltipPosition="before">
               Tambah
@@ -61,14 +61,58 @@
                   <!--sj number-->
                   <mat-form-field [appearance]="formFieldAppearance">
                     <mat-label>SJ Number</mat-label>
-                    <input matInput autocomplete="off" placeholder="SJ Number" formControlName="sjNumber" >
+                    <input matInput autocomplete="off" placeholder="SJ Number" formControlName="sjNumber"
+                           [errorStateMatcher]="stateMatcherInfo.sjNumber.matcher" required>
+                    <mat-error
+                      *ngIf="reactiveFormUtil.formControl(info, 'sjNumber').hasError('required')">
+                      {{stateMatcherInfo.sjNumber.message}}</mat-error>
                   </mat-form-field>
+
+                  <!--Tanggal Pengiriman-->
+                  <mat-form-field>
+                    <mat-label>Tanggal Pengiriman</mat-label>
+                    <input matInput autocomplete="off" placeholder="Tanggal Pengiriman"
+                           formControlName="tanggalPengiriman"
+                           (focus)="deliveryDatepicker.open()"
+                           (click)="deliveryDatepicker.open()"
+                           [matDatepicker]="deliveryDatepicker">
+                    <!--<mat-error-->
+                    <!--*ngIf="reactiveFormUtil.formControl(form, 'tanggalMulai').hasError('required')">-->
+                    <!--{{stateMatchers.tanggalMulai.message}}</mat-error>-->
+                    <mat-datepicker #deliveryDatepicker></mat-datepicker>
+
+                  </mat-form-field>
+
+                  <!--Tanggal Penerimaan-->
+                  <mat-form-field>
+                    <mat-label>Tanggal Penerimaan</mat-label>
+                    <input matInput autocomplete="off" placeholder="Tanggal Penerimaan"
+                           formControlName="tanggalPenerimaan"
+                           (focus)="receivedDatepicker.open()"
+                           (click)="receivedDatepicker.open()"
+                           [matDatepicker]="receivedDatepicker">
+                    <!--<mat-error-->
+                    <!--*ngIf="reactiveFormUtil.formControl(form, 'tanggalMulai').hasError('required')">-->
+                    <!--{{stateMatchers.tanggalMulai.message}}</mat-error>-->
+                    <mat-datepicker #receivedDatepicker></mat-datepicker>
+
+                  </mat-form-field>
+
 
                   <!--Note-->
                   <mat-form-field [appearance]="formFieldAppearance">
                     <mat-label>Catatan</mat-label>
-                    <textarea  matInput placeholder="Note" style="height: 75px" formControlName="catatan"></textarea>
+                    <textarea matInput placeholder="Note" style="height: 75px" formControlName="catatan"></textarea>
                   </mat-form-field>
+
+
+                  <mat-button-toggle-group matTooltip="Status Penawaran" matTooltipPosition="before"
+                                           formControlName="status"
+                                           name="status" aria-label="Status Penawaran">
+                    <mat-button-toggle class="toggle" value="ACC">Setuju</mat-button-toggle>
+                    <mat-button-toggle class="not-toggle" value="NOT_ACC">Tidak Setuju</mat-button-toggle>
+                  </mat-button-toggle-group>
+
                 </div>
 
               </mat-card-content>
@@ -84,7 +128,7 @@
   </div>
 
   <mat-dialog-actions align="end">
-    <button class="button-style" mat-flat-button (click)="onNoClick()" color="primary">
+    <button class="button-style" [disabled]="formCoDetail.invalid" mat-flat-button (click)="onNoClick()" color="primary">
       Selesai
     </button>
   </mat-dialog-actions>

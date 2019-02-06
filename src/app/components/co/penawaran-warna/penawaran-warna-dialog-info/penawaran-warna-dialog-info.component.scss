@@ -65,10 +65,74 @@
 .add-info-button {
   float: right;
   z-index: 1000;
-
 }
 
+// customize angular material date picker
+
+::ng-deep .mat-datepicker-content {
+  //border-radius: 10px;
+  margin-top: 2px;
+  height: 388px;
+  .mat-calendar {
+    //border-radius: 10px;
+    .mat-calendar-header {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      //border-radius: 10px;
+      background: mat-color($dan-app-primary);
+      color: #ffffff;
+      padding: 8px 8px 1px 8px;
+      .mat-calendar-controls {
+        .mat-button {
+          .mat-button-wrapper {
+            .mat-calendar-arrow {
+              display: none;
+            }
+          }
+        }
+        .mat-icon-button {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .mat-calendar-table {
+  .mat-calendar-table-header {
+    margin-top: 10px;
+  }
+  .mat-calendar-table-header th {
+    text-align: center;
+    padding: 16px 0 8px 0;
+    background: #ffffff;
+  }
+}
+
+// end of customize angular material date picker
+
 #dialog-block {
+
+
+
+  .toggle {}
+  .not-toggle {}
+  .mat-button-toggle-group {
+
+    .mat-button-toggle-checked {
+      background-color: mat-color($dan-app-primary);
+      color: white !important;
+    }
+    .mat-button-toggle-checked:not(.toggle) {
+      background-color: mat-color($dan-app-warning);
+      color: white !important;
+    }
+
+
+    .mat-button-toggle {
+
+    }
+  }
 
   .mat-expansion-panel {
     .mat-expansion-panel-header {

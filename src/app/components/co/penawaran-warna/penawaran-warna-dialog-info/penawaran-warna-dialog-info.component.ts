@@ -1,17 +1,18 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormArray, FormGroup} from '@angular/forms';
-import {penawaranWarnaDetailForm, penawaranWarnaInfoForm} from '../../../../inits/co/co-init';
+import {penawaranWarnaDetailForm, penawaranWarnaInfoErrorStateMatchers, penawaranWarnaInfoForm} from '../../../../inits/co/co-init';
 import {ReactiveFormUtil} from '../../../../shared/reactive-form-util';
 import {Constants} from '../../../../shared/constants';
 import {masterSubCategoryForm} from '../../../../inits/master/master-category-init';
+import {FocusMonitor} from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-penawaran-warna-dialog-info',
   templateUrl: './penawaran-warna-dialog-info.component.html',
   styleUrls: ['./penawaran-warna-dialog-info.component.scss']
 })
-export class PenawaranWarnaDialogInfoComponent implements OnInit {
+export class PenawaranWarnaDialogInfoComponent implements OnInit, AfterViewInit {
 
   // item: any;
   public reactiveFormUtil = new ReactiveFormUtil();
@@ -19,7 +20,12 @@ export class PenawaranWarnaDialogInfoComponent implements OnInit {
 
   formCoDetail: FormGroup; // = penawaranWarnaDetailForm();
 
+  stateMatcherInfo = penawaranWarnaInfoErrorStateMatchers;
+
+  @ViewChild('notAccepted') notAccepted: ElementRef<HTMLInputElement>;
+
   constructor(private changeDetector: ChangeDetectorRef,
+              private _focusMonitor: FocusMonitor,
               public dialogRef: MatDialogRef<PenawaranWarnaDialogInfoComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     // console.log(data)
@@ -27,6 +33,12 @@ export class PenawaranWarnaDialogInfoComponent implements OnInit {
     this.formCoDetail = (this.data.formDetail !== undefined) ? this.data.formDetail : penawaranWarnaDetailForm(this.data.detail);
     // console.log(this.formCoDetail.getRawValue())
   }
+
+
+  ngAfterViewInit(): void {
+  }
+
+
 
 
   getNamaKainOrAlias() {

@@ -60,19 +60,20 @@ export class PenawaranWarnaComponent
     this.searchDocumentTriggerElement.nativeElement.value = '';
     this.searchDocumentNumber.setValue('');
 
+    /* open sheet dialog */
+    this.openSheetDialog({
+      onCo: selectedValue.onCo,
+      poUuid: selectedValue.uuid,
+      poNumber: selectedValue.nomorDokumenPo
+    });
+  }
 
+
+  openSheetDialog(data: any, fromSearch = true) {
     this.bottomSheet.open(PenawaranWarnaSheetComponent, {
       disableClose: true,
-      data: {
-        onCo: selectedValue.onCo,
-        poUuid: selectedValue.uuid,
-        poNumber: selectedValue.nomorDokumenPo,
-        isInsert: true
-      }
-    }).afterDismissed()
-      .subscribe(value => {
-
-      });
+      data: {...data, fromSearch: fromSearch}
+    });
   }
 
 
@@ -194,15 +195,15 @@ export class PenawaranWarnaComponent
 
 
 
-  onTableRightClicked = (event, cardIndex) => {
+  onTableRightClicked = (event, cardIndex, penawaran) => {
 
     this.isRightClick = true;
     this.showTableMenuOnRightClick(event, this.menuData);
-    this.cardClicked(cardIndex);
+    this.cardClicked(cardIndex, penawaran);
   };
 
 
-  cardClicked(cardIndex: number) {
+  cardClicked(cardIndex: number, penawaran) {
     this.sideNav.close();
     this.dataIndexSelected = cardIndex;
     for (let i = 0; i < this.dataPenawaran.length; i++) {
@@ -210,6 +211,15 @@ export class PenawaranWarnaComponent
     }
 
     this.openedPanelColorOfferHistory = true;
+
+    if (!this.isRightClick) {
+      // this.openSheetDialog({
+      //   onCo: true,
+      //   coUuid: penawaran.uuid,
+      //   poUuid: penawaran.pemesananPembelian.uuid,
+      //   poNumber: '......'
+      // }, false);
+    }
   }
 
   note(noted: string, length: number) {

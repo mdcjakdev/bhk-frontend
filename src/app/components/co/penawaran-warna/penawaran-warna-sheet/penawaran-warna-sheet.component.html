@@ -9,6 +9,7 @@
       {{(failLoadDocumentPoAndDocumentProperties) ? 'Gagal Memuat....' : data.poNumber}}</strong>
     <button *ngIf="!failLoadDocumentPoAndDocumentProperties"
             (click)="save()"
+            [disabled]="formCo.invalid"
             mat-flat-button color="primary"
             [ngStyle]="{
         'float': 'right',
@@ -55,54 +56,14 @@
 
     </mat-form-field>
 
-
-    <!--<mat-form-field formGroupName="salesman" [appearance]="formFieldAppearance">-->
-    <!--<mat-select #selectSalesman-->
-    <!--[placeholder]="(salesmanLazy.isEnabled()) ? 'Salesman' : (salesmanLazy.failToFetch ? 'Gagal memuat data salesman ....' : 'Memuat data salesman ......' )"-->
-    <!--formControlName="uuid"-->
-    <!--[errorStateMatcher]="stateMatchers.salesman.matcher"-->
-    <!--[required]="salesmanLazy.isEnabled()">-->
-    <!--<mat-option class="pilih">&#45;&#45;&nbsp; Pilih salah satu &nbsp;&#45;&#45;</mat-option>-->
-    <!--<mat-divider></mat-divider>-->
-    <!--<mat-option [value]="v.uuid" *ngFor="let v of salesmanLazy.data">-->
-    <!--{{v.karyawan.nama}}-->
-    <!--</mat-option>-->
-    <!--<mat-divider></mat-divider>-->
-    <!--<mat-option *ngIf="!salesmanLazy.isLast" (click)="salesmanLazy.refresh()" class="lebih-banyak">-->
-    <!--<div *ngIf="!salesmanLazy.waitingLoadMore || salesmanLazy.failToFetch; else load">Muat lebih-->
-    <!--banyak-->
-    <!--....-->
-    <!--</div>-->
-    <!--<ng-template #load>-->
-    <!--<mat-progress-bar style="position: relative; border-radius: 0px" color="primary"-->
-    <!--mode="indeterminate"></mat-progress-bar>-->
-    <!--</ng-template>-->
-    <!--</mat-option>-->
-    <!--</mat-select>-->
-    <!--<button *ngIf="salesmanLazy.failToFetch" matSuffix mat-icon-button-->
-    <!--matTooltip="Segarkan Salesman"-->
-    <!--[matTooltipPosition]="'left'"-->
-    <!--(click)="salesmanLazy.refresh()">-->
-    <!--<mat-icon color="primary">refresh</mat-icon>-->
-    <!--</button>-->
-    <!--<mat-error-->
-    <!--*ngIf="reactiveFormUtil.formControl(reactiveFormUtil.getFormGroup(form, 'salesman'), 'uuid').hasError('required')">-->
-    <!--{{stateMatchers.salesman.message}}</mat-error>-->
-    <!--</mat-form-field>-->
-
-    <!--<div>Daftar List Item</div>-->
-
     <mat-form-field [appearance]="formFieldAppearanceVendor">
       <mat-label>
         Vendor
       </mat-label>
-      <mat-select cdkFocusRegionStart placeholder="Vendor" required>
-        <mat-option class="pilih">--&nbsp; Pilih salah satu &nbsp;--</mat-option>
-        <mat-divider></mat-divider>
-        <mat-option [value]="v" *ngFor="let v of tipeIdentitas">
-          {{v}}
-        </mat-option>
-      </mat-select>
+      <input placeholder="Vendor"
+             [value]="dataPo.supplier.nama"
+             disabled
+             autocomplete="off" matInput>
     </mat-form-field>
 
 
@@ -113,7 +74,7 @@
     <mat-nav-list>
       <a (click)="openDialogColorOffer(i)"
          mat-list-item *ngFor="let detail of dataPo.detail; let i = index">
-        <mat-icon mat-list-icon>local_laundry_service</mat-icon>
+        <mat-icon mat-list-icon color="primary">confirmation_number</mat-icon>
         <span mat-line class="result-info">{{detail.item.namaKain}}</span>
         <!--<span mat-line class="footer-info">{{data.data | json}}</span>-->
       </a>
