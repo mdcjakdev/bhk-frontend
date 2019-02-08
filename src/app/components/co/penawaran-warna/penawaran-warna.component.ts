@@ -35,6 +35,8 @@ export class PenawaranWarnaComponent
 
   errorMessage = '';
 
+  selectedValueByRightClick;
+
 
   @ViewChild('searchDocumentTrigger') searchDocumentTriggerElement: ElementRef<HTMLInputElement>;
 
@@ -97,21 +99,33 @@ export class PenawaranWarnaComponent
     }
   }
 
+  onSelectedMenuOptions(penawaran, edit = true) {
+    this.openSheetDialog({
+      onCo: true,
+      poUuid: penawaran.pemesananPembelian.uuid,
+      poNumber: penawaran.pemesananPembelian.nomorDokumenPo
+    }, false, edit);
+  }
 
-  openSheetDialog(data: any, fromSearch = true) {
+  onTableRightClicked = (event, cardIndex, penawaran) => {
+    this.selectedValueByRightClick = penawaran;
+
+    this.isRightClick = true;
+    this.showTableMenuOnRightClick(event, this.menuData);
+    this.stylingSelectedCard(cardIndex, true);
+  };
+
+
+  openSheetDialog(data: any, fromSearch = true, edit = true) {
     this.bottomSheet.open(PenawaranWarnaSheetComponent, {
       disableClose: true,
-      data: {...data, fromSearch: fromSearch}
+      data: {...data, fromSearch: fromSearch, edit: edit}
     }).afterDismissed().subscribe(value => {
       if (value === undefined) {
         return;
       }
-
       this.getData();
     });
-
-
-
   }
 
   onSearchDocumentNumberTyped(event) {
@@ -230,12 +244,7 @@ export class PenawaranWarnaComponent
 
 
 
-  onTableRightClicked = (event, cardIndex) => {
 
-    this.isRightClick = true;
-    this.showTableMenuOnRightClick(event, this.menuData);
-    this.stylingSelectedCard(cardIndex, true);
-  };
 
 
 

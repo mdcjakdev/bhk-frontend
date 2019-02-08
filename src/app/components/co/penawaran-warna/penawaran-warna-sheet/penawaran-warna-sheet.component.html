@@ -9,7 +9,7 @@
       {{(failLoadDocumentPoAndDocumentProperties) ? 'Gagal Memuat....' : data.poNumber}}&nbsp;
       <span class="warn" *ngIf="formValuesHasChanged">*</span>
     </strong>
-    <button *ngIf="!failLoadDocumentPoAndDocumentProperties"
+    <button *ngIf="this.data.edit && !failLoadDocumentPoAndDocumentProperties"
             (click)="save()"
             [disabled]="formCo.invalid"
             mat-flat-button color="primary"

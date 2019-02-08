@@ -278,6 +278,11 @@ export class PenawaranWarnaSheetComponent implements OnInit {
 
   openDialogColorOffer(index = -1) {
 
+    // jika hanya melihat info detail/informasi data
+    if (!this.data.edit) {
+      return;
+    }
+
     setTimeout(() => {
 
       if (this.whenListItemInfoClicked) {

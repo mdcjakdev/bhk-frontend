@@ -2,13 +2,16 @@
 
 
   <mat-menu #menuData="matMenu" xPosition="after" yPosition="below"
-            (closed)="tableMenuRightClickOnClose($event)"
             (contextmenu)="preventDefaultMode($event)">
-    <button mat-menu-item (contextmenu)="preventDefaultMode($event)">
+    <button mat-menu-item
+            (click)="onSelectedMenuOptions(selectedValueByRightClick, false)"
+            (contextmenu)="preventDefaultMode($event)">
       <mat-icon>description</mat-icon>
       <span>Rincian informasi</span>
     </button>
-    <button mat-menu-item [disabled]="awaitSearch" (contextmenu)="preventDefaultMode($event)">
+    <button mat-menu-item
+            (click)="onSelectedMenuOptions(selectedValueByRightClick)"
+            [disabled]="awaitSearch" (contextmenu)="preventDefaultMode($event)">
       <mat-icon>edit</mat-icon>
       <span>Ubah data</span>
     </button>
@@ -102,9 +105,7 @@
             [ngClass]="dataStyles[cardIndex]"
             (click)="cardClicked(cardIndex)"
             (dblclick)="cardDoubleClicked(cardIndex, penawaran)"
-
-
-            (contextmenu)="onTableRightClicked($event, cardIndex)">
+            (contextmenu)="onTableRightClicked($event, cardIndex, penawaran)">
 
             <mat-card-content>
               <table id="co-table-mini">
