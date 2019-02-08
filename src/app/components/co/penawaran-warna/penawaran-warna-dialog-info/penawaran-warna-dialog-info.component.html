@@ -45,11 +45,11 @@
                       id="info">
 
               <mat-card-content>
-                <button mat-icon-button matTooltip="Print"
+                <button mat-icon-button matTooltip="Cetak"
                         matTooltipPosition="below">
                   <mat-icon class="icon-delete-info">print</mat-icon>
-                </button>
-                <button mat-icon-button
+                </button> 
+                <button *ngIf="uuidEmpty(info.get('uuid').value)" mat-icon-button
                         (click)="removeInfo(reactiveFormUtil.getFormArray('info', warna), infoIndex)"
                         matTooltip="Hapus"
                         matTooltipPosition="below">

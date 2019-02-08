@@ -1,0 +1,46 @@
+<div id="dialog-block-detail">
+  <h4 mat-dialog-title>
+    <div>
+      <!--confirmation_number-->
+      <mat-icon class="header-color" style="margin-bottom: 4px;">info</mat-icon>
+
+      <strong class="header-color" style="margin-left: 10px">&nbsp;Kain {{getNamaKainOrAlias()}}</strong>
+    </div>
+  </h4>
+
+  <div mat-dialog-content class="form-app">
+    <mat-list>
+      <div *ngFor="let warna of data.formDetailValue.warna; index as i">
+        <!--<mat-divider></mat-divider>-->
+        <div class="list-container">
+          <h3 mat-subheader>Warna {{data.detailWarna[i].warna.namaWarna}}
+            &nbsp;({{data.detailWarna[i].warna.kodeWarna}})
+            &nbsp;&nbsp;<span class="warn no-info" *ngIf="warna.info.length === 0">* Tidak ada informasi penawaran</span>
+          </h3>
+          <mat-list-item *ngFor="let info of warna.info">
+            <mat-icon mat-list-icon [color]="accepted(info) ? 'primary' : 'warn'">note</mat-icon>
+            <h4 mat-line >
+
+              <strong matTooltip="SJ Number"
+                      matTooltipPosition="below">{{info.sjNumber}}</strong>
+              &nbsp;&nbsp;
+              <button mat-icon-button matTooltip="Cetak"
+                      matTooltipPosition="below">
+                <mat-icon class="icon-delete-info">print</mat-icon>
+              </button>
+
+            </h4>
+            <p mat-line> Pengiriman :&nbsp;&nbsp;{{(info.tanggalPengiriman.length === 0) ? '-' : info.tanggalPengiriman | date}} </p>
+            <p mat-line> Penerimaan :&nbsp;&nbsp;{{(info.tanggalPenerimaan.length === 0) ? '-' : info.tanggalPenerimaan | date}} </p>
+            <p mat-line> Catatan :&nbsp;&nbsp;{{(info.catatan.length === 0) ? '-' : info.catatan}} </p>
+          </mat-list-item>
+        </div>
+      </div>
+
+    </mat-list>
+
+
+  </div>
+
+
+</div>

@@ -93,34 +93,54 @@
 
     <div class="row " style="padding-right: -105px !important;">
 
-      <div [ngClass]="colorOfferListStyling()" id="content-wrapper">
+      <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12" id="content-wrapper">
 
         <div
           *ngFor="let penawaran of dataPenawaran; index as cardIndex"
-          class="col-lg-4 col-md-6 col-sm-6 col-xs-6 col-lg">
+          class="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">
           <mat-card
             [ngClass]="dataStyles[cardIndex]"
-            (click)="cardClicked(cardIndex, penawaran)"
-            (contextmenu)="onTableRightClicked($event, cardIndex, penawaran)">
+            (click)="cardClicked(cardIndex)"
+            (dblclick)="cardDoubleClicked(cardIndex, penawaran)"
+
+
+            (contextmenu)="onTableRightClicked($event, cardIndex)">
 
             <mat-card-content>
-              <mat-icon>web</mat-icon>
-
+              <table id="co-table-mini">
+                <tr>
+                  <td ><mat-icon>description</mat-icon></td>
+                  <td class="i" colspan="2" >
+                    <h6 >{{penawaran.nomorDokumen}}</h6>
+                  </td>
+                </tr>
+              </table>
+              <table id="co-table-mini-detail">
+                <tr>
+                  <td class="f"><span>Tanggal</span></td>
+                  <td>:&nbsp;&nbsp;{{penawaran.tanggalPenawaran}}</td>
+                </tr>
+                <tr>
+                  <td class="f"><span>Vendor</span></td>
+                  <td>:&nbsp;&nbsp;{{penawaran.pemesananPembelian.supplier.nama}}</td>
+                </tr>
+              </table>
             </mat-card-content>
             <mat-divider></mat-divider>
             <mat-card-footer>
               <table>
                 <tr>
-                  <td>
-                    <mat-icon>description</mat-icon>
-                  </td>
-                  <td class="td-content">
-                    <strong>{{penawaran.nomorDokumenPo}}</strong>
+                  <!--<td>-->
+                    <!--<mat-icon>description</mat-icon>-->
+                  <!--</td>-->
+                  <td class="td-content" colspan="2">
+                    <strong>{{penawaran.pemesananPembelian.nomorDokumenPo}}</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td class="td-note mat-primary" colspan="2">
-                    {{note(penawaran.catatan, 20)}}
+                  <td class="td-note mat-primary" colspan="2" [matTooltip]="noteTooltip(penawaran.pemesananPembelian.catatan, 30)"
+                      matTooltipPosition="below">
+                    {{note(penawaran.pemesananPembelian.catatan, 30)}}
                   </td>
                 </tr>
               </table>
@@ -131,47 +151,6 @@
         </div>
       </div>
 
-      <div
-        style="padding-right: 0"
-        *ngIf="openedPanelColorOfferHistory" class="animated fadeIn col-lg-3 col-md-3 col-sm-12 col-xs-12 col-lg">
-        <mat-card>
-
-          <mat-card-content>
-
-          </mat-card-content>
-          <mat-divider></mat-divider>
-          <mat-card-footer>
-            <table>
-              <tr>
-                <td>
-
-                </td>
-                <td class="td-content">
-                  <strong>xzxzxz</strong>
-                </td>
-              </tr>
-              <tr>
-                <td class="td-note mat-primary" colspan="2">
-                  xxzxzx
-                </td>
-              </tr>
-            </table>
-
-          </mat-card-footer>
-
-        </mat-card>
-      </div>
-
-
-      <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="position: fixed;-->
-      <!--bottom: 0;">-->
-      <!--<mat-paginator [showFirstLastButtons]="true"-->
-
-      <!--[length]="200"-->
-      <!--[pageSize]="pageSize"-->
-      <!--[pageSizeOptions]="[10, 25, 50, 100]">-->
-      <!--</mat-paginator>-->
-      <!--</div>-->
 
 
     </div>

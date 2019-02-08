@@ -1,0 +1,27 @@
+<div id="dialog-block-confirmation" >
+  <h4 mat-dialog-title>
+    <div>
+      <mat-icon color="primary" style="margin-bottom: 4px;">gavel</mat-icon>
+
+      <strong style="margin-left: 10px" class="primary">&nbsp;Konfirmasi</strong>
+    </div>
+  </h4>
+
+  <div mat-dialog-content >
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      {{data.message}}
+    </div>
+  </div>
+
+  <mat-dialog-actions class="confirm"  align="end">
+    <button mat-button mat-dialog-close="tidak">
+      <strong class="warn">Tidak</strong>
+    </button>
+    <button mat-button mat-dialog-close="ya">
+      <strong class="primary">Ya</strong>
+    </button>
+  </mat-dialog-actions>
+
+
+
+</div>

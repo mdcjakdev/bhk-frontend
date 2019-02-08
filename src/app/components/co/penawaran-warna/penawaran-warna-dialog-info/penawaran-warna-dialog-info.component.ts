@@ -1,10 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormArray, FormGroup} from '@angular/forms';
 import {penawaranWarnaDetailForm, penawaranWarnaInfoErrorStateMatchers, penawaranWarnaInfoForm} from '../../../../inits/co/co-init';
 import {ReactiveFormUtil} from '../../../../shared/reactive-form-util';
 import {Constants} from '../../../../shared/constants';
-import {masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {FocusMonitor} from '@angular/cdk/a11y';
 
 @Component({
@@ -14,7 +13,6 @@ import {FocusMonitor} from '@angular/cdk/a11y';
 })
 export class PenawaranWarnaDialogInfoComponent implements OnInit, AfterViewInit {
 
-  // item: any;
   public reactiveFormUtil = new ReactiveFormUtil();
   formFieldAppearance = new Constants().formFieldAppearance;
 
@@ -22,22 +20,21 @@ export class PenawaranWarnaDialogInfoComponent implements OnInit, AfterViewInit 
 
   stateMatcherInfo = penawaranWarnaInfoErrorStateMatchers;
 
-  @ViewChild('notAccepted') notAccepted: ElementRef<HTMLInputElement>;
-
-  constructor(private changeDetector: ChangeDetectorRef,
-              private _focusMonitor: FocusMonitor,
-              public dialogRef: MatDialogRef<PenawaranWarnaDialogInfoComponent>,
+  constructor(public dialogRef: MatDialogRef<PenawaranWarnaDialogInfoComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    // console.log(data)
+    this.formCoDetail = (this.data.formDetail !== undefined)
+      ? this.data.formDetail : penawaranWarnaDetailForm(this.data.detail);
 
-    this.formCoDetail = (this.data.formDetail !== undefined) ? this.data.formDetail : penawaranWarnaDetailForm(this.data.detail);
-    // console.log(this.formCoDetail.getRawValue())
   }
 
 
   ngAfterViewInit(): void {
   }
 
+
+  uuidEmpty(uuid: string) {
+    return uuid.trim().length === 0;
+  }
 
 
 

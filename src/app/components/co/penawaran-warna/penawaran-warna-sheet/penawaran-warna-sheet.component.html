@@ -6,7 +6,9 @@
 
     <strong [ngClass]="(failLoadDocumentPoAndDocumentProperties) ? 'warn' : 'primary'">
       <mat-icon *ngIf="failLoadDocumentPoAndDocumentProperties" color="warn" style="margin-right: 10px">error</mat-icon>
-      {{(failLoadDocumentPoAndDocumentProperties) ? 'Gagal Memuat....' : data.poNumber}}</strong>
+      {{(failLoadDocumentPoAndDocumentProperties) ? 'Gagal Memuat....' : data.poNumber}}&nbsp;
+      <span class="warn" *ngIf="formValuesHasChanged">*</span>
+    </strong>
     <button *ngIf="!failLoadDocumentPoAndDocumentProperties"
             (click)="save()"
             [disabled]="formCo.invalid"
@@ -56,7 +58,7 @@
 
     </mat-form-field>
 
-    <mat-form-field [appearance]="formFieldAppearanceVendor">
+    <mat-form-field [appearance]="'legacy'">
       <mat-label>
         Vendor
       </mat-label>
@@ -76,7 +78,13 @@
          mat-list-item *ngFor="let detail of dataPo.detail; let i = index">
         <mat-icon mat-list-icon color="primary">confirmation_number</mat-icon>
         <span mat-line class="result-info">{{detail.item.namaKain}}</span>
-        <!--<span mat-line class="footer-info">{{data.data | json}}</span>-->
+        <button mat-icon-button matSuffix
+                class="button-info-item"
+                (click)="infoClicked(i)"
+                matTooltip="Informasi"
+                matTooltipPosition="before">
+          <mat-icon aria-label="Informasi">info</mat-icon>
+        </button>
       </a>
     </mat-nav-list>
   </div>
