@@ -201,7 +201,7 @@ export class PenawaranWarnaSheetComponent implements OnInit {
   }
 
   close(result?) {
-    if (this.formValuesHasChanged) {
+    if (this.data.onCo && this.formValuesHasChanged) {
       const dialogRef = this.dialog.open(PenawaranWarnaConfirmationDialogComponent, {
         width: '300px',
         data: {message: 'Perubahan data belum disimpan. Simpan perubahan data?'},
@@ -307,6 +307,9 @@ export class PenawaranWarnaSheetComponent implements OnInit {
         autoFocus: false,
         position: {bottom: '50px', top: '45px'}
       });
+
+      dialogRef.afterClosed().subscribe(value => this.changeDetector.detectChanges())
+
     }, 50);
   }
 

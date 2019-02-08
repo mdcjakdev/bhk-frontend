@@ -4,7 +4,7 @@
   <mat-progress-bar *ngIf="waitingForLoadingPoAndDocumentData" color="warn" mode="indeterminate"></mat-progress-bar>
   <div id="dokumen">
 
-    <strong [ngClass]="(failLoadDocumentPoAndDocumentProperties) ? 'warn' : 'primary'">
+    <strong [ngClass]="(failLoadDocumentPoAndDocumentProperties) ? 'warn' : ((formValuesHasChanged) ? 'warn' : 'primary')">
       <mat-icon *ngIf="failLoadDocumentPoAndDocumentProperties" color="warn" style="margin-right: 10px">error</mat-icon>
       {{(failLoadDocumentPoAndDocumentProperties) ? 'Gagal Memuat....' : data.poNumber}}&nbsp;
       <span class="warn" *ngIf="formValuesHasChanged">*</span>
