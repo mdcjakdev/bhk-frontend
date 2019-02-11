@@ -13,12 +13,7 @@ import {SalesOrderComponent} from './components/sales-order/sales-order.componen
   declarations: [
     AppComponent,
     LoginComponent,
-    SalesOrderComponent,
-
-
-
-
-
+    SalesOrderComponent
   ],
   imports: [
     BrowserAnimationsModule,

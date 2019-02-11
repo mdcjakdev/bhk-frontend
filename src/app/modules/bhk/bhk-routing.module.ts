@@ -17,15 +17,15 @@ const routes: Routes = [
       },
       {
         path: 'pembelian/pr',
-        loadChildren: 'src\\app\\modules\\bhk\\pr\\pr.module#PrModule'
+        loadChildren: 'src\\app\\modules\\bhk\\purchase\\pr\\pr.module#PrModule'
       },
       {
         path: 'pembelian/po',
-        loadChildren: 'src\\app\\modules\\bhk\\po\\po.module#PoModule'
+        loadChildren: 'src\\app\\modules\\bhk\\purchase\\po\\po.module#PoModule'
       },
       {
         path: 'pembelian/co',
-        loadChildren: 'src\\app\\modules\\bhk\\co\\co.module#CoModule'
+        loadChildren: 'src\\app\\modules\\bhk\\purchase\\co\\co.module#CoModule'
       }
     ]
   }

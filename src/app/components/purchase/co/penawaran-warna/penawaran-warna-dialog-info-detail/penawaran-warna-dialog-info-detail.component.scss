@@ -1,0 +1,138 @@
+@import "../../../../../../assets/css/dan-mix";
+@import "../../../../../../assets/css/dan-theme";
+
+.mat-dialog-actions {
+  padding-bottom: 20px;
+}
+
+.mat-progress-bar {
+  position: absolute;
+  height: 4px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  width: 100%;
+}
+
+.mat-dialog-title {
+  font-size: 15px;
+}
+
+
+.icon-delete-info {
+  color: #6f6f6f;
+}
+
+.info-title {
+  float: left;
+  margin: 7px 0px 0px 0px;
+}
+
+#info {
+
+
+  .mat-card-title, .mat-card-subtitle {
+    text-align: right;
+  }
+
+  .mat-card-content {
+    text-align: right;
+  }
+
+  margin-top: 15px;
+  background: rgba(89, 89, 89, 0.01);
+  border: 1px solid #d7d7d7;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 0px 0px, rgba(0, 0, 0, 0.19) 0px 0px 0px 0px;
+}
+
+
+//
+::ng-deep .mat-dialog-container {
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 24px;
+}
+
+.selected-header-panel {
+  color: #ffffff;
+  //background-color: mat-color($dan-app-primary);
+}
+
+.no-info {
+  font-size: $standard-font-size-xs;
+}
+
+.container-info {
+  padding: 15px 0px;
+}
+
+.add-info-button {
+  float: right;
+  z-index: 1000;
+}
+
+
+.header-color {
+  color: #717171;
+}
+
+
+#dialog-block-detail {
+
+
+
+  .mat-line {
+    font-size: $standard-font-size-sm;
+  }
+
+  .mat-list {
+    .list-container {
+      //padding-top: 10px;
+      margin-left: 12px;
+    }
+  }
+
+
+
+
+
+  .mat-dialog-title {
+    padding: 24px;
+    margin: 0;
+  }
+
+  .button-style {
+    width: 95px;
+  }
+
+  .row {
+    padding: 0 0 !important;
+    margin: 0 0 !important;
+  }
+
+  .mat-dialog-content {
+    margin: 0;
+    padding: 0px 0px 15px 0px;
+  }
+
+
+
+  .mat-divider.divider-actions {
+    margin-top: 5px;
+    border-color: rgba(0, 0, 0, 0.18);
+  }
+
+  .mat-dialog-actions {
+    padding-right: 24px;
+    padding-top: 14px;
+    padding-bottom: 18px;
+    background: rgba(0, 0, 0, 0.07);
+  }
+
+  .mat-dialog-actions.delete {
+    background: rgba(0, 0, 0, 0.0);
+    color: rgba(0, 0, 0, 0.89);
+  }
+
+}
