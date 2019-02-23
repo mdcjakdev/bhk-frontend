@@ -40,7 +40,6 @@ import {
 } from '@angular/material';
 import {NgScrollbarModule} from 'ngx-scrollbar';
 import {ElementFocusDirective} from '../../shared/directives/element-focus.directive';
-import {ServerService} from '../../services/server.service';
 import {MiddlewareService} from '../../shared/middleware.service';
 import {AppDateAdapter} from '../../shared/app-date-adapter';
 import {TextMaskModule} from 'angular2-text-mask';
@@ -50,6 +49,7 @@ import {MatSelectViewChildDirective} from '../../shared/directives/mat-select-vi
 import {MatTooltipAsNotificationDirective} from '../../shared/directives/mat-tooltip-as-notification.directive';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {StopMonitorDirective} from '../../shared/directives/stop-monitor.directive';
+import {AuthService} from "../../services/auth/auth.service";
 
 
 @NgModule({
@@ -132,9 +132,7 @@ import {StopMonitorDirective} from '../../shared/directives/stop-monitor.directi
     // { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
     { provide: DateAdapter, useClass: AppDateAdapter },
 
-
-    ServerService
-
+    AuthService
 
   ],
   entryComponents: [

@@ -1,6 +1,54 @@
 import {ErrorStateMatcher} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import * as moment from 'moment';
+import { JSEncrypt } from 'jsencrypt';
+import { QuickEncrypt } from 'quick-encrypt';
+import CryptoJS from 'crypto-js'
+
+
+export const PRIVATE_KEY = '-----BEGIN RSA PRIVATE KEY-----\n' +
+  'MIICXgIBAAKBgQC5a3f+2soYdDVKWmtnTxf1kuiC5Cg/ZBaindHfN7bNN+1cDztJ\n' +
+  '3d54parhvdox2IusO5jVLabD6/1tlZUJymHYcz6Z3ezJggtcUlBk6kKdCwaAWIIq\n' +
+  'sxODMqtFpXeFCZNXtJSGvqIw1VXS6SivdLefpK2wRedahW8CWHu+UTevxwIDAQAB\n' +
+  'AoGAeAwjeaav19tNMWGPTijAS2edEDml8TzdBtYFLm9E9GM0UzktWqrCQfyIwXUI\n' +
+  '0uLvs0g2sDbJVOnyf8Or5dXZOI5zA7q8FizXnqiVRMKi8do6OXYYUjlPpcYk1ou7\n' +
+  '79MJ+qpMYCYju3QjK5uiIRrkW+NdOMWA1yz61ZDyusTB/PECQQDs00lgc9soQwK3\n' +
+  'n9p1sl8gC3GbUBLJ9HLxAuQiXFyd8sggrQvI8D+t4lVieMeRu5ekNEs++y8V9shO\n' +
+  'IEQf4kt5AkEAyG6xJsrvwcSpH0vnJVd1lI8TM6fA3TG5XBkdjisVHrWjFPHZUV27\n' +
+  'N4tV6A30cR7sXWejQy+LtdSIhfRI+EvFPwJBAMiR6QMXG/TtS8/YQlyLxKSPDJhN\n' +
+  'KJyBuxcDK9MuBgJ/K58A74oubsAFf+r1/48dIUCgSVn9wdMIPnxsN0YJkYECQQC9\n' +
+  'vMvGxWWiMOFI1znBh8GvGKI8zBkvS9sE7GGmK/KaV6hCM5BeDjUkp6pzOoKkc3me\n' +
+  'EnXjLCc9wixbYp2RL2lRAkEApss+n5xqT99uz1dBhDbtR5WNkjdLdkQfXiuy2t0B\n' +
+  'PQlHQqiDKdWF5kw1Eg4QE1t+TVMAkhzpJc4Xk1G4tshCBA==\n' +
+  '-----END RSA PRIVATE KEY-----';
+
+
+export const PUBLIC_KEY = '-----BEGIN PUBLIC KEY-----\n' +
+  'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5a3f+2soYdDVKWmtnTxf1kuiC\n' +
+  '5Cg/ZBaindHfN7bNN+1cDztJ3d54parhvdox2IusO5jVLabD6/1tlZUJymHYcz6Z\n' +
+  '3ezJggtcUlBk6kKdCwaAWIIqsxODMqtFpXeFCZNXtJSGvqIw1VXS6SivdLefpK2w\n' +
+  'RedahW8CWHu+UTevxwIDAQAB\n' +
+  '-----END PUBLIC KEY-----';
+
+
+export const LOGIN = 'login';
+export const USER = 'user';
+export const OAUTH = 'oauth';
+
+export function encrypt(text) {
+  return CryptoJS.AES.encrypt(JSON.stringify(text), PUBLIC_KEY).toString();
+}
+
+export function decrypt(chiperText) {
+  return CryptoJS.AES.decrypt(chiperText, PUBLIC_KEY).toString(CryptoJS.enc.Utf8);
+}
+
+
+export function plantDataToLocalStorage(login, user, oauth) {
+  localStorage.setItem(LOGIN, encrypt(JSON.stringify(login)));
+  localStorage.setItem(USER, encrypt(JSON.stringify(user)));
+  localStorage.setItem(OAUTH, encrypt(JSON.stringify(oauth)));
+}
 
 
 export function generateArrayForm(initValue: any[], formGroupFunction: Function) {

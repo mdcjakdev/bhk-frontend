@@ -1,11 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {BhkDashboardComponent} from '../../components/bhk-dashboard/bhk-dashboard.component';
+import {BhkGuard} from "../../services/auth/bhk.guard";
 
 const routes: Routes = [
   {
     path: '',
     component: BhkDashboardComponent,
+    canActivate: [BhkGuard],
     children: [
       {
         path: 'master',

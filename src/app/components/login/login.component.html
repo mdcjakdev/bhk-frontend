@@ -1,9 +1,12 @@
 
   <div id="login">
-    <mat-card>
+    <mat-card id="login-card">
       <mat-card-title>
-        <!--<mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>-->
-        <strong class="primary">BHK</strong>
+        <mat-progress-bar *ngIf="startAuth" color="primary" mode="indeterminate"></mat-progress-bar>
+        <strong style="color: #717dff;">B</strong>
+        <strong style="color: #ff57ba">H</strong>
+        <strong class="primary">K</strong>
+
       </mat-card-title>
       <mat-card-subtitle class="move-subtitle-up">
        <b>Masuk Menggunakan Akun Anda</b>
@@ -12,23 +15,34 @@
 
         <mat-form-field appearance="outline">
           <mat-label>&nbsp;ID Pengguna</mat-label>
-          <input matInput placeholder="Pengguna" required autocomplete="off" >
+          <input matInput placeholder="Pengguna" [(ngModel)]="username" [ngModelOptions]="{ standalone: true }"
+                 (keyup.enter)="login()"
+                 required autocomplete="off" >
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>&nbsp;Kata Sandi</mat-label>
-          <input [type]="hide ? 'password' : 'text'" matInput placeholder="Katasandi" required autocomplete="off">
+          <input [type]="hide ? 'password' : 'text'" matInput placeholder="Katasandi"
+                 [(ngModel)]="password" [ngModelOptions]="{ standalone: true }"
+                 (keyup.enter)="login()"
+                 required autocomplete="off">
           <mat-icon style="cursor: pointer;" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
 
+        <div *ngIf="isLoginFailed">
+          <span class="warn error-login">{{failedResponse.error.message}}</span>
+        </div>
       </mat-card-content>
       <mat-card-actions align="end" style="padding-right: 7px">
-        <button mat-flat-button color="primary">
+        <button (click)="login()" mat-flat-button color="primary">
           Masuk
         </button>
       </mat-card-actions>
       <span class="company"><b>PT.&nbsp;Bintang Harapan Kurnia&nbsp;&nbsp;</b>(<b>BHK</b>),
         &nbsp;Denpasar - Indonesia</span>
+
+
     </mat-card>
+
 
   </div>

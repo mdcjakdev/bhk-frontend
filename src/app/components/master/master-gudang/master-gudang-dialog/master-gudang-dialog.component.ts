@@ -46,6 +46,9 @@ export class MasterGudangDialogComponent extends DialogUtil
       masterGudangForm(data.data, data.disables),
       masterGudangErrorStateMatchers);
 
+    const f = new FileReader();
+
+
     // init untuk data lokasi
     this.lokasiLazy = new SelectLazy(
       this.form,
