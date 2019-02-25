@@ -204,11 +204,11 @@
   </mat-dialog-actions>
 
   <mat-dialog-actions class="delete" *ngIf="!isDataNull() && isDelete()" align="end">
-    <button mat-button [mat-dialog-close]="close">
-      <span>Tidak</span>
-    </button>
     <button mat-button (click)="delete(data.data.uuid)">
-      <span>Ya</span>
+      <strong class="delete">Ya, Hapus</strong>
+    </button>
+    <button mat-button [mat-dialog-close]="close">
+      <strong class="delete">Tidak</strong>
     </button>
   </mat-dialog-actions>
 

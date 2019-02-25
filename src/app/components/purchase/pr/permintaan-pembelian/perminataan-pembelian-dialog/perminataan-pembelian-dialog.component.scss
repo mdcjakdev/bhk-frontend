@@ -5,6 +5,11 @@
   padding-bottom: 20px;
 }
 
+.delete {
+  color: $delete-font-color;
+  font-size: $standard-font-size-sm;
+}
+
 ::ng-deep .mat-chip-list-wrapper {
   margin: -2px !important;
 }

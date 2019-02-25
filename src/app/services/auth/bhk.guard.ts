@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, Router} from '@angular/router';
-import { Observable } from 'rxjs';
-import {decrypt, LOGIN, OAUTH, plantDataToLocalStorage, USER} from "../../shared/utils";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from '@angular/router';
+import {Observable} from 'rxjs';
+import {decrypt, LOGIN, OAUTH, USER} from "../../shared/utils";
 import {BhkService} from "../bhk.service";
 
 @Injectable({
@@ -43,7 +43,7 @@ export class BhkGuard implements CanActivate, CanActivateChild {
         this.reactivatingLogin(oauthData);
         return true;
       } else {
-        this.router.navigate(['/denied']);
+        this.router.navigate(['/']);
         return false;
       }
     }
@@ -53,9 +53,9 @@ export class BhkGuard implements CanActivate, CanActivateChild {
 
 
   reactivatingLogin(oauthData) {
-    const login = JSON.parse(decrypt(localStorage.getItem(LOGIN)));
-    const user = JSON.parse(decrypt(localStorage.getItem(USER)));
-    const oauth = JSON.parse(decrypt(oauthData));
+    const login = JSON.parse(JSON.parse(decrypt(localStorage.getItem(LOGIN))));
+    const user = JSON.parse(JSON.parse(decrypt(localStorage.getItem(USER))));
+    const oauth = JSON.parse(JSON.parse(decrypt(oauthData)));
     this.bhk.addLoginInfo(login);
     this.bhk.addUserInfo(user);
     this.bhk.addOauthInfo(oauth);

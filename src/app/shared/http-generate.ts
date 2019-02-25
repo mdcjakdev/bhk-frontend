@@ -26,7 +26,7 @@ export class AppHttpGenerate {
     this.failed = false;
     this.waiting = true;
 
-    const setHttp = <Observable<any>> this.functionRequest(this.http, params);
+    const setHttp = <Observable<any>> this.functionRequest(params);
 
     setTimeout(() => {
 

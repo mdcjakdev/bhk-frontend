@@ -5,6 +5,7 @@ import {ComponentUtil} from '../../shared/component-util';
 import {NgScrollbar} from 'ngx-scrollbar';
 import {DashboardSharedService} from '../../services/dashboard-shared.service';
 import {Router} from '@angular/router';
+import {BhkService} from "../../services/bhk.service";
 
 @Component({
   selector: 'app-bhk-dashboard',
@@ -31,6 +32,7 @@ export class BhkDashboardComponent
   start = false;
   constructor(
     private router: Router,
+    public bhk: BhkService,
     public bhkSharedService: DashboardSharedService,
     public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     super(bhkSharedService, changeDetectorRef, media);
@@ -39,6 +41,9 @@ export class BhkDashboardComponent
 
   ngOnInit() {
 
+    // this.bhk.userInfo.subscribe(value => console.log('annas ', value));
+
+    console.log('Annas ', this.bhk.userInfo.value)
 
     // init menu awal yang terpilih
     this.menus.selectMenu(['app']);

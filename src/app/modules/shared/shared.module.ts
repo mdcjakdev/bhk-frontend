@@ -50,6 +50,7 @@ import {MatTooltipAsNotificationDirective} from '../../shared/directives/mat-too
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {StopMonitorDirective} from '../../shared/directives/stop-monitor.directive';
 import {AuthService} from "../../services/auth/auth.service";
+import {BhkService} from "../../services/bhk.service";
 
 
 @NgModule({

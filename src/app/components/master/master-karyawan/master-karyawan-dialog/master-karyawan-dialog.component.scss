@@ -6,6 +6,11 @@
   padding-bottom: 20px;
 }
 
+.delete {
+  color: $delete-font-color;
+  font-size: $standard-font-size-sm;
+}
+
 .mat-option {
   font-size: $standard-font-size;
 }

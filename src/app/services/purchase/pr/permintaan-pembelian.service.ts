@@ -1,35 +1,35 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {apiHost, apiPort} from '../../../shared/constants';
+import {server, TOKEN} from '../../../shared/constants';
+import {BhkService} from "../../bhk.service";
+import {toParams} from "../../../shared/utils";
 
 @Injectable()
 export class PermintaanPembelianService {
 
-  constructor(public http: HttpClient) { }
-
-  getData(page = 0, size = 10, http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/pr/?page=' + page + '&size=' + size);
+  constructor(public http: HttpClient, private bhk: BhkService) {
   }
 
-  getDocumentProperties(http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/pr/utilitas/propertidokumen/');
-  }
+  private token = () => {
+    return { [TOKEN]: this.bhk.oauthInfo.value[TOKEN] }
+  };
 
-  getDocumentForPO(nomorDokumen, ke, http = this.http) {
-    return http.get(apiHost + ':' + apiPort
-      + '/api/pr/dokumen/po/?nomorDokumen=' + nomorDokumen + '&ke=' + ke);
-  }
+  getData = (page = 0, size = 10) => this.http.get(`${server}/api/pr/${toParams({
+    ...this.token(),
+    page: page,
+    size: size
+  })}`);
 
-  postData(body) {
-    return this.http.post(apiHost + ':' + apiPort + '/api/pr/', body);
-  }
+  postData = (body) => this.http.post(`${server}/api/pr/${toParams(this.token())}`, body);
 
-  putData(id, body) {
-    return this.http.put(apiHost + ':' + apiPort + '/api/pr/' + id, body);
-  }
+  deleteData = (id) => this.http.delete(`${server}/api/pr/${id}${toParams(this.token())}`);
 
-  deleteData(id) {
-    return this.http.delete(apiHost + ':' + apiPort + '/api/pr/' + id);
-  }
-  
+  getDocumentProperties = () => this.http.get(`${server}/api/pr/utilitas/propertidokumen/${toParams(this.token())}`);
+
+  getDocumentForPO = (nomorDokumen, ke) => this.http.get(`${server}/api/pr/dokumen/po/${toParams({
+    ...this.token(),
+    nomorDokumen: nomorDokumen,
+    ke: ke
+  })}`);
+
 }

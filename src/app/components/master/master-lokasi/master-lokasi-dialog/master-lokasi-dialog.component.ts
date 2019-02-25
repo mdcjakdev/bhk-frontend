@@ -46,6 +46,9 @@ export class MasterLokasiDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }
@@ -71,6 +74,9 @@ export class MasterLokasiDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }

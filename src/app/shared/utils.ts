@@ -63,7 +63,7 @@ export function isUrlAlreadyHasParams(url: string) {
 }
 
 
-export function convertObjectAsHttpParams(object: any, definedUrl?: string) {
+export function toParams(object: any, definedUrl?: string) {
   if (typeof object === 'undefined' || object === null) {
     return '';
   }

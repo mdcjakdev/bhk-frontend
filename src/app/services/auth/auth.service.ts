@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import {convertObjectAsHttpParams} from "../../shared/utils";
+import {toParams} from "../../shared/utils";
 import {apiHost, apiPort} from "../../shared/constants";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
-
-  tokenParam = 'access_token';
 
   constructor(public http: HttpClient) { }
 
@@ -29,14 +25,14 @@ export class AuthService {
 
   public login(info) {
     const api = `${apiHost}:${apiPort}/login/auth`;
-    const url = `${api}${convertObjectAsHttpParams(info, api)}`;
+    const url = `${api}${toParams(info, api)}`;
     return this.http.post(url, null);
   }
 
 
   public oauthToken(info) {
     const api = `${apiHost}:${apiPort}/oauth/token`;
-    const url = `${api}${convertObjectAsHttpParams({...info, grant_type: 'password'}, api)}`;
+    const url = `${api}${toParams({...info, grant_type: 'password'}, api)}`;
     return this.http.post(url, null, this.generateHeaders());
   }
 

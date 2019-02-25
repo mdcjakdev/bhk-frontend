@@ -29,6 +29,7 @@ export class MasterCategoryDialogComponent extends DialogUtil
               public masterCategoryService: MasterCategoryService,
               dialogRef: MatDialogRef<MasterCategoryDialogComponent>,
               @Inject(MAT_DIALOG_DATA) data: any) {
+
     super(dialogRef,
       data,
       masterCategoryForm(data.data),
@@ -70,6 +71,9 @@ export class MasterCategoryDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }
@@ -95,6 +99,9 @@ export class MasterCategoryDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }

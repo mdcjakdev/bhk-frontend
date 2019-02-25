@@ -2,6 +2,7 @@ import {MenuModel} from './menu-model';
 import {ReactiveFormUtil} from './reactive-form-util';
 
 export const UUID_COLUMN = 'uuid';
+export const TOKEN = 'access_token';
 
 // export const apiHost = 'http://206.189.144.26';
 // export const apiHost = 'http://104.248.149.36';
@@ -10,6 +11,8 @@ export const apiHost = 'http://localhost';
 // export const apiPort = '4200';
 export const apiPort = '8000';
 // export const apiPort = '5000';
+
+export const server = `${apiHost}:${apiPort}`;
 
 export const delayHttpRequest = 500;
 export const delayAnotherProcess = 0;

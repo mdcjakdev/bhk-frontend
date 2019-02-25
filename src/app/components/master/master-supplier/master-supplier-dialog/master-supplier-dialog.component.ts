@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {masterSubCategoryForm} from '../../../../inits/master/master-category-init';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
@@ -65,6 +64,9 @@ export class MasterSupplierDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }
@@ -90,6 +92,9 @@ export class MasterSupplierDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }

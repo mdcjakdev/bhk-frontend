@@ -1,47 +1,39 @@
 import { Injectable } from '@angular/core';
-import {apiHost, apiPort} from '../../../shared/constants';
-import {convertObjectAsHttpParams} from '../../../shared/utils';
+import {apiHost, apiPort, server, TOKEN} from '../../../shared/constants';
+import {toParams} from '../../../shared/utils';
 import {HttpClient} from '@angular/common/http';
+import {BhkService} from "../../bhk.service";
 
 @Injectable()
 export class PenawaranWarnaService {
 
-  constructor(public http: HttpClient) { }
-
-
-  getData(page = 0, size = 10, http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/co/?page=' + page + '&size=' + size);
+  constructor(public http: HttpClient, private bhk: BhkService) {
   }
 
-  getDocumentProperties(http = this.http, params?) {
-    let url = '/api/co/utilitas/propertidokumen/'
-    url += ((params !== undefined || params !== null) ? convertObjectAsHttpParams(params, url) : '');
-    return http.get(apiHost + ':' + apiPort + url);
-  }
+  private token = () => {
+    return { [TOKEN]: this.bhk.oauthInfo.value[TOKEN] }
+  };
 
-  getByPoId(id) {
-    return this.http.get(`${apiHost}:${apiPort}/api/co/by/poid/${id}`);
-  }
+  getData = (page = 0, size = 10) => this.http.get(`${server}/api/co/${toParams({
+    ...this.token(),
+    page: page,
+    size: size
+  })}`);
 
-  getListOfPoDocument(bodyParams) {
-    return this.http.post(apiHost + ':' + apiPort + '/api/co/utilitas/list/po/', bodyParams);
-  }
+  postData = (body) => this.http.post(`${server}/api/co/${toParams(this.token())}`, body);
 
-  postData(body) {
-    return this.http.post(apiHost + ':' + apiPort + '/api/co/', body);
-  }
-
-  putData(id, body) {
-    return this.http.put(apiHost + ':' + apiPort + '/api/co/' + id, body);
-  }
-
-  deleteData(id) {
-    return this.http.delete(apiHost + ':' + apiPort + '/api/co/' + id);
-  }
+  deleteData = (id) => this.http.delete(`${server}/api/co/${id}${toParams(this.token())}`);
 
 
-  checkPrByPoId(poId) {
-    return this.http.get(apiHost + ':' + apiPort + '/api/co/check/pr/' + poId);
-  }
+  getDocumentProperties = (http = this.http, params?) => this.http.get(`${server}/api/co/utilitas/propertidokumen/${toParams({
+    ...params,
+    ...this.token()
+  })}`);
+
+  getByPoId = (id) => this.http.get(`${apiHost}:${apiPort}/api/co/by/poid/${id}${toParams(this.token())}`);
+
+  getListOfPoDocument = (bodyParams) => this.http.post(`${server}/api/co/utilitas/list/po/${toParams(this.token())}`, bodyParams);
+
+  checkPrByPoId = (poId) => this.http.get(`${server}/api/co/check/pr/${poId}${toParams(this.token())}`);
 
 }

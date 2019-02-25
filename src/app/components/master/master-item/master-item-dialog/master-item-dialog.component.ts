@@ -1,6 +1,12 @@
 import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {DialogUtil} from '../../../../shared/dialog-util';
-import {MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatDialogRef, MatSnackBar} from '@angular/material';
+import {
+  MAT_DIALOG_DATA,
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  MatDialogRef,
+  MatSnackBar
+} from '@angular/material';
 import {Ui} from '../../../../shared/ui';
 import {first} from 'rxjs/operators';
 import {SUCCESS, trimReactiveObject} from '../../../../shared/utils';
@@ -269,6 +275,9 @@ export class MasterItemDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }
@@ -294,6 +303,9 @@ export class MasterItemDialogComponent extends DialogUtil
           this.dialogRef.close({...this.data, data: SUCCESS});
         },
         error1 => {
+          if (error1.status === 401) {
+            this.dialogRef.close();
+          }
           this.dialogRef.disableClose = false;
           Ui.unblockUI('#dialog-block');
         }

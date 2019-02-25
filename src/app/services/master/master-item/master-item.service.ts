@@ -1,26 +1,27 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {apiHost, apiPort} from '../../../shared/constants';
+import {server, TOKEN} from '../../../shared/constants';
+import {BhkService} from "../../bhk.service";
+import {toParams} from "../../../shared/utils";
 
 @Injectable()
 export class MasterItemService {
 
-  constructor(public http: HttpClient) { }
-
-
-  getData(page = 0, size = 10, http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/master/item/?page=' + page + '&size=' + size);
+  constructor(public http: HttpClient, private bhk: BhkService) {
   }
 
-  postData(body) {
-    return this.http.post(apiHost + ':' + apiPort + '/api/master/item/', body);
-  }
+  private token = () => {
+    return { [TOKEN]: this.bhk.oauthInfo.value[TOKEN] }
+  };
 
-  putData(id, body) {
-    return this.http.put(apiHost + ':' + apiPort + '/api/master/item/' + id, body);
-  }
+  getData = (page = 0, size = 10) => this.http.get(`${server}/api/master/item/${toParams({
+    ...this.token(),
+    page: page,
+    size: size
+  })}`);
 
-  deleteData(id) {
-    return this.http.delete(apiHost + ':' + apiPort + '/api/master/item/' + id);
-  }
+  postData = (body) => this.http.post(`${server}/api/master/item/${toParams(this.token())}`, body);
+
+  deleteData = (id) => this.http.delete(`${server}/api/master/item/${id}${toParams(this.token())}`);
+
 }

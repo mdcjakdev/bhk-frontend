@@ -33,9 +33,6 @@ export class LoginComponent implements OnInit {
 
   login(info = { username: this.username, password: this.password }) {
 
-
-
-
     if ((<string> this.username).length === 0) {
       openAppSnackbar(this.snackBar, 'Username tidak boleh kosong ...',
         SNACKBAR_WARNING_STYLE, 500);
@@ -49,14 +46,13 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    Ui.blockUI('#login-card', 0.5, 5, 0, 5);
+    Ui.blockUI('#login-card', 0.7, 5, 0, 5);
     this.isLoginFailed = false;
     this.startAuth = true;
 
    setTimeout(() => {
      this.auth.login(info).pipe().subscribe(
        value => {
-         console.log(value)
          this.bhk.addLoginInfo(info);
          this.bhk.addUserInfo(value);
          this.requestToken(info, value);
@@ -74,16 +70,11 @@ export class LoginComponent implements OnInit {
   }
 
 
-
-
-
-
   requestToken(loginInfo, userInfo) {
 
     // JSEN
     this.auth.oauthToken(loginInfo).pipe().subscribe(
       value => {
-        console.log(value);
         this.bhk.addOauthInfo(value);
         this.startAuth = false;
         Ui.unblockUI('#login-card');

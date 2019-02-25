@@ -1,47 +1,38 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {apiHost, apiPort} from '../../../shared/constants';
-import {convertObjectAsHttpParams} from '../../../shared/utils';
+import {server, TOKEN} from '../../../shared/constants';
+import {toParams} from '../../../shared/utils';
 import {PemesananPembelian} from '../../../inits/purchase/po/po-init';
 import {Observable} from 'rxjs';
+import {BhkService} from "../../bhk.service";
 
 @Injectable()
 export class PemesananPembelianService {
 
-  constructor(public http: HttpClient) { }
-
-  getData(page = 0, size = 10, http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/po/?page=' + page + '&size=' + size);
+  constructor(public http: HttpClient, private bhk: BhkService) {
   }
 
-  getDocumentProperties(http = this.http, params?) {
-    let url = '/api/po/utilitas/propertidokumen/'
-    url += ((params !== undefined || params !== null) ? convertObjectAsHttpParams(params, url) : '');
-    return http.get(apiHost + ':' + apiPort + url);
-  }
+  private token = () => {
+    return {[TOKEN]: this.bhk.oauthInfo.value[TOKEN]}
+  };
 
-  postData(body) {
-    return this.http.post(apiHost + ':' + apiPort + '/api/po/', body);
-  }
+  getData = (page = 0, size = 10) => this.http.get(`${server}/api/po/${toParams({
+    ...this.token(),
+    page: page,
+    size: size
+  })}`);
 
-  putData(id, body) {
-    return this.http.put(apiHost + ':' + apiPort + '/api/po/' + id, body);
-  }
+  postData = (body) => this.http.post(`${server}/api/po/${toParams(this.token())}`, body);
 
-  deleteData(id) {
-    return this.http.delete(apiHost + ':' + apiPort + '/api/po/' + id);
-  }
+  deleteData = (id) => this.http.delete(`${server}/api/po/${id}${toParams(this.token())}`);
 
+  getDocumentProperties = (params?) => this.http.get(`${server}/api/po/utilitas/propertidokumen/${toParams({
+    ...params,
+    ...this.token()
+  })}`);
 
-  getDataById(id): Observable<PemesananPembelian> {
-    return this.http.get<PemesananPembelian>(`${apiHost}:${apiPort}/api/po/${id}`);
-  }
+  getDataById = (id): Observable<PemesananPembelian> => this.http.get<PemesananPembelian>(`${server}/api/po/${id}${toParams(this.token())}`);
 
-
-
-
-  checkPrByPoId(poId) {
-    return this.http.get(apiHost + ':' + apiPort + '/api/po/check/pr/' + poId);
-  }
+  checkPrByPoId = (poId) => this.http.get(`${server}/api/po/check/pr/${poId}${toParams(this.token())}`);
 
 }

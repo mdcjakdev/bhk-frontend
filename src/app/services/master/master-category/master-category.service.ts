@@ -1,25 +1,27 @@
-import { Injectable } from '@angular/core';
-import {apiHost, apiPort} from '../../../shared/constants';
+import {Injectable} from '@angular/core';
+import {server, TOKEN} from '../../../shared/constants';
 import {HttpClient} from '@angular/common/http';
+import {BhkService} from "../../bhk.service";
+import {toParams} from "../../../shared/utils";
 
 @Injectable()
 export class MasterCategoryService {
 
-  constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient, private bhk: BhkService) {}
 
-  getData(page = 0, size = 10, http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/master/kategori/?page=' + page + '&size=' + size);
-  }
+  private token = () => {
+    return {[TOKEN]: this.bhk.oauthInfo.value[TOKEN]}
+  };
 
-  postData(body) {
-    return this.http.post(apiHost + ':' + apiPort + '/api/master/kategori/', body);
-  }
+  getData = (page = 0, size = 10) => this.http.get(`${server}/api/master/kategori/${toParams({
+    ...this.token(),
+    page: page,
+    size: size
+  })}`);
 
-  putData(id, body) {
-    return this.http.put(apiHost + ':' + apiPort + '/api/master/kategori/' + id, body);
-  }
+  postData = (body) => this.http.post(`${server}/api/master/kategori/${toParams(this.token())}`, body);
 
-  deleteData(id) {
-    return this.http.delete(apiHost + ':' + apiPort + '/api/master/kategori/' + id);
-  }
+  deleteData = (id) => this.http.delete(`${server}/api/master/kategori/${id}${toParams(this.token())}`);
+
+
 }

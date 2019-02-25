@@ -9,7 +9,6 @@ import {MatBottomSheet, MatDialog, MatSnackBar} from '@angular/material';
 import {printWord} from '../../../../shared/utils';
 import {PenawaranWarnaService} from '../../../../services/purchase/co/penawaran-warna.service';
 import {FormControl} from '@angular/forms';
-import {Ui} from '../../../../shared/ui';
 import {PenawaranWarnaSheetComponent} from './penawaran-warna-sheet/penawaran-warna-sheet.component';
 
 @Component({

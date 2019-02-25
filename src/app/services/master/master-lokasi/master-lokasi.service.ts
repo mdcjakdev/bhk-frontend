@@ -1,26 +1,27 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {apiHost, apiPort} from '../../../shared/constants';
+import {server, TOKEN} from '../../../shared/constants';
+import {BhkService} from "../../bhk.service";
+import {toParams} from "../../../shared/utils";
 
 @Injectable()
 export class MasterLokasiService {
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, private bhk: BhkService) {
   }
 
-  getData(page = 0, size = 10, http = this.http) {
-    return http.get(apiHost + ':' + apiPort + '/api/master/lokasi/?page=' + page + '&size=' + size);
-  }
+  private token = () => {
+    return { [TOKEN]: this.bhk.oauthInfo.value[TOKEN] }
+  };
 
-  postData(body) {
-    return this.http.post(apiHost + ':' + apiPort + '/api/master/lokasi/', body);
-  }
+  getData = (page = 0, size = 10) => this.http.get(`${server}/api/master/lokasi/${toParams({
+    ...this.token(),
+    page: page,
+    size: size
+  })}`);
 
-  putData(id, body) {
-    return this.http.put(apiHost + ':' + apiPort + '/api/master/lokasi/' + id, body);
-  }
+  postData = (body) => this.http.post(`${server}/api/master/lokasi/${toParams(this.token())}`, body);
 
-  deleteData(id) {
-    return this.http.delete(apiHost + ':' + apiPort + '/api/master/lokasi/' + id);
-  }
+  deleteData = (id) => this.http.delete(`${server}/api/master/lokasi/${id}${toParams(this.token())}`);
+
 }

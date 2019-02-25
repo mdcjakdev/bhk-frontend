@@ -43,7 +43,8 @@ export class PenawaranWarnaDialogInfoComponent implements OnInit, AfterViewInit 
     if (l === 0) {
       return this.data.item.namaKain;
     } else {
-      return this.data.item.namaAlias[l - 1];
+      return this.data.item.namaKain
+      // return this.data.item.namaAlias[l - 1].namaAlias;
     }
   }
 

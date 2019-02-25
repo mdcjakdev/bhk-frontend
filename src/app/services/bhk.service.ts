@@ -5,28 +5,38 @@ import {BehaviorSubject, Observable, Subject} from "rxjs";
 @Injectable()
 export class BhkService {
 
-  private _loginInfo: Subject<any> = new BehaviorSubject<any>(undefined);
+  private _redirect: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
 
-  private _userInfo: Subject<any> = new BehaviorSubject<any>(undefined);
+  private _loginInfo: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
 
-  private _oauthInfo: Subject<any> = new BehaviorSubject<any>(undefined);
+  private _userInfo: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+
+  private _oauthInfo: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
 
 
   constructor() {
   }
 
-  get loginInfo(): Observable<any> {
-    return this._loginInfo.asObservable();
+  get redirect(): BehaviorSubject<any> {
+    return this._redirect;
   }
 
-  get userInfo(): Observable<any> {
-    return this._userInfo.asObservable();
+  get loginInfo(): BehaviorSubject<any> {
+    return this._loginInfo;
   }
 
-  get oauthInfo(): Observable<any> {
-    return this._oauthInfo.asObservable();
+  get userInfo(): BehaviorSubject<any> {
+    return this._userInfo;
   }
 
+  get oauthInfo(): BehaviorSubject<any> {
+    return this._oauthInfo;
+  }
+
+
+  public redirectTo(value) {
+    this._redirect.next(value);
+  }
 
   public addOauthInfo(value) {
     this._oauthInfo.next(value);

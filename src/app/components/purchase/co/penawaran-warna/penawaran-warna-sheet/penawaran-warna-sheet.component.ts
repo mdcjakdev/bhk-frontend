@@ -264,6 +264,10 @@ export class PenawaranWarnaSheetComponent implements OnInit {
           this.close('saved');
         },
         error1 => {
+          if (error1.status === 401) {
+            this.bottomSheetRef.dismiss();
+          }
+
           if (failed) {
             failed(error1);
           }

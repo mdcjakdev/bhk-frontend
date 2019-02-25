@@ -4,6 +4,11 @@
   padding-bottom: 20px;
 }
 
+.delete {
+  color: $delete-font-color;
+  font-size: $standard-font-size-sm;
+}
+
 .mat-progress-bar {
   position: absolute;
   height: 4px;
