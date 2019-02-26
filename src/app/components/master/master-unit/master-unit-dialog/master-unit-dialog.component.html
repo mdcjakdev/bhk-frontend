@@ -2,7 +2,7 @@
 
   <mat-progress-bar *ngIf="dialogRef.disableClose" [color]="(isDelete()) ? 'warn' : 'accent'" mode="indeterminate">
   </mat-progress-bar>
-  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'accent' : 'primary'">
+  <h4 mat-dialog-title [ngClass]="(isDelete()) ? 'warn' : 'primary'">
     <div>
       <mat-icon *ngIf="!isDataNull() && isDetail()" style="margin-bottom: 8px;">description</mat-icon>
       <mat-icon *ngIf="!isDataNull() && (isInsert() || isUpdate())" style="margin-bottom: 4px;">subject</mat-icon>

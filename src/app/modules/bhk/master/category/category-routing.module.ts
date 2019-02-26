@@ -1,11 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MasterCategoryComponent} from '../../../../components/master/master-category/master-category.component';
+import {BhkGuard} from "../../../../services/auth/bhk.guard";
 
 const routes: Routes = [
   {
     path: '',
-    component: MasterCategoryComponent
+    component: MasterCategoryComponent,
+    canActivate: [BhkGuard]
   }
 ];
 

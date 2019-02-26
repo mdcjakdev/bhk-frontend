@@ -243,11 +243,6 @@ export class PenawaranWarnaComponent
 
 
 
-
-
-
-
-
   noteTooltip(noted: string, length: number) {
     if (noted.length > length) {
       return noted;

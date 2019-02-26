@@ -58,7 +58,7 @@ export class MenuList {
       <MenuModel> { ...createMenu, url: '/app/pembelian/pr', selector: [this.pembelianDataRootSelector, 'pr'], menu: 'Permintaan', icon: 'chrome_reader_mode'},
       <MenuModel> { ...createMenu, url: '/app/pembelian/po', selector: [this.pembelianDataRootSelector, 'po'], menu: 'Pemesanan', icon: 'account_balance_wallet'},
       <MenuModel> { ...createMenu, url: '/app/pembelian/co', selector: [this.pembelianDataRootSelector, 'co'], menu: 'Penawaran', icon: 'more'},
-      <MenuModel> { ...createMenu, url: '/app/pembelian/transfer', selector: [this.pembelianDataRootSelector, 'transfer'], menu: 'Transfer', icon: 'swap_horiz'}
+      <MenuModel> { ...createMenu, url: '/app/pembelian/delivery', selector: [this.pembelianDataRootSelector, 'delivery'], menu: 'Pengiriman', icon: 'swap_horiz'}
     ]
   };
 

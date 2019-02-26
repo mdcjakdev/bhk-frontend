@@ -39,7 +39,7 @@ export interface PenawaranWarnaDetail extends AppAuditEntity {
   warna?: PenawaranWarnaDetailWarna[];
 }
 
-export interface PenawaranWarna {
+export interface PenawaranWarna extends AppAuditEntity {
 
   pemesananPembelian?: PemesananPembelian;
 
@@ -89,19 +89,6 @@ export const penawaranWarnaInit = {
   detail: []
 };
 
-
-export interface PenawaranWarna {
-
-  pemesananPembelian?: PemesananPembelian;
-
-  tanggalPenawaran?: any;
-  nomorDokumen?: string;
-  nomorPrefix?: string;
-  counter?: any;
-  status?: string;
-  detail?: PenawaranWarnaDetail[];
-
-}
 
 // ================ DISABLES STATUS ===================================================================
 

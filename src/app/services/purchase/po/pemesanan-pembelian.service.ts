@@ -35,4 +35,10 @@ export class PemesananPembelianService {
 
   checkPrByPoId = (poId) => this.http.get(`${server}/api/po/check/pr/${poId}${toParams(this.token())}`);
 
+  /**
+   * Mengmambil data dokumen po berdasarkan nomor dokumen yang seperti
+   * @param bodyParams parameter data { page, size, requestAction, documentNumber}
+   */
+  getListOfPoDocument = (bodyParams) => this.http.post(`${server}/api/po/utilitas/listof/like${toParams(this.token())}`, bodyParams);
+
 }

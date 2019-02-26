@@ -8,9 +8,8 @@ import {LoginComponent} from './components/login/login.component';
 import {SharedModule} from './modules/shared/shared.module';
 import {FormsModule} from '@angular/forms';
 import {SalesOrderComponent} from './components/sales-order/sales-order.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
 import {BhkService} from "./services/bhk.service";
-import {AuthService} from "./services/auth/auth.service";
 
 @NgModule({
   declarations: [

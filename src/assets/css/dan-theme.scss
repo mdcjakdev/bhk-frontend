@@ -76,7 +76,9 @@ $dan-green: $mat-teal;
 //$dan-green: $mat-red;
 
 //$dan-accent: $mat-deep-orange;
-$dan-accent: $mat-orange;
+//$dan-accent: $mat-orange;
+$dan-accent: $mat-light-blue;
+
 $dan-grey: (
   50: #fafafa,
   100: #f5f5f5,
@@ -146,7 +148,8 @@ $dan-red: (
 //$dan-app-warning: mat-palette($dan-red, 400, 100, 700);
 
 $dan-app-primary: mat-palette($dan-green, 500 , 100, 900);
-$dan-app-accent: mat-palette($dan-accent, 900);
+//$dan-app-accent: mat-palette($dan-accent, 900);
+$dan-app-accent: mat-palette($dan-accent, A700);
 $dan-app-warning: mat-palette($dan-red, 400, 100, 700);
 
 

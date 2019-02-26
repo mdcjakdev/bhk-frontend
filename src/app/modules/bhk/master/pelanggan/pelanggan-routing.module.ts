@@ -1,11 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MasterPelangganComponent} from '../../../../components/master/master-pelanggan/master-pelanggan.component';
+import {BhkGuard} from "../../../../services/auth/bhk.guard";
 
 const routes: Routes = [
   {
     path: '',
-    component: MasterPelangganComponent
+    component: MasterPelangganComponent,
+    canActivate: [BhkGuard]
   }
 ];
 

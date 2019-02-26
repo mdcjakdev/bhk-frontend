@@ -6,6 +6,7 @@ import {NgScrollbar} from 'ngx-scrollbar';
 import {DashboardSharedService} from '../../services/dashboard-shared.service';
 import {Router} from '@angular/router';
 import {BhkService} from "../../services/bhk.service";
+import {LOGIN, OAUTH, USER} from "../../shared/utils";
 
 @Component({
   selector: 'app-bhk-dashboard',
@@ -122,4 +123,19 @@ export class BhkDashboardComponent
     this.changeDetectorRef.detectChanges();
   }
 
+  removeAuthenticationInfo() {
+    this.bhk.addUserInfo(undefined);
+    this.bhk.addLoginInfo(undefined);
+    this.bhk.addOauthInfo(undefined);
+    localStorage.removeItem(LOGIN);
+    localStorage.removeItem(USER);
+    localStorage.removeItem(OAUTH);
+  }
+
+  logout() {
+    this.removeAuthenticationInfo();
+    setTimeout(() => {
+      this.router.navigate(['/'])
+    }, 100);
+  }
 }

@@ -51,6 +51,12 @@ export function plantDataToLocalStorage(login, user, oauth) {
 }
 
 
+/**
+ * Digunakan untuk mengenerate form array dari suatu formgroup dengan inisial value yang dikirim
+ *
+ * @param initValue data awal
+ * @param formGroupFunction nama fungsi Form Group target
+ */
 export function generateArrayForm(initValue: any[], formGroupFunction: Function) {
   const data = [];
   initValue.forEach(value => data.push(formGroupFunction(value)));

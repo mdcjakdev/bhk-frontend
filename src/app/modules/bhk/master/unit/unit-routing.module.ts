@@ -1,11 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MasterUnitComponent} from '../../../../components/master/master-unit/master-unit.component';
+import {BhkGuard} from "../../../../services/auth/bhk.guard";
 
 const routes: Routes = [
   {
     path: '',
-    component: MasterUnitComponent
+    component: MasterUnitComponent,
+    canActivate: [BhkGuard]
   }
 ];
 

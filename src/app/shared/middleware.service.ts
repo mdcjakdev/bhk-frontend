@@ -38,8 +38,8 @@ export class MiddlewareService implements HttpInterceptor {
                 openAppSnackbar(this.snackBar, 'Session anda telah habis. Silahkan Login Ulang',
                   SNACKBAR_ERROR_STYLE, 2000);
               }, 100);
-              // this.removeAuthenticationInfo();
-              // this.router.navigate(['/']);
+              this.removeAuthenticationInfo();
+              this.router.navigate(['/']);
             } else if (error.status === 500) {
               if (error.error.message === undefined) {
                 openAppSnackbar(this.snackBar, CANNOT_PROCESS, SNACKBAR_ERROR_STYLE, 2000);

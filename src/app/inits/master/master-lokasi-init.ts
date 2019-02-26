@@ -1,4 +1,4 @@
-import {AppErrorStateMatcher} from '../../shared/utils';
+import {AppErrorStateMatcher, statusGeneralization} from '../../shared/utils';
 import {AppAuditEntity, appAuditEntityDisables, appAuditEntityForm, appAuditEntityInit} from '../init';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -40,13 +40,14 @@ export const masterLokasiErrorStateMatchers = {
 
 /** Fungsi Init Reactive Form Group untuk data Master Lokasi*/
 export function masterLokasiForm(init: any = masterLokasiInit,
-                                    disables = masterLokasiDisables,
-                                    initAuditForm: Function = appAuditEntityForm): FormGroup {
+                                 disables = masterLokasiDisables,
+                                 forGeneralization = false,
+                                 initAuditForm: Function = appAuditEntityForm): FormGroup {
 
   return new FormBuilder().group({
     ...initAuditForm(init, disables).controls,
-    namaLokasi: [{value: init.namaLokasi, disabled: disables.namaLokasi}, Validators.required],
-    tipeLokasi: [{value: init.tipeLokasi, disabled: disables.tipeLokasi}, Validators.required]
+    namaLokasi: [{value: init.namaLokasi, disabled: disables.namaLokasi}, statusGeneralization(Validators.required, forGeneralization)],
+    tipeLokasi: [{value: init.tipeLokasi, disabled: disables.tipeLokasi}, statusGeneralization(Validators.required, forGeneralization)]
   });
 
 }

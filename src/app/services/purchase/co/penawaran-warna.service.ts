@@ -14,26 +14,26 @@ export class PenawaranWarnaService {
     return { [TOKEN]: this.bhk.oauthInfo.value[TOKEN] }
   };
 
-  getData = (page = 0, size = 10) => this.http.get(`${server}/api/co/${toParams({
+  getData = (page = 0, size = 10) => this.http.get(`${server}/api/offer/${toParams({
     ...this.token(),
     page: page,
     size: size
   })}`);
 
-  postData = (body) => this.http.post(`${server}/api/co/${toParams(this.token())}`, body);
+  postData = (body) => this.http.post(`${server}/api/offer/${toParams(this.token())}`, body);
 
-  deleteData = (id) => this.http.delete(`${server}/api/co/${id}${toParams(this.token())}`);
+  deleteData = (id) => this.http.delete(`${server}/api/offer/${id}${toParams(this.token())}`);
 
 
-  getDocumentProperties = (http = this.http, params?) => this.http.get(`${server}/api/co/utilitas/propertidokumen/${toParams({
+  getDocumentProperties = (http = this.http, params?) => this.http.get(`${server}/api/offer/utilitas/propertidokumen/${toParams({
     ...params,
     ...this.token()
   })}`);
 
-  getByPoId = (id) => this.http.get(`${apiHost}:${apiPort}/api/co/by/poid/${id}${toParams(this.token())}`);
+  getByPoId = (id) => this.http.get(`${apiHost}:${apiPort}/api/offer/by/poid/${id}${toParams(this.token())}`);
 
-  getListOfPoDocument = (bodyParams) => this.http.post(`${server}/api/co/utilitas/list/po/${toParams(this.token())}`, bodyParams);
+  getListOfPoDocument = (bodyParams) => this.http.post(`${server}/api/offer/utilitas/list/po/${toParams(this.token())}`, bodyParams);
 
-  checkPrByPoId = (poId) => this.http.get(`${server}/api/co/check/pr/${poId}${toParams(this.token())}`);
+  checkPrByPoId = (poId) => this.http.get(`${server}/api/offer/check/pr/${poId}${toParams(this.token())}`);
 
 }

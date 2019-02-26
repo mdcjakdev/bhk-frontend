@@ -28,6 +28,10 @@ const routes: Routes = [
       {
         path: 'pembelian/co',
         loadChildren: 'src\\app\\modules\\bhk\\purchase\\co\\co.module#CoModule'
+      },
+      {
+        path: 'pembelian/delivery',
+        loadChildren: 'src\\app\\modules\\bhk\\purchase\\delivery\\delivery.module#DeliveryModule'
       }
     ]
   }
